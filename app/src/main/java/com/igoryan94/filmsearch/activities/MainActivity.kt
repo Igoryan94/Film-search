@@ -1,10 +1,12 @@
-package com.igoryan94.filmsearch
+package com.igoryan94.filmsearch.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +23,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-
+        b.contents.setOnClickListener {
+            startActivity(Intent(this, ImageViewTestActivity::class.java))
+        }
     }
 }
