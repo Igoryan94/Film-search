@@ -5,43 +5,143 @@
 	android:id="@+id/main"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".activities.MainActivity">
+	tools:context=".activities.MainActivity"
+	tools:ignore="ContentDescription">
 
-	<LinearLayout
+	<androidx.cardview.widget.CardView
 		android:id="@+id/topBar"
 		android:layout_width="match_parent"
-		android:layout_height="70dp"
-		android:background="#000077"
-		android:orientation="vertical"
-		app:layout_constraintBottom_toTopOf="@id/contents"
+		android:layout_height="100dp"
+		android:layout_marginStart="5dp"
+		android:layout_marginEnd="5dp"
+		app:cardCornerRadius="20dp"
+		app:cardElevation="25dp"
+		app:layout_constraintBottom_toTopOf="@id/topBarDescription"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+		app:layout_constraintTop_toTopOf="parent">
 
-	<LinearLayout
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal">
+
+			<ImageView
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:scaleType="centerCrop"
+				android:src="@drawable/ic_poster_lotr" />
+
+			<ImageView
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:scaleType="centerCrop"
+				android:src="@drawable/ic_poster_thor" />
+
+			<ImageView
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:scaleType="centerCrop"
+				android:src="@drawable/ic_poster_cpt_marvel" />
+
+		</LinearLayout>
+
+	</androidx.cardview.widget.CardView>
+
+	<TextView
+		android:id="@+id/topBarDescription"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="20dp"
+		android:layout_marginEnd="20dp"
+		android:background="@drawable/rectangle"
+		android:gravity="center"
+		android:text="@string/main_topbar_description"
+		app:layout_constraintTop_toBottomOf="@+id/topBar" />
+
+	<androidx.cardview.widget.CardView
 		android:id="@+id/contents"
 		android:layout_width="0dp"
-		android:layout_height="0dp"
-		android:background="#777777"
-		android:orientation="vertical"
-		android:layout_marginStart="50dp"
-		android:layout_marginTop="30dp"
-		android:layout_marginEnd="50dp"
-		android:layout_marginBottom="30dp"
+		android:layout_height="wrap_content"
+		android:layout_margin="25dp"
+		app:cardBackgroundColor="@color/white"
+		app:cardCornerRadius="10dp"
+		app:cardElevation="15dp"
+		app:contentPadding="0dp"
 		app:layout_constraintBottom_toTopOf="@id/bottomButtons"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/topBar" />
+		app:layout_constraintTop_toBottomOf="@id/topBarDescription">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center|top"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/textButtonGroup1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="6dp"
+				android:layout_marginBottom="1dp"
+				android:background="@drawable/rectangle"
+				android:paddingStart="8dp"
+				android:text="@string/main_subtitle_button_group_1"
+				android:textColor="#707070"
+				tools:ignore="RtlSymmetry" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_gravity="center|top"
+				android:background="@drawable/main_menu_gradient_shape"
+				android:orientation="vertical">
+
+				<Button
+					android:id="@+id/buttonMenu"
+					style="@style/MainMenuButton"
+					android:text="@string/main_button_title_menu" />
+
+				<Button
+					android:id="@+id/buttonFavorites"
+					style="@style/MainMenuButton"
+					android:text="@string/main_button_title_favorites" />
+
+				<Button
+					android:id="@+id/buttonWatchLater"
+					style="@style/MainMenuButton"
+					android:text="@string/main_button_title_watch_later" />
+
+				<Button
+					android:id="@+id/buttonRecommendations"
+					style="@style/MainMenuButton"
+					android:text="@string/main_button_title_recommendations" />
+
+				<Button
+					android:id="@+id/buttonSettings"
+					style="@style/MainMenuButton"
+					android:text="@string/main_button_title_settings" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</androidx.cardview.widget.CardView>
 
 	<LinearLayout
 		android:id="@+id/bottomButtons"
 		android:layout_width="match_parent"
 		android:layout_height="70dp"
-		android:background="#337700"
-		android:orientation="vertical"
+		android:background="@drawable/rectangle"
+		android:backgroundTint="@color/colorPrimaryDark"
+		android:backgroundTintMode="screen"
+		android:orientation="horizontal"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/contents" />
+		app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

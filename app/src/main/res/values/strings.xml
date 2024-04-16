@@ -1,5 +1,12 @@
 <resources>
 	<string name="app_name">Film search</string>
-	<string name="image_view_sub_text">Успех обеспечен! Надо лишь\nподойти, и взять...</string>
+	<string name="image_view_sub_text">Успех обеспечен! Надо лишь\nподойти, и взять…</string>
 	<string name="image_view_test_button">В космос!</string>
+	<string name="main_subtitle_button_group_1">Группа кнопок 1</string>
+	<string name="main_button_title_menu">Меню</string>
+	<string name="main_button_title_favorites">Избранное</string>
+	<string name="main_button_title_watch_later">Посмотреть позже</string>
+	<string name="main_button_title_recommendations">Подборки</string>
+	<string name="main_button_title_settings">Настройки</string>
+	<string name="main_topbar_description">Постеры взяты с ресурса КиноПоиск</string>
 </resources>
