@@ -2,6 +2,7 @@ package com.igoryan94.filmsearch.activities
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,7 +12,7 @@ import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var b: ActivityMainBinding
+    private lateinit var b: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +25,15 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-//        b.contents.setOnClickListener {
-//            startActivity(Intent(this, ImageViewTestActivity::class.java))
-//        }
+        b.topAppBar.setNavigationOnClickListener {
+            Toast.makeText(this, "Когда-нибудь здесь будет навигация...", Toast.LENGTH_SHORT).show()
+        }
+
+        b.topAppBar.setOnMenuItemClickListener {
+            Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
+            true
+        }
+
         setupButtons()
     }
 

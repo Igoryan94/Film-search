@@ -6,7 +6,30 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	tools:context=".activities.MainActivity"
+	android:background="@color/backgroundColor"
 	tools:ignore="ContentDescription">
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/appBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toTopOf="@+id/topBar"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<com.google.android.material.appbar.MaterialToolbar
+			android:id="@+id/topAppBar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="@color/colorPrimary"
+			app:menu="@menu/top_app_bar"
+			app:navigationIcon="@drawable/ic_vector_nav"
+			app:title="@string/app_name" />
+		<!--		FIXME не получилось сделать все иконки белыми (меню), поэтому они чёрные-->
+		<!--	app:navigationIconTint="@color/white"-->
+
+	</com.google.android.material.appbar.AppBarLayout>
 
 	<androidx.cardview.widget.CardView
 		android:id="@+id/topBar"
@@ -19,7 +42,7 @@
 		app:layout_constraintBottom_toTopOf="@id/topBarDescription"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent">
+		app:layout_constraintTop_toTopOf="@id/appBar">
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -67,7 +90,7 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_margin="25dp"
-		app:cardBackgroundColor="@color/white"
+		app:cardBackgroundColor="@color/backgroundColor"
 		app:cardCornerRadius="10dp"
 		app:cardElevation="15dp"
 		app:contentPadding="0dp"
@@ -91,7 +114,7 @@
 				android:background="@drawable/rectangle"
 				android:paddingStart="8dp"
 				android:text="@string/main_subtitle_button_group_1"
-				android:textColor="#707070"
+				android:textColor="@color/colorAccent"
 				tools:ignore="RtlSymmetry" />
 
 			<LinearLayout
