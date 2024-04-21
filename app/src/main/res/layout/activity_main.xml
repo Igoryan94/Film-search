@@ -155,6 +155,28 @@
 
 	</androidx.cardview.widget.CardView>
 
+	<Button
+		android:id="@+id/button"
+		style="@style/RoundButton.SilverText.Bigger"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Styled Button"
+		app:layout_constraintBottom_toTopOf="@+id/bottomButtons"
+		app:layout_constraintEnd_toStartOf="@id/textView"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/contents" />
+
+	<TextView
+		android:id="@+id/textView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Styled TextView"
+		app:layout_constraintBottom_toTopOf="@+id/bottomButtons"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/button"
+		style="@style/CustomYellowTextView"
+		app:layout_constraintTop_toBottomOf="@+id/contents" />
+
 	<LinearLayout
 		android:id="@+id/bottomButtons"
 		android:layout_width="match_parent"
@@ -163,6 +185,7 @@
 		android:backgroundTint="@color/colorPrimaryDark"
 		android:backgroundTintMode="screen"
 		android:orientation="horizontal"
+		app:layout_constraintTop_toBottomOf="@+id/contents"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
