@@ -158,6 +158,7 @@
 	<Button
 		android:id="@+id/button"
 		style="@style/RoundButton.SilverText.Bigger"
+		android:textAppearance="@style/ButtonTextShadow"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="Styled Button"
@@ -175,6 +176,7 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/button"
 		style="@style/CustomYellowTextView"
+		android:textAppearance="@style/TextViewYellowShadow"
 		app:layout_constraintTop_toBottomOf="@+id/contents" />
 
 	<LinearLayout
