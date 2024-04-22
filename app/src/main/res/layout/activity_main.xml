@@ -5,8 +5,8 @@
 	android:id="@+id/main"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".activities.MainActivity"
 	android:background="@color/backgroundColor"
+	tools:context=".activities.MainActivity"
 	tools:ignore="ContentDescription">
 
 	<com.google.android.material.appbar.AppBarLayout
@@ -94,7 +94,7 @@
 		app:cardCornerRadius="10dp"
 		app:cardElevation="15dp"
 		app:contentPadding="0dp"
-		app:layout_constraintBottom_toTopOf="@id/bottomButtons"
+		app:layout_constraintBottom_toTopOf="@id/button"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/topBarDescription">
@@ -158,26 +158,35 @@
 	<Button
 		android:id="@+id/button"
 		style="@style/RoundButton.SilverText.Bigger"
-		android:textAppearance="@style/ButtonTextShadow"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="Styled Button"
-		app:layout_constraintBottom_toTopOf="@+id/bottomButtons"
+		android:textAppearance="@style/ButtonTextShadow"
+		app:layout_constraintBottom_toTopOf="@+id/subscribeView"
 		app:layout_constraintEnd_toStartOf="@id/textView"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/contents" />
 
 	<TextView
 		android:id="@+id/textView"
+		style="@style/CustomYellowTextView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="Styled TextView"
-		app:layout_constraintBottom_toTopOf="@+id/bottomButtons"
+		android:textAppearance="@style/TextViewYellowShadow"
+		app:layout_constraintBottom_toBottomOf="@+id/button"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toEndOf="@id/button"
-		style="@style/CustomYellowTextView"
-		android:textAppearance="@style/TextViewYellowShadow"
-		app:layout_constraintTop_toBottomOf="@+id/contents" />
+		app:layout_constraintTop_toTopOf="@+id/button" />
+
+	<com.igoryan94.filmsearch.views.SubscribeView
+		android:id="@+id/subscribeView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toTopOf="@id/bottomButtons"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/button" />
 
 	<LinearLayout
 		android:id="@+id/bottomButtons"
@@ -187,7 +196,6 @@
 		android:backgroundTint="@color/colorPrimaryDark"
 		android:backgroundTintMode="screen"
 		android:orientation="horizontal"
-		app:layout_constraintTop_toBottomOf="@+id/contents"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
