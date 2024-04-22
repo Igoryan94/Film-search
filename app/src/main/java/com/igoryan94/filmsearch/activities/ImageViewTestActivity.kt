@@ -39,9 +39,14 @@ class ImageViewTestActivity : AppCompatActivity() {
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
             adapter = pagerAdapter
 
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//
+//            })
 
-            })
+            setPageTransformer { page, position ->
+                page.findViewById<TextView>(R.id.textView).translationX =
+                    -position * (page.width / 2)
+            }
         }
 
         //Создаем список элементов, который передадим в адаптер
