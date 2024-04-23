@@ -84,39 +84,6 @@
 		android:text="@string/main_topbar_description"
 		app:layout_constraintTop_toBottomOf="@+id/topBar" />
 
-	<Button
-		android:id="@+id/button"
-		style="@style/RoundButton.SilverText.Bigger"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Styled Button"
-		android:textAppearance="@style/ButtonTextShadow"
-		app:layout_constraintBottom_toTopOf="@+id/subscribeView"
-		app:layout_constraintEnd_toStartOf="@id/textView"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/topBarDescription" />
-
-	<TextView
-		android:id="@+id/textView"
-		style="@style/CustomYellowTextView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Styled TextView"
-		android:textAppearance="@style/TextViewYellowShadow"
-		app:layout_constraintBottom_toBottomOf="@+id/button"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toEndOf="@id/button"
-		app:layout_constraintTop_toTopOf="@+id/button" />
-
-	<com.igoryan94.filmsearch.views.SubscribeView
-		android:id="@+id/subscribeView"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/button" />
-
 	<com.google.android.material.bottomnavigation.BottomNavigationView
 		android:id="@+id/bottomNavigation"
 		android:layout_width="match_parent"

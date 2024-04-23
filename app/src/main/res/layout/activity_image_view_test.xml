@@ -53,12 +53,44 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/textView" />
 
+	<Button
+		android:id="@+id/styledButton"
+		style="@style/RoundButton.SilverText.Bigger"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Styled Button"
+		android:textAppearance="@style/ButtonTextShadow"
+		app:layout_constraintBottom_toTopOf="@+id/subscribeView"
+		app:layout_constraintEnd_toStartOf="@id/textView"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/button" />
+
+	<TextView
+		android:id="@+id/styledTextView"
+		style="@style/CustomYellowTextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Styled TextView"
+		android:textAppearance="@style/TextViewYellowShadow"
+		app:layout_constraintBottom_toBottomOf="@+id/styledButton"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toEndOf="@id/styledButton"
+		app:layout_constraintTop_toTopOf="@+id/styledButton" />
+
+	<com.igoryan94.filmsearch.views.SubscribeView
+		android:id="@+id/subscribeView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toTopOf="@id/viewPager2"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/button" />
+
 	<androidx.viewpager2.widget.ViewPager2
 		android:id="@+id/viewPager2"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
+		android:layout_height="120dp"
 		android:orientation="vertical"
-		app:layout_constraintTop_toBottomOf="@id/button"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent" />
