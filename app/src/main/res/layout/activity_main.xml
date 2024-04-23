@@ -6,6 +6,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/backgroundColor"
+	android:layoutAnimation="@anim/layout_menu_transition"
+	tools:layoutAnimation="null"
 	tools:context=".activities.MainActivity"
 	tools:ignore="ContentDescription">
 
