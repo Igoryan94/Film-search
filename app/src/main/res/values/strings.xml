@@ -9,4 +9,5 @@
 	<string name="main_button_title_recommendations">Подборки</string>
 	<string name="main_button_title_settings">Настройки</string>
 	<string name="main_topbar_description">Постеры взяты с ресурса КиноПоиск</string>
+	<string name="menu_selections_title">Подборки</string>
 </resources>

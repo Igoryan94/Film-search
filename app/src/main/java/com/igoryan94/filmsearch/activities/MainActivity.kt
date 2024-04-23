@@ -1,13 +1,14 @@
 package com.igoryan94.filmsearch.activities
 
 import android.os.Bundle
-import android.widget.Button
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.dragonfly.tweaks.toast
+import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 
@@ -30,21 +31,35 @@ class MainActivity : AppCompatActivity() {
         }
 
         b.topAppBar.setOnMenuItemClickListener {
-            Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
+            when (it.itemId) {
+                R.id.settings -> "Настройки".toast(this)
+                else -> "-".toast(this)
+            }
             true
         }
 
-        setupButtons()
-    }
+        b.bottomNavigation.setOnItemSelectedListener(object :
+            NavigationBarView.OnItemSelectedListener {
+            override fun onNavigationItemSelected(it: MenuItem): Boolean {
+                when (it.itemId) {
+                    R.id.favorites -> {
+                        "Избранное".toast(this@MainActivity)
+                        return true
+                    }
 
-    private fun setupButtons() {
-        for (button in listOf(
-            b.buttonMenu,
-            b.buttonFavorites,
-            b.buttonRecommendations,
-            b.buttonWatchLater,
-            b.buttonSettings
-        ))
-            button.setOnClickListener { "${(it as Button).text}".toast(this) }
+                    R.id.watchLater -> {
+                        "Посмотреть позже".toast(this@MainActivity)
+                        return true
+                    }
+
+                    R.id.selections -> {
+                        "Подборки".toast(this@MainActivity)
+                        return true
+                    }
+
+                    else -> return false
+                }
+            }
+        })
     }
 }

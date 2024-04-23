@@ -13,7 +13,6 @@
 		android:id="@+id/appBar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@+id/topBar"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent">
@@ -23,11 +22,11 @@
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
 			android:background="@color/colorPrimary"
-			app:menu="@menu/top_app_bar"
+			style="@style/Widget.MaterialComponents.Toolbar.Primary"
+			app:menu="@menu/main_top_bar"
 			app:navigationIcon="@drawable/ic_vector_nav"
-			app:title="@string/app_name" />
-		<!--		FIXME не получилось сделать все иконки белыми (меню), поэтому они чёрные-->
-		<!--	app:navigationIconTint="@color/white"-->
+			app:title="@string/app_name"
+			app:titleTextColor="@color/white" />
 
 	</com.google.android.material.appbar.AppBarLayout>
 
@@ -42,7 +41,7 @@
 		app:layout_constraintBottom_toTopOf="@id/topBarDescription"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="@id/appBar">
+		app:layout_constraintTop_toBottomOf="@id/appBar">
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -85,76 +84,6 @@
 		android:text="@string/main_topbar_description"
 		app:layout_constraintTop_toBottomOf="@+id/topBar" />
 
-	<androidx.cardview.widget.CardView
-		android:id="@+id/contents"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_margin="25dp"
-		app:cardBackgroundColor="@color/backgroundColor"
-		app:cardCornerRadius="10dp"
-		app:cardElevation="15dp"
-		app:contentPadding="0dp"
-		app:layout_constraintBottom_toTopOf="@id/button"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/topBarDescription">
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_gravity="center|top"
-			android:orientation="vertical">
-
-			<TextView
-				android:id="@+id/textButtonGroup1"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="6dp"
-				android:layout_marginBottom="1dp"
-				android:background="@drawable/rectangle"
-				android:paddingStart="8dp"
-				android:text="@string/main_subtitle_button_group_1"
-				android:textColor="@color/colorAccent"
-				tools:ignore="RtlSymmetry" />
-
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_gravity="center|top"
-				android:background="@drawable/main_menu_gradient_shape"
-				android:orientation="vertical">
-
-				<Button
-					android:id="@+id/buttonMenu"
-					style="@style/MainMenuButton"
-					android:text="@string/main_button_title_menu" />
-
-				<Button
-					android:id="@+id/buttonFavorites"
-					style="@style/MainMenuButton"
-					android:text="@string/main_button_title_favorites" />
-
-				<Button
-					android:id="@+id/buttonWatchLater"
-					style="@style/MainMenuButton"
-					android:text="@string/main_button_title_watch_later" />
-
-				<Button
-					android:id="@+id/buttonRecommendations"
-					style="@style/MainMenuButton"
-					android:text="@string/main_button_title_recommendations" />
-
-				<Button
-					android:id="@+id/buttonSettings"
-					style="@style/MainMenuButton"
-					android:text="@string/main_button_title_settings" />
-
-			</LinearLayout>
-
-		</LinearLayout>
-
-	</androidx.cardview.widget.CardView>
-
 	<Button
 		android:id="@+id/button"
 		style="@style/RoundButton.SilverText.Bigger"
@@ -165,7 +94,7 @@
 		app:layout_constraintBottom_toTopOf="@+id/subscribeView"
 		app:layout_constraintEnd_toStartOf="@id/textView"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/contents" />
+		app:layout_constraintTop_toBottomOf="@+id/topBarDescription" />
 
 	<TextView
 		android:id="@+id/textView"
@@ -183,19 +112,20 @@
 		android:id="@+id/subscribeView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@id/bottomButtons"
+		app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/button" />
 
-	<LinearLayout
-		android:id="@+id/bottomButtons"
+	<com.google.android.material.bottomnavigation.BottomNavigationView
+		android:id="@+id/bottomNavigation"
 		android:layout_width="match_parent"
-		android:layout_height="70dp"
-		android:background="@drawable/rectangle"
-		android:backgroundTint="@color/colorPrimaryDark"
-		android:backgroundTintMode="screen"
-		android:orientation="horizontal"
+		android:layout_height="wrap_content"
+		android:background="@color/colorPrimaryDark"
+		app:itemIconTint="@android:color/white"
+		app:itemTextColor="@android:color/white"
+		app:labelVisibilityMode="labeled"
+		app:menu="@menu/main_nav"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
