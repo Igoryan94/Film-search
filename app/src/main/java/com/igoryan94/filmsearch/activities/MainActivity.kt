@@ -1,7 +1,9 @@
 package com.igoryan94.filmsearch.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        initViews()
+        applyAnimations()
+    }
+
+    private fun initViews() {
         b.topAppBar.setNavigationOnClickListener {
             Toast.makeText(this, "Когда-нибудь здесь будет навигация...", Toast.LENGTH_SHORT).show()
         }
@@ -61,5 +68,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        // TODO поменять на что-то полезнее, позже, если нужно
+        b.topBar.setOnClickListener {
+            startActivity(Intent(this, AnimThrowActivity::class.java))
+        }
+    }
+
+    private fun applyAnimations() {
+        val myAnim = AnimationUtils.loadAnimation(this, R.anim.my_animation)
+        b.bottomNavigation.startAnimation(myAnim)
     }
 }
