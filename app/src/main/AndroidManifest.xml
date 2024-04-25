@@ -11,6 +11,9 @@
 		android:supportsRtl="true"
 		android:theme="@style/MainTheme">
 		<activity
+			android:name=".activities.LayoutTransitionAnimActivity"
+			android:exported="false" />
+		<activity
 			android:name=".activities.AnimSetActivity"
 			android:exported="false" />
 		<activity

@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.databinding.ActivityAnimThrowBinding
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.toast
 
@@ -71,14 +70,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         // TODO поменять на что-то полезнее, позже, если нужно
-        startActivity(Intent(this, AnimSetActivity::class.java))
-        b.topBar.setOnClickListener {
-            startActivity(Intent(this, AnimSetActivity::class.java))
-        }
-        b.topBar.setOnLongClickListener {
-            startActivity(Intent(this, ActivityAnimThrowBinding::class.java))
-            true
-        }
+        startActivity(Intent(this, LayoutTransitionAnimActivity::class.java))
         finish()
         // -END поменять на что-то полезнее, позже, если нужно
     }
