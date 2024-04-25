@@ -1,8 +1,9 @@
 package com.igoryan94.filmsearch.activities
 
-import android.content.Intent
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -70,13 +71,22 @@ class MainActivity : AppCompatActivity() {
         })
 
         // TODO поменять на что-то полезнее, позже, если нужно
-        startActivity(Intent(this, LayoutTransitionAnimActivity::class.java))
-        finish()
+//        startActivity(Intent(this, LayoutTransitionAnimActivity::class.java))
+//        finish()
         // -END поменять на что-то полезнее, позже, если нужно
     }
 
     private fun applyAnimations() {
-        val myAnim = AnimationUtils.loadAnimation(this, R.anim.my_animation)
-        b.bottomNavigation.startAnimation(myAnim)
+        b.imagePoster1.animate()
+            .translationX(0f)
+            .setDuration(1000)
+            .start()
+
+        val animator = ObjectAnimator.ofFloat(b.imagePoster2, View.TRANSLATION_Y, 0f)
+        animator.setDuration(1000)
+        animator.start()
+
+        val anim = AnimationUtils.loadAnimation(this, R.anim.my_animation)
+        b.imagePoster3.startAnimation(anim)
     }
 }

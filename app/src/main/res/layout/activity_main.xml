@@ -51,20 +51,25 @@
 			android:orientation="horizontal">
 
 			<ImageView
+				android:id="@+id/imagePoster1"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
+				android:translationX="-500dp"
 				android:scaleType="centerCrop"
 				android:src="@drawable/ic_poster_lotr" />
 
 			<ImageView
+				android:id="@+id/imagePoster2"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
+				android:translationY="-400dp"
 				android:scaleType="centerCrop"
 				android:src="@drawable/ic_poster_thor" />
 
 			<ImageView
+				android:id="@+id/imagePoster3"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
 				android:layout_weight="1"
