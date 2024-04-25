@@ -49,6 +49,7 @@
 		android:background="?android:attr/selectableItemBackground"
 		android:text="@string/image_view_test_button"
 		android:textColor="@color/black"
+		android:stateListAnimator="@animator/state_list_button_elevation"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/textView" />
@@ -60,6 +61,7 @@
 		android:layout_height="wrap_content"
 		android:text="Styled Button"
 		android:textAppearance="@style/ButtonTextShadow"
+		android:stateListAnimator="@animator/state_list_button_elevation_simply_big"
 		app:layout_constraintBottom_toTopOf="@+id/subscribeView"
 		app:layout_constraintEnd_toStartOf="@id/textView"
 		app:layout_constraintStart_toStartOf="parent"

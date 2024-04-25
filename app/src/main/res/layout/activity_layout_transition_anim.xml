@@ -12,6 +12,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="Добавить"
+		android:stateListAnimator="@animator/state_list_button_elevation"
 		app:layout_constraintTop_toTopOf="parent" />
 
 	<Button
@@ -19,6 +20,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="Удалить"
+		android:stateListAnimator="@animator/state_list_button_elevation_simply_big"
 		app:layout_constraintTop_toBottomOf="@id/buttonAdd" />
 
 	<LinearLayout
