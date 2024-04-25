@@ -9,11 +9,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.dragonfly.tweaks.toast
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityAnimThrowBinding
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
+import com.igoryan94.filmsearch.toast
 
 class MainActivity : AppCompatActivity() {
     private lateinit var b: ActivityMainBinding
