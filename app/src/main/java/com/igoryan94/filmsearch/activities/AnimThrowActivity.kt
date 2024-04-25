@@ -2,11 +2,13 @@ package com.igoryan94.filmsearch.activities
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.igoryan94.filmsearch.R
@@ -42,6 +44,15 @@ class AnimThrowActivity : AppCompatActivity() {
 //        val throwingAnim = AnimationUtils.loadAnimation(this, R.anim.car_throwing)
 //        b.throwingImage.startAnimation(throwingAnim)
 //    }
+
+    private fun showAnimDrawable() {
+        val ad = ContextCompat.getDrawable(
+            this, R.drawable.my_animation_list
+        ) as AnimationDrawable
+
+        b.throwingImage.setBackgroundDrawable(ad)
+        ad.start()
+    }
 
     private fun throwTheCarCompletely() {
 //        val animator = ValueAnimator.ofFloat(1f, 0f)
