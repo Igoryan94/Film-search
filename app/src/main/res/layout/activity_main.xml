@@ -10,6 +10,7 @@
 	tools:layoutAnimation="null"
 	tools:context=".activities.MainActivity"
 	tools:ignore="ContentDescription">
+	<!-- null указан, чтобы layout был по прежнему виден -->
 
 	<com.google.android.material.appbar.AppBarLayout
 		android:id="@+id/appBar"
@@ -57,7 +58,9 @@
 				android:layout_weight="1"
 				android:translationX="-500dp"
 				android:scaleType="centerCrop"
-				android:src="@drawable/ic_poster_lotr" />
+				android:clickable="true"
+				android:src="@drawable/ic_poster_lotr"
+				android:stateListAnimator="@animator/state_list_button_physical_click" />
 
 			<ImageView
 				android:id="@+id/imagePoster2"
@@ -66,7 +69,9 @@
 				android:layout_weight="1"
 				android:translationY="-400dp"
 				android:scaleType="centerCrop"
-				android:src="@drawable/ic_poster_thor" />
+				android:clickable="true"
+				android:src="@drawable/ic_poster_thor"
+				android:stateListAnimator="@animator/state_list_button_physical_click" />
 
 			<ImageView
 				android:id="@+id/imagePoster3"
@@ -74,7 +79,9 @@
 				android:layout_height="match_parent"
 				android:layout_weight="1"
 				android:scaleType="centerCrop"
-				android:src="@drawable/ic_poster_cpt_marvel" />
+				android:clickable="true"
+				android:src="@drawable/ic_poster_cpt_marvel"
+				android:stateListAnimator="@animator/state_list_button_physical_click" />
 
 		</LinearLayout>
 
@@ -104,11 +111,14 @@
 		app:layout_constraintRight_toRightOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/topBarDescription"
 		tools:layoutAnimation="null">
+		<!-- null указан, чтобы layout был по прежнему виден -->
 
 		<androidx.cardview.widget.CardView
 			android:id="@+id/poster_1"
 			android:layout_width="150dp"
 			android:layout_height="200dp"
+			android:clickable="true"
+			android:stateListAnimator="@animator/state_list_button_physical_click"
 			app:cardCornerRadius="15dp">
 
 			<ImageView
@@ -122,7 +132,8 @@
 			android:id="@+id/poster_2"
 			android:layout_width="150dp"
 			android:layout_height="200dp"
-			android:alpha="1"
+			android:clickable="true"
+			android:stateListAnimator="@animator/state_list_button_physical_click"
 			app:cardCornerRadius="15dp">
 
 			<ImageView
@@ -136,6 +147,8 @@
 			android:id="@+id/poster_3"
 			android:layout_width="150dp"
 			android:layout_height="200dp"
+			android:clickable="true"
+			android:stateListAnimator="@animator/state_list_button_physical_click"
 			app:cardCornerRadius="15dp">
 
 			<ImageView
@@ -149,7 +162,8 @@
 			android:id="@+id/poster_4"
 			android:layout_width="150dp"
 			android:layout_height="200dp"
-			android:alpha="0"
+			android:clickable="true"
+			android:stateListAnimator="@animator/state_list_button_physical_click"
 			app:cardCornerRadius="15dp">
 
 			<ImageView
