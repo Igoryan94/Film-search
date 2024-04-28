@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityListBinding
 import com.igoryan94.filmsearch.views.recycler.adapters.MyAdapter
+import com.igoryan94.filmsearch.views.recycler.etc.MyItemDecoration
 
 class ListActivity : AppCompatActivity() {
     private lateinit var b: ActivityListBinding
@@ -36,6 +37,9 @@ class ListActivity : AppCompatActivity() {
             layoutAnimation = anim
             //Запускаем анимацию на выполнение
             scheduleLayoutAnimation()
+
+            // Подключаем декоратор элементов
+            addItemDecoration(MyItemDecoration())
         }
     }
 }
