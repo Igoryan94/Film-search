@@ -1,6 +1,7 @@
 package com.igoryan94.filmsearch.activities
 
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -23,6 +24,18 @@ class ListActivity : AppCompatActivity() {
         }
 
         val adapter = MyAdapter()
-        b.recyclerView.adapter = adapter
+        b.recyclerView.apply {
+            this.adapter = adapter
+//            layoutManager = GridLayoutManager(this, 3) // 4; 5
+            //Загружаем анимацию, созданную в XML формате
+            val anim = AnimationUtils.loadLayoutAnimation(
+                applicationContext,
+                R.anim.layout_rv_slide_from_right
+            )
+            //Передаем ее в recyclerView
+            layoutAnimation = anim
+            //Запускаем анимацию на выполнение
+            scheduleLayoutAnimation()
+        }
     }
 }
