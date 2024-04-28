@@ -1,6 +1,7 @@
 package com.igoryan94.filmsearch.activities
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -71,8 +72,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         // TODO поменять на что-то полезнее, позже, если нужно
-//        startActivity(Intent(this, LayoutTransitionAnimActivity::class.java))
-//        finish()
+        startActivity(Intent(this, ListActivity::class.java))
+        finish()
         // -END поменять на что-то полезнее, позже, если нужно
     }
 
