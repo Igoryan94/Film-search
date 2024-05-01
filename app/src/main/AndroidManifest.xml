@@ -11,16 +11,19 @@
 		android:supportsRtl="true"
 		android:theme="@style/MainTheme">
 		<activity
-			android:name=".activities.ListActivity"
+			android:name=".activities.training.NumberGridActivity"
 			android:exported="false" />
 		<activity
-			android:name=".activities.LayoutTransitionAnimActivity"
+			android:name=".activities.training.ListActivity"
 			android:exported="false" />
 		<activity
-			android:name=".activities.AnimSetActivity"
+			android:name=".activities.training.LayoutTransitionAnimActivity"
 			android:exported="false" />
 		<activity
-			android:name=".activities.AnimThrowActivity"
+			android:name=".activities.training.AnimSetActivity"
+			android:exported="false" />
+		<activity
+			android:name=".activities.training.AnimThrowActivity"
 			android:exported="false" />
 		<activity
 			android:name=".activities.MainActivity"
@@ -31,7 +34,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".activities.ImageViewTestActivity" />
+		<activity android:name=".activities.training.ImageViewTestActivity" />
 	</application>
 
 </manifest>

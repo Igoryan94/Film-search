@@ -1,4 +1,4 @@
-package com.igoryan94.filmsearch.activities
+package com.igoryan94.filmsearch.activities.training
 
 import android.animation.Animator
 import android.os.Bundle

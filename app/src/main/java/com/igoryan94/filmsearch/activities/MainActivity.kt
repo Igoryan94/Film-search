@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.activities.training.NumberGridActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.toast
 
@@ -35,6 +36,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        // TODO поменять на что-то полезнее, позже, если нужно
+        startActivity(Intent(this, NumberGridActivity::class.java))
+        finish()
+        // -END поменять на что-то полезнее, позже, если нужно
+
         b.topAppBar.setNavigationOnClickListener {
             Toast.makeText(this, "Когда-нибудь здесь будет навигация...", Toast.LENGTH_SHORT).show()
         }
@@ -70,11 +76,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
-        // TODO поменять на что-то полезнее, позже, если нужно
-        startActivity(Intent(this, ListActivity::class.java))
-        finish()
-        // -END поменять на что-то полезнее, позже, если нужно
     }
 
     private fun applyAnimations() {

@@ -1,4 +1,4 @@
-package com.igoryan94.filmsearch.activities
+package com.igoryan94.filmsearch.activities.training
 
 import android.os.Bundle
 import android.view.LayoutInflater

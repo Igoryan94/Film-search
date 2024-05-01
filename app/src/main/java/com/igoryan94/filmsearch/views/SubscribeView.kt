@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.ImageViewTestActivity
+import com.igoryan94.filmsearch.activities.training.ImageViewTestActivity
 
 class SubscribeView(context: Context, attributeSet: AttributeSet) :
     LinearLayout(context, attributeSet) {
