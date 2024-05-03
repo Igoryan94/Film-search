@@ -11,6 +11,9 @@
 		android:supportsRtl="true"
 		android:theme="@style/MainTheme">
 		<activity
+			android:name=".activities.training.ListMultiTypeActivity"
+			android:exported="false" />
+		<activity
 			android:name=".activities.training.NumberGridActivity"
 			android:exported="false" />
 		<activity
