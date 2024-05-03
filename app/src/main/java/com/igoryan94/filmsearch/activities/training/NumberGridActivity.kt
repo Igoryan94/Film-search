@@ -31,7 +31,8 @@ class NumberGridActivity : AppCompatActivity() {
 
         numbers = (1..30).shuffled().toMutableList()
 
-        adapter = NumbersAdapter(numbers)
+        adapter = NumbersAdapter()
+        adapter.items = numbers
         recyclerView.adapter = adapter
 
         findViewById<Button>(R.id.button_shuffle).setOnClickListener {
