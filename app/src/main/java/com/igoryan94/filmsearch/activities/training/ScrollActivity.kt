@@ -1,0 +1,162 @@
+package com.igoryan94.filmsearch.activities.training
+
+import android.os.Bundle
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.views.recycler.models.Ad
+import com.igoryan94.filmsearch.views.recycler.models.Product
+import com.skill_factory.unit6.adapter.ProductAdapter
+
+class ScrollActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_scroll)
+        val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
+        val adapter = ProductAdapter()
+        adapter.items = arrayListOf(
+            Product(
+                0,
+                R.drawable.ic_apple,
+                "Apple",
+                "Juicy Apple fruit, which is eaten fresh, serves as a raw material in cooking and for making drinks."
+            ),
+            Ad("Акция", "Скидка на бананы 15%"),
+            Product(
+                1,
+                R.drawable.ic_banana,
+                "Banana",
+                "It is one of the oldest food crops, and for tropical countries it is the most important food plant and the main export item."
+            ),
+            Product(
+                2,
+                R.drawable.ic_lemon,
+                "Lemon",
+                "Lemons are eaten fresh, and are also used in the manufacture of confectionery and soft drinks, in the liquor and perfume industry."
+            ),
+            Product(
+                3,
+                R.drawable.ic_pear,
+                "Pear",
+                "Under favorable conditions, the pear reaches a large size-up to 5-25 meters in height and 5 meters in diameter of the crown."
+            ),
+            Product(
+                4,
+                R.drawable.ic_strawberry,
+                "Strawberry",
+                "A perennial herbaceous plant 5-20 cm high, with a thick brown rhizome. \"Mustache\" is short. The stem is thin."
+            ),
+            Product(
+                5,
+                R.drawable.ic_orange,
+                "Orange",
+                "Orange juice is widely used as a drink in restaurants and cafes."
+            ),
+            Product(
+                6,
+                R.drawable.ic_banana,
+                "Banana",
+                "It is one of the oldest food crops, and for tropical countries it is the most important food plant and the main export item."
+            ),
+            Product(
+                7,
+                R.drawable.ic_banana,
+                "Banana",
+                "It is one of the oldest food crops, and for tropical countries it is the most important food plant and the main export item."
+            ),
+            Product(
+                8,
+                R.drawable.ic_banana,
+                "Banana",
+                "It is one of the oldest food crops, and for tropical countries it is the most important food plant and the main export item."
+            ),
+            Product(
+                9,
+                R.drawable.ic_banana,
+                "Banana",
+                "It is one of the oldest food crops, and for tropical countries it is the most important food plant and the main export item."
+            ),
+            Product(
+                10,
+                R.drawable.ic_banana,
+                "Banana",
+                "It is one of the oldest food crops, and for tropical countries it is the most important food plant and the main export item."
+            ),
+            Product(
+                11,
+                R.drawable.ic_lemon,
+                "Lemon",
+                "Lemons are eaten fresh, and are also used in the manufacture of confectionery and soft drinks, in the liquor and perfume industry."
+            ),
+            Product(
+                12,
+                R.drawable.ic_lemon,
+                "Lemon",
+                "Lemons are eaten fresh, and are also used in the manufacture of confectionery and soft drinks, in the liquor and perfume industry."
+            ),
+            Product(
+                13,
+                R.drawable.ic_lemon,
+                "Lemon",
+                "Lemons are eaten fresh, and are also used in the manufacture of confectionery and soft drinks, in the liquor and perfume industry."
+            ),
+        )
+        recyclerView.adapter = adapter
+        var savePositionFirst = 0
+        var savePositionLast = 0
+
+        //Метод который сохраняет текущую позицию скрола
+        fun savePosition() {
+            savePositionFirst = (recyclerView.layoutManager as LinearLayoutManager)
+                .findFirstCompletelyVisibleItemPosition()
+            savePositionLast = (recyclerView.layoutManager as LinearLayoutManager)
+                .findLastCompletelyVisibleItemPosition()
+        }
+
+        //Скролит к savePositionFirst
+        fun scrollToSaveStartPosition() {
+            recyclerView.smoothScrollToPosition(savePositionFirst)
+        }
+
+        //Скролит к savePositionLast
+        fun scrollToSaveLastPosition() {
+            recyclerView.smoothScrollToPosition(savePositionLast)
+        }
+
+        //Метод который скролит список к началу
+        // Если уже в начале, прокручивать низ экрана до нижней сохранённой позиции
+        fun scrollToStart() {
+            if ((recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition() > 0)
+                recyclerView.smoothScrollToPosition(0)
+            else
+                scrollToSaveLastPosition()
+        }
+
+        //Метод который скролит список в конец
+        // Если уже в конце, прокручивать верх экрана до верхней сохранённой позиции
+        fun scrollToEnd() {
+            if ((recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition() < adapter.itemCount - 1)
+                recyclerView.smoothScrollToPosition(adapter.itemCount)
+            else
+                scrollToSaveStartPosition()
+        }
+
+        val up = findViewById<ImageView>(R.id.up)
+        val save = findViewById<ImageView>(R.id.save)
+        val down = findViewById<ImageView>(R.id.down)
+
+        up.setOnClickListener {
+            scrollToStart()
+        }
+
+        save.setOnClickListener {
+            savePosition()
+        }
+
+        down.setOnClickListener {
+            scrollToEnd()
+        }
+    }
+}

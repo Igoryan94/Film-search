@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.training.ListActivity
+import com.igoryan94.filmsearch.activities.training.ScrollActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.toast
 
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         // TODO поменять на что-то полезнее, позже, если нужно
-        startActivity(Intent(this, ListActivity::class.java))
+        startActivity(Intent(this, ScrollActivity::class.java))
         finish()
         // -END поменять на что-то полезнее, позже, если нужно
 
