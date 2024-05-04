@@ -11,6 +11,9 @@ import com.igoryan94.filmsearch.views.recycler.models.Product
 import com.skill_factory.unit6.adapter.ProductAdapter
 
 class ScrollActivity : AppCompatActivity() {
+    // TODO: обязательно наверстать тему постраничной прогрузки!!!
+    //  Ссылка на урок: https://apps.skillfactory.ru/learning/course/course-v1:SkillFactory+ANDROID-NEW+2020/block-v1:SkillFactory+ANDROID-NEW+2020+type@sequential+block@0e613c01f37d4d4bb1f74f31e623312f/block-v1:SkillFactory+ANDROID-NEW+2020+type@vertical+block@4434b4c23dd24343b7d14939e295f06f
+    //  Ссылка на объяснение ментора, почему тема крайне важна: https://app.pachca.com/chats?thread_id=3571584&sidebar_message=234337124
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scroll)
