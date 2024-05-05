@@ -20,6 +20,7 @@ class ScrollActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scroll)
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
+//        LinearSnapHelper().attachToRecyclerView(recyclerView) // остановка прокрутки на краях элементов
         val adapter = ProductAdapter()
         adapter.items = arrayListOf(
             Product(
