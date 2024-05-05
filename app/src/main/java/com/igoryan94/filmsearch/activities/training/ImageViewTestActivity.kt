@@ -1,5 +1,7 @@
 package com.igoryan94.filmsearch.activities.training
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,18 +9,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityImageViewTestBinding
 
 class ImageViewTestActivity : AppCompatActivity() {
-    lateinit var b: ActivityImageViewTestBinding
-    private lateinit var pagerAdapter: MyAdapter
+    private lateinit var b: ActivityImageViewTestBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,67 +30,31 @@ class ImageViewTestActivity : AppCompatActivity() {
             insets
         }
 
-        //Создаем адаптер
-        pagerAdapter = MyAdapter()
-
-        //Привязываем созданный адаптер к нашему ViewPager, который у нас в разметке
-        b.viewPager2.apply {
-            orientation = ViewPager2.ORIENTATION_HORIZONTAL
-            adapter = pagerAdapter
-
-//            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//
-//            })
-
-            setPageTransformer { page, position ->
-                page.findViewById<TextView>(R.id.textView).translationX =
-                    -position * (page.width / 2)
-            }
-        }
-
-        //Создаем список элементов, который передадим в адаптер
-        val pagerItems = listOf(
-            PagerItem(ContextCompat.getColor(this, R.color.colorAccent), "Accent"),
-            PagerItem(ContextCompat.getColor(this, R.color.colorCat), "Cat"),
-            PagerItem(ContextCompat.getColor(this, R.color.backgroundColor), "BG")
-        )
-
-        //Передаем список в адаптер
-        pagerAdapter.setItems(pagerItems)
+        b.recyclerView.adapter = MyAdapter()
+        PagerSnapHelper().attachToRecyclerView(b.recyclerView)
     }
 
-    class PagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+        private val colors = arrayOf(Color.RED, Color.GREEN, Color.BLUE, Color.WHITE, Color.YELLOW)
 
-        //В этом методе мы передаем данные из PagerItem в нашу верстку item.xml
-        fun onBind(item: PagerItem) {
-            //корневой элемент item.xml
-            (itemView as? ConstraintLayout)?.apply {
-                setBackgroundColor(item.color)
-                findViewById<TextView>(R.id.textView).text = item.text
-            }
-        }
-    }
-
-    data class PagerItem(val color: Int, val text: String)
-
-    // Адаптер для ViewPager2
-    class MyAdapter : RecyclerView.Adapter<PagerViewHolder>() {
-        private var items = mutableListOf<PagerItem>()
-
-        fun setItems(newItems: List<PagerItem>) {
-            items.clear()
-            items.addAll(newItems)
+        class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var textView: TextView = itemView.findViewById(R.id.text_view)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder =
-            PagerViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.tabs_item, parent, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+            return MyViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_tab, parent, false)
             )
-
-        override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-            holder.onBind(items[position])
         }
 
-        override fun getItemCount(): Int = items.size
+        @SuppressLint("SetTextI18n")
+        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+            holder.itemView.setBackgroundColor(colors[position])
+            holder.textView.text = "${position + 1}"
+        }
+
+        override fun getItemCount(): Int {
+            return colors.size
+        }
     }
 }

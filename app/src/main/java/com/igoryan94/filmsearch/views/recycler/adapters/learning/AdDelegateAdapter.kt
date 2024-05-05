@@ -1,4 +1,4 @@
-package com.igoryan94.filmsearch.views.recycler.adapters
+package com.igoryan94.filmsearch.views.recycler.adapters.learning
 
 import android.view.LayoutInflater
 import android.view.View

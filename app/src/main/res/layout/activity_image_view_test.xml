@@ -83,16 +83,16 @@
 		android:id="@+id/subscribeView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@id/viewPager2"
+		app:layout_constraintBottom_toTopOf="@id/recyclerView"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@+id/button" />
 
-	<androidx.viewpager2.widget.ViewPager2
-		android:id="@+id/viewPager2"
+	<androidx.recyclerview.widget.RecyclerView
+		android:id="@+id/recyclerView"
 		android:layout_width="match_parent"
-		android:layout_height="120dp"
-		android:orientation="vertical"
+		android:layout_height="0dp"
+		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent" />

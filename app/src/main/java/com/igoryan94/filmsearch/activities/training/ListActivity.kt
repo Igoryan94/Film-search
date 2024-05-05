@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityListBinding
-import com.igoryan94.filmsearch.views.recycler.adapters.MyAdapter
+import com.igoryan94.filmsearch.views.recycler.adapters.learning.MyAdapter
 import com.igoryan94.filmsearch.views.recycler.etc.MyItemDecoration
 
 class ListActivity : AppCompatActivity() {

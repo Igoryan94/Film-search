@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.views.recycler.adapters.NumbersAdapter
+import com.igoryan94.filmsearch.views.recycler.adapters.learning.NumbersAdapter
 
 class NumberGridActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

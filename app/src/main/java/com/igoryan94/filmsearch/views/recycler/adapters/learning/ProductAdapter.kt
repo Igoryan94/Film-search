@@ -1,4 +1,4 @@
-package com.igoryan94.filmsearch.views.recycler.adapters
+package com.igoryan94.filmsearch.views.recycler.adapters.learning
 
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.igoryan94.filmsearch.views.recycler.models.Item

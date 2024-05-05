@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.views.recycler.adapters.ProductAdapter
+import com.igoryan94.filmsearch.views.recycler.adapters.learning.ProductAdapter
 import com.igoryan94.filmsearch.views.recycler.models.Ad
 import com.igoryan94.filmsearch.views.recycler.models.Product
 import java.util.Collections
@@ -20,7 +20,7 @@ class ScrollActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scroll)
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
-//        LinearSnapHelper().attachToRecyclerView(recyclerView) // остановка прокрутки на краях элементов
+//        LinearSnapHelper().attachToRecyclerView(recyclerView) // доводка прокрутки до краёв элементов
 //        PagerSnapHelper().attachToRecyclerView(recyclerView) // более интересный вариант
         val adapter = ProductAdapter()
         adapter.items = arrayListOf(
