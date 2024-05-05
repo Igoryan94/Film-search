@@ -21,6 +21,7 @@ class ScrollActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scroll)
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
 //        LinearSnapHelper().attachToRecyclerView(recyclerView) // остановка прокрутки на краях элементов
+//        PagerSnapHelper().attachToRecyclerView(recyclerView) // более интересный вариант
         val adapter = ProductAdapter()
         adapter.items = arrayListOf(
             Product(
