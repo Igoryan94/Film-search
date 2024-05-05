@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        // TODO поменять на что-то полезнее, позже, если нужно
+        // TODO доп. точка входа, чтобы тестировать другое активити, если нужно.
+        //  Впоследствии убрать, добавив эту точку входа на отдельную кнопку тестирования
         startActivity(Intent(this, ScrollActivity::class.java))
         finish()
         // -END поменять на что-то полезнее, позже, если нужно

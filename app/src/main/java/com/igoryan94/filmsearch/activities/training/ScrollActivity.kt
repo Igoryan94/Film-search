@@ -3,12 +3,14 @@ package com.igoryan94.filmsearch.activities.training
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.views.recycler.adapters.ProductAdapter
 import com.igoryan94.filmsearch.views.recycler.models.Ad
 import com.igoryan94.filmsearch.views.recycler.models.Product
-import com.skill_factory.unit6.adapter.ProductAdapter
+import java.util.Collections
 
 class ScrollActivity : AppCompatActivity() {
     // TODO: обязательно наверстать тему постраничной прогрузки!!!
@@ -161,5 +163,61 @@ class ScrollActivity : AppCompatActivity() {
         down.setOnClickListener {
             scrollToEnd()
         }
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.Callback() {
+
+
+            override fun isLongPressDragEnabled(): Boolean {
+                //Drag & drop поддерживается
+                return true
+            }
+
+            override fun isItemViewSwipeEnabled(): Boolean {
+                //Swipe поддерживается
+                return true
+            }
+
+            override fun getMovementFlags(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                //Настраиваем флаги для drag & drop и swipe жестов
+                val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+                return makeMovementFlags(dragFlags, swipeFlags)
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                val items = adapter.items
+                val fromPosition = viewHolder.adapterPosition
+                val toPosition = target.adapterPosition
+                //Меняем элементы местами с помощью метода swap
+                if (fromPosition < toPosition) {
+                    for (i in fromPosition until toPosition) {
+                        Collections.swap(items, i, i + 1)
+                    }
+                } else {
+                    for (i in fromPosition downTo toPosition + 1) {
+                        Collections.swap(items, i, i - 1)
+                    }
+                }
+                //Сообщаем об изменениях адаптеру
+                //Or DiffUtil
+                adapter.notifyItemMoved(fromPosition, toPosition)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                //Удаляем элемент из списка после жеста swipe
+                (adapter.items as ArrayList).removeAt(viewHolder.adapterPosition)
+                //Or DiffUtil
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+            }
+        }
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
     }
 }
