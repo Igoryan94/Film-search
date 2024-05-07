@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.training.ImageViewTestActivity
+import com.igoryan94.filmsearch.activities.training.ScrollCoordinatorActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.toast
 
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
         // TODO доп. точка входа, чтобы тестировать другое активити, если нужно.
         //  Впоследствии убрать, добавив эту точку входа на отдельную кнопку тестирования
-        startActivity(Intent(this, ImageViewTestActivity::class.java))
+        startActivity(Intent(this, ScrollCoordinatorActivity::class.java))
         finish()
         // -END поменять на что-то полезнее, позже, если нужно
 
