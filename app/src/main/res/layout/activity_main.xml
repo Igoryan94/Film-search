@@ -170,7 +170,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:scaleType="centerCrop"
-				android:src="@drawable/poster_jumanji" />
+				android:src="@drawable/film_poster_jumanji" />
 		</androidx.cardview.widget.CardView>
 
 	</GridLayout>
