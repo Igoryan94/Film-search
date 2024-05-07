@@ -36,12 +36,12 @@
 			android:background="@color/colorPrimary"
 			android:fitsSystemWindows="true"
 			android:minHeight="60dp"
-			app:layout_collapseMode="pin"
 			app:layout_scrollFlags="scroll|exitUntilCollapsed"
 			app:menu="@menu/main_top_bar"
 			app:navigationIcon="@drawable/ic_vector_nav"
 			app:title="@string/app_name"
 			app:titleTextColor="@color/white"
+			app:contentScrim="@color/colorPrimaryDark"
 			app:toolbarId="@+id/toolbar">
 
 			<ImageView
@@ -62,21 +62,49 @@
 
 	</com.google.android.material.appbar.AppBarLayout>
 
-	<FrameLayout
-		android:id="@+id/bottomView"
-		android:layout_width="match_parent"
-		android:layout_height="70dp"
-		android:layout_gravity="bottom"
-		android:background="@drawable/gradient_shape_primary_color"
-		app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
+	<!--	<androidx.constraintlayout.widget.ConstraintLayout-->
+	<!--		android:id="@+id/bottomView"-->
+	<!--		android:layout_width="match_parent"-->
+	<!--		android:layout_height="70dp"-->
+	<!--		android:paddingStart="4dp"-->
+	<!--		android:paddingEnd="4dp"-->
+	<!--		android:layout_gravity="bottom"-->
+	<!--		android:background="@drawable/gradient_shape_primary_color"-->
+	<!--		app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">-->
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:text="BottomViewLayout"
-			android:textColor="@color/colorText"
-			android:textSize="24sp" />
-	</FrameLayout>
+	<!--		<com.google.android.material.button.MaterialButton-->
+	<!--			android:id="@+id/bottomButton1"-->
+	<!--			android:layout_width="wrap_content"-->
+	<!--			android:layout_height="match_parent"-->
+	<!--			style="@style/BottomNavButton"-->
+	<!--			app:layout_constraintStart_toStartOf="parent" />-->
+
+	<!--		<com.google.android.material.button.MaterialButton-->
+	<!--			android:id="@+id/bottomButton2"-->
+	<!--			android:layout_width="wrap_content"-->
+	<!--			android:layout_height="match_parent"-->
+	<!--			style="@style/BottomNavButton"-->
+	<!--			app:layout_constraintStart_toEndOf="@id/bottomButton1"-->
+	<!--			app:layout_constraintEnd_toStartOf="@id/bottomButton3" />-->
+
+	<!--		<com.google.android.material.button.MaterialButton-->
+	<!--			android:id="@+id/bottomButton3"-->
+	<!--			android:layout_width="wrap_content"-->
+	<!--			android:layout_height="match_parent"-->
+	<!--			style="@style/BottomNavButton"-->
+	<!--			app:layout_constraintEnd_toEndOf="parent" />-->
+
+	<!--	</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+	<com.google.android.material.bottomnavigation.BottomNavigationView
+		android:id="@+id/bottomNavigation"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		app:itemIconTint="@color/colorPrimaryLight"
+		app:itemRippleColor="@color/backgroundColor"
+		app:itemTextColor="@color/colorPrimaryLight"
+		app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+		app:menu="@menu/main_nav" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

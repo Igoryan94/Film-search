@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityScrollCoordinatorBinding
+import com.igoryan94.filmsearch.toast
 import kotlin.math.abs
 
 class ScrollCoordinatorActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class ScrollCoordinatorActivity : AppCompatActivity() {
             insets
         }
 
-        b.toolbar.title = "Film search\nScrollCoordinatorActivity"
+        b.toolbar.title = "Film search"
 
         b.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
@@ -33,15 +34,28 @@ class ScrollCoordinatorActivity : AppCompatActivity() {
                         R.color.backgroundColor
                     )
                 )
-            }
-            if (abs(verticalOffset) >= appBarLayout.scrollBarSize)
+                b.toolbarLayout.title = "0"
+            } else if (abs(verticalOffset) >= appBarLayout.scrollBarSize) {
                 b.toolbarLayout.setCollapsedTitleTextColor(
                     ContextCompat.getColor(
                         this@ScrollCoordinatorActivity,
-                        R.color.colorPrimary
+                        R.color.colorPrimaryLight
                     )
                 )
-            b.toolbarLayout.title = verticalOffset.toString()
+                b.toolbarLayout.title = verticalOffset.toString()
+            } else {
+                b.toolbarLayout.title = "Film search"
+            }
+        }
+
+        b.bottomNavigation.setOnItemSelectedListener {
+//            when (it.itemId) {
+//                R.id.favorites ->
+//                R.id.watchLater->
+//                R.id.selections->
+//            }
+            "${it.title}".toast(this@ScrollCoordinatorActivity)
+            true
         }
     }
 }
