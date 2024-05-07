@@ -17,9 +17,6 @@
 			android:name=".activities.training.ScrollActivity"
 			android:exported="false" />
 		<activity
-			android:name=".activities.training.ListMultiTypeActivity"
-			android:exported="false" />
-		<activity
 			android:name=".activities.training.NumberGridActivity"
 			android:exported="false" />
 		<activity
