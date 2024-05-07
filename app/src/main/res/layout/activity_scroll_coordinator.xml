@@ -62,4 +62,21 @@
 
 	</com.google.android.material.appbar.AppBarLayout>
 
+	<FrameLayout
+		android:id="@+id/bottomView"
+		android:layout_width="match_parent"
+		android:layout_height="70dp"
+		android:layout_gravity="bottom"
+		android:background="@drawable/gradient_shape_primary_color"
+		app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="BottomViewLayout"
+			android:textColor="@color/colorText"
+			android:textSize="24sp" />
+	</FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
