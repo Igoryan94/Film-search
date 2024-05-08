@@ -1,7 +1,6 @@
 package com.igoryan94.filmsearch.activities
 
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -11,15 +10,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.training.ScrollCoordinatorActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.toast
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
+import com.igoryan94.filmsearch.views.recycler.adapters.FilmListRecyclerAdapter
+import com.igoryan94.filmsearch.views.recycler.adapters.TopSpacingItemDecoration
 
 class MainActivity : AppCompatActivity() {
     private lateinit var b: ActivityMainBinding
+
+    private lateinit var filmsAdapter: FilmListRecyclerAdapter
 
     val filmsDataBase: List<Film> = initFilmsDb()
 
@@ -35,14 +38,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         initViews()
+        initList()
         applyAnimations()
     }
 
     private fun initViews() {
         // TODO доп. точка входа, чтобы тестировать другое активити, если нужно.
         //  Впоследствии убрать, добавив эту точку входа на отдельную кнопку тестирования
-        startActivity(Intent(this, ScrollCoordinatorActivity::class.java))
-        finish()
+//        startActivity(Intent(this, ScrollCoordinatorActivity::class.java))
+//        finish()
         // -END поменять на что-то полезнее, позже, если нужно
 
         b.topAppBar.setNavigationOnClickListener {
@@ -80,6 +84,29 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun initList() {
+        //находим наш RV
+        b.mainRecycler.apply {
+            //Инициализируем наш адаптер в конструктор передаем анонимно инициализированный интерфейс,
+            //оставим его пока пустым, он нам понадобится во второй части задания
+            filmsAdapter =
+                FilmListRecyclerAdapter(object : FilmListRecyclerAdapter.OnItemClickListener {
+                    override fun click(film: Film, position: Int) {
+
+                    }
+                })
+            //Присваиваем адаптер
+            adapter = filmsAdapter
+            //Присвои layoutmanager
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            //Применяем декоратор для отступов
+            val decorator = TopSpacingItemDecoration(8)
+            addItemDecoration(decorator)
+        }
+        //Кладем нашу БД в RV
+        filmsAdapter.setItems(filmsDataBase)
     }
 
     private fun applyAnimations() {
