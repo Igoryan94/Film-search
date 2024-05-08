@@ -1,6 +1,7 @@
 package com.igoryan94.filmsearch.activities
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -94,7 +95,12 @@ class MainActivity : AppCompatActivity() {
             filmsAdapter =
                 FilmListRecyclerAdapter(object : FilmListRecyclerAdapter.OnItemClickListener {
                     override fun click(film: Film, position: Int) {
-
+                        startActivity(
+                            Intent(
+                                this@MainActivity,
+                                FilmDetailsActivity::class.java // TODO
+                            )
+                        )
                     }
                 })
             //Присваиваем адаптер
