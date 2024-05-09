@@ -95,11 +95,15 @@ class MainActivity : AppCompatActivity() {
             filmsAdapter =
                 FilmListRecyclerAdapter(object : FilmListRecyclerAdapter.OnItemClickListener {
                     override fun click(film: Film, position: Int) {
+                        val bundle = Bundle()
+                        //Первым параметром указывается ключ, по которому потом будем искать, вторым сам
+                        //передаваемый объект
+                        bundle.putParcelable("film", film)
                         startActivity(
                             Intent(
                                 this@MainActivity,
-                                FilmDetailsActivity::class.java // TODO
-                            )
+                                FilmDetailsActivity::class.java
+                            ).putExtras(bundle)
                         )
                     }
                 })
