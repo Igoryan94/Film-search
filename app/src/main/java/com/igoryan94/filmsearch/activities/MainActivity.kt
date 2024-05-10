@@ -3,6 +3,7 @@ package com.igoryan94.filmsearch.activities
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -41,6 +42,23 @@ class MainActivity : AppCompatActivity() {
         initViews()
         initList()
         applyAnimations()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt("list_position", b.mainRecycler.scrollY)
+    }
+
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle?,
+        persistentState: PersistableBundle?
+    ) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState)
+
+        b.mainRecycler.scrollToPosition(
+            savedInstanceState?.getInt("list_position") ?: 0
+        )
     }
 
     private fun initViews() {
