@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.activities.training.ImageViewTestActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.toast
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.selections -> {
                         "Подборки".toast(this@MainActivity)
+                        startActivity(Intent(this@MainActivity, ImageViewTestActivity::class.java))
                         return true
                     }
 
