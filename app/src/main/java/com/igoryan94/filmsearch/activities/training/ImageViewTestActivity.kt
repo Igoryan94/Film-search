@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityImageViewTestBinding
+import com.igoryan94.filmsearch.fragments.MyFragment
+import com.igoryan94.filmsearch.fragments.MyFragment2
 import com.igoryan94.filmsearch.log
 
 class ImageViewTestActivity : AppCompatActivity() {
@@ -35,6 +37,34 @@ class ImageViewTestActivity : AppCompatActivity() {
         b.recyclerView.adapter = MyAdapter()
         PagerSnapHelper().attachToRecyclerView(b.recyclerView)
 
+        setupFragments()
+        setupBottomSheet()
+    }
+
+    fun passData(editext: String) {
+        val bundle = Bundle()
+        bundle.putString("input", editext)
+
+        val frag2 = MyFragment2()
+        frag2.arguments = bundle
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frameLayout, frag2)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun setupFragments() {
+        val tag = "fragment_1"
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.frameLayout, MyFragment(), tag)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun setupBottomSheet() {
         val bottomSheetBehavior = BottomSheetBehavior.from(b.bottomSheet)
         b.fab.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED

@@ -72,7 +72,7 @@
 				android:stateListAnimator="@animator/state_list_button_elevation_simply_big"
 				android:text="Styled Button"
 				android:textAppearance="@style/ButtonTextShadow"
-				app:layout_constraintBottom_toTopOf="@+id/fragment1"
+				app:layout_constraintBottom_toTopOf="@+id/frameLayout"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/button" />
 
@@ -87,9 +87,8 @@
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="@+id/styledButton" />
 
-			<fragment
-				android:id="@+id/fragment1"
-				android:name="com.igoryan94.filmsearch.fragments.MyFragment"
+			<FrameLayout
+				android:id="@+id/frameLayout"
 				android:layout_width="match_parent"
 				android:layout_height="300dp"
 				app:layout_constraintBottom_toTopOf="@id/subscribeView"
@@ -102,7 +101,7 @@
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/fragment1" />
+				app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
 		</androidx.constraintlayout.widget.ConstraintLayout>
 

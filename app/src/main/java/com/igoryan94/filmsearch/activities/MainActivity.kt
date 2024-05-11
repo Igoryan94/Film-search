@@ -63,12 +63,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        // TODO доп. точка входа, чтобы тестировать другое активити, если нужно.
-        //  Впоследствии убрать, добавив эту точку входа на отдельную кнопку тестирования
-//        startActivity(Intent(this, ScrollCoordinatorActivity::class.java))
-//        finish()
-        // -END поменять на что-то полезнее, позже, если нужно
-
         b.topAppBar.setNavigationOnClickListener {
             Toast.makeText(this, "Когда-нибудь здесь будет навигация...", Toast.LENGTH_SHORT).show()
         }
@@ -97,7 +91,11 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.selections -> {
                         "Подборки".toast(this@MainActivity)
+                        // TODO доп. точка входа, чтобы тестировать другое активити, если нужно.
+                        //  Впоследствии убрать, добавив эту точку входа на отдельную кнопку тестирования
                         startActivity(Intent(this@MainActivity, ImageViewTestActivity::class.java))
+                        // -END поменять на что-то полезнее, позже, если нужно
+
                         return true
                     }
 
