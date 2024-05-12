@@ -1,12 +1,15 @@
 package com.igoryan94.filmsearch.activities.training
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,10 +17,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityImageViewTestBinding
-import com.igoryan94.filmsearch.fragments.MyFragment
-import com.igoryan94.filmsearch.fragments.MyFragment2
+import com.igoryan94.filmsearch.fragments.training.MyFragment
+import com.igoryan94.filmsearch.fragments.training.MyFragment2
+import com.igoryan94.filmsearch.fragments.training.ToBeOrNotToBeDialogFragment
 import com.igoryan94.filmsearch.log
 
 class ImageViewTestActivity : AppCompatActivity() {
@@ -39,6 +44,10 @@ class ImageViewTestActivity : AppCompatActivity() {
 
         setupFragments()
         setupBottomSheet()
+
+        setOnBackPressAction()
+
+        ToBeOrNotToBeDialogFragment().show(supportFragmentManager, "dialog1")
     }
 
     fun passData(editext: String) {
@@ -62,6 +71,35 @@ class ImageViewTestActivity : AppCompatActivity() {
             .add(R.id.frameLayout, MyFragment(), tag)
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun setOnBackPressAction() {
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitDialog()
+//                ToBeOrNotToBeDialogFragment().show(supportFragmentManager, "dialog1")
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private fun showExitDialog() {
+        val alertDialog = MaterialAlertDialogBuilder(this, R.style.MyDialog)
+            .setTitle("Вы хотите выйти?")
+            .setIcon(android.R.drawable.ic_menu_gallery)
+            .setPositiveButton("Да") { _: DialogInterface, _: Int ->
+                finish()
+            }
+            .setNegativeButton("Нет") { _: DialogInterface, _: Int ->
+                // ничего не делаем
+            }
+            .setNeutralButton("Не знаю") { _: DialogInterface, _: Int ->
+                Toast.makeText(this, "Решайся", Toast.LENGTH_SHORT).show()
+            }
+            .create()
+
+        alertDialog.show()
     }
 
     private fun setupBottomSheet() {

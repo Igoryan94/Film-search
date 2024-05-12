@@ -1,4 +1,4 @@
-package com.igoryan94.filmsearch.fragments
+package com.igoryan94.filmsearch.fragments.training
 
 import android.os.Bundle
 import android.view.LayoutInflater
