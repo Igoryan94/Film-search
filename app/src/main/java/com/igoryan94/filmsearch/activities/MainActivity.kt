@@ -1,6 +1,7 @@
 package com.igoryan94.filmsearch.activities
 
 import android.animation.ObjectAnimator
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -8,11 +9,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.activities.training.ImageViewTestActivity
@@ -43,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         initViews()
         initList()
         applyAnimations()
+
+        setOnBackPressAction()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -60,6 +65,34 @@ class MainActivity : AppCompatActivity() {
         b.mainRecycler.scrollToPosition(
             savedInstanceState?.getInt("list_position") ?: 0
         )
+    }
+
+    private fun setOnBackPressAction() {
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitDialog()
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private fun showExitDialog() {
+        val alertDialog = MaterialAlertDialogBuilder(this, R.style.MyDialog)
+            .setTitle("Вы хотите выйти?")
+            .setIcon(android.R.drawable.ic_menu_gallery)
+            .setPositiveButton("Да") { _: DialogInterface, _: Int ->
+                finish()
+            }
+            .setNegativeButton("Нет") { _: DialogInterface, _: Int ->
+                // ничего не делаем
+            }
+            .setNeutralButton("Не знаю") { _: DialogInterface, _: Int ->
+                Toast.makeText(this, "Решайся", Toast.LENGTH_SHORT).show()
+            }
+            .create()
+
+        alertDialog.show()
     }
 
     private fun initViews() {
