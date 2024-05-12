@@ -13,7 +13,7 @@
     <!-- null указан, чтобы layout был по прежнему виден -->
 
     <FrameLayout
-        android:id="@+id/fragment_home_placeholder"
+        android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
