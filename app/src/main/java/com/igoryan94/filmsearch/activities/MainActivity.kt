@@ -3,7 +3,6 @@ package com.igoryan94.filmsearch.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -36,8 +35,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        setSupportActionBar(b.topAppBar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_vector_back)
+
         b.topAppBar.setNavigationOnClickListener {
-            Toast.makeText(this, "Когда-нибудь здесь будет навигация...", Toast.LENGTH_SHORT).show()
+            if (supportFragmentManager.backStackEntryCount < 2) {
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            } else
+                onBackPressedDispatcher.onBackPressed()
         }
 
         b.topAppBar.setOnMenuItemClickListener {
@@ -81,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     private fun initHomeFragment() {
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_placeholder, HomeFragment())
+            .add(R.id.fragmentPlaceholder, HomeFragment())
             .addToBackStack(null)
             .commit()
     }
@@ -97,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_placeholder, fragment)
+            .replace(R.id.fragmentPlaceholder, fragment)
             .addToBackStack(null)
             .commit()
     }
