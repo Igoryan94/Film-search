@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
         initHomeFragment()
+
+//        startActivity(Intent("asdasd")) // кастомный интент для открытия ImageViewTestActivity
     }
 
     private fun initViews() {

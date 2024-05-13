@@ -46,7 +46,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.training.ImageViewTestActivity" />
+        <activity
+            android:name=".activities.training.ImageViewTestActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="asdasd" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
