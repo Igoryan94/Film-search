@@ -2,7 +2,9 @@ package com.igoryan94.filmsearch.activities.training
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +43,14 @@ class ImageViewTestActivity : AppCompatActivity() {
 
         b.recyclerView.adapter = MyAdapter()
         PagerSnapHelper().attachToRecyclerView(b.recyclerView)
+
+        b.styledButton.setOnClickListener {
+            val url = "https://www.example.com"
+            val webIntent = Intent(Intent.ACTION_VIEW)
+            webIntent.addCategory(Intent.CATEGORY_BROWSABLE)
+            webIntent.setDataAndType(Uri.parse(url), "text/html")
+            startActivity(webIntent)
+        }
 
         setupFragments()
         setupBottomSheet()
