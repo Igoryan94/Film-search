@@ -1,6 +1,5 @@
 package com.igoryan94.filmsearch.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -9,8 +8,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.training.ImageViewTestActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
+import com.igoryan94.filmsearch.fragments.FavoritesFragment
 import com.igoryan94.filmsearch.fragments.FilmDetailsFragment
 import com.igoryan94.filmsearch.fragments.HomeFragment
 import com.igoryan94.filmsearch.toast
@@ -30,13 +29,15 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        initViews()
-        initHomeFragment()
+        setupViews()
+        setupHomeFragment()
+
+        setupBottomNav()
 
 //        startActivity(Intent("asdasd")) // кастомный интент для открытия ImageViewTestActivity
     }
 
-    private fun initViews() {
+    private fun setupViews() {
         setSupportActionBar(b.topAppBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_vector_back)
@@ -55,38 +56,10 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        b.bottomNavigation.setOnItemSelectedListener(object :
-            NavigationBarView.OnItemSelectedListener {
-            override fun onNavigationItemSelected(it: MenuItem): Boolean {
-                when (it.itemId) {
-                    R.id.favorites -> {
-                        "Избранное".toast(this@MainActivity)
-                        return true
-                    }
-
-                    R.id.watchLater -> {
-                        "Посмотреть позже".toast(this@MainActivity)
-                        return true
-                    }
-
-                    R.id.selections -> {
-                        "Подборки".toast(this@MainActivity)
-                        // TODO доп. точка входа, чтобы тестировать другое активити, если нужно.
-                        //  Впоследствии убрать, добавив эту точку входа на отдельную кнопку тестирования
-                        startActivity(Intent(this@MainActivity, ImageViewTestActivity::class.java))
-                        // -END поменять на что-то полезнее, позже, если нужно
-
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        })
     }
 
-    private fun initHomeFragment() {
+    // Инициализация центрального фрагмента для навигации по фильмам
+    private fun setupHomeFragment() {
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragmentPlaceholder, HomeFragment())
@@ -94,6 +67,28 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    // Настройка нижней навигации
+    private fun setupBottomNav() {
+        // Реакция на выбор элементов навигации
+        b.bottomNavigation.setOnItemSelectedListener(object :
+            NavigationBarView.OnItemSelectedListener {
+            override fun onNavigationItemSelected(it: MenuItem): Boolean {
+                when (it.itemId) {
+                    R.id.favorites -> {
+                        supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.fragmentPlaceholder, FavoritesFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
+
+                return false
+            }
+        })
+    }
+
+    // Открытие деталей фильма
     fun openFilmDetails(film: Film) {
         val bundle = Bundle()
         //Первым параметром указывается ключ, по которому потом будем искать, вторым сам

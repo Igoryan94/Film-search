@@ -120,5 +120,6 @@ class FilmDiffCallback(private val oldList: List<Film>, private val newList: Lis
 data class Film(
     val title: String,
     val poster: Int,
-    val description: String
+    val description: String,
+    var isInFavorites: Boolean = false
 ) : Parcelable
