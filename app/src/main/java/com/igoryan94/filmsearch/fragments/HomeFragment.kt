@@ -18,14 +18,20 @@ import com.igoryan94.filmsearch.views.recycler.adapters.TopSpacingItemDecoration
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
 
-    private val filmsDataBase: List<Film> = initFilmsDb()
+    val filmsDataBase: List<Film> = initFilmsDb()
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
+
+    companion object {
+        lateinit var instance: HomeFragment
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         b = FragmentHomeBinding.inflate(inflater, container, false)
+
+        instance = this
 
         initList()
         applyAnimations()
