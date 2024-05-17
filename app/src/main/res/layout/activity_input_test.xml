@@ -28,6 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/username" />
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/clipFieldLayout"
         style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,11 +39,19 @@
         app:layout_constraintTop_toBottomOf="@id/username1">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/clipField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Field"
             android:imeOptions="actionPrevious"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/clipButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Скопировать и вставить из буфера"
+        app:layout_constraintTop_toBottomOf="@id/clipFieldLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

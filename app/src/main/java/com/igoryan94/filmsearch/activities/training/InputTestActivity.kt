@@ -1,5 +1,8 @@
 package com.igoryan94.filmsearch.activities.training
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.text.InputFilter
 import android.widget.Toast
@@ -9,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityInputTestBinding
+import com.igoryan94.filmsearch.toast
 
 class InputTestActivity : AppCompatActivity() {
     private lateinit var b: ActivityInputTestBinding
@@ -52,5 +56,18 @@ class InputTestActivity : AppCompatActivity() {
         }
         // Добавляем фильтр к полю ввода b.username1
         b.username1.filters = arrayOf(inputFilter1)
+
+        b.clipButton.setOnClickListener {
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+            val clipData = ClipData.newPlainText("Text", "This is text from MyApplication")
+            clipboardManager.setPrimaryClip(clipData)
+            "Text put to buffer".toast(this@InputTestActivity)
+
+            b.clipField.setText(
+                if (clipboardManager.hasPrimaryClip()) clipboardManager.primaryClip?.getItemAt(0)
+                    ?.text ?: "(null)" else "(null)"
+            )
+        }
     }
 }
