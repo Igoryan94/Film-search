@@ -1,11 +1,10 @@
 package com.igoryan94.filmsearch.fragments
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.igoryan94.filmsearch.R
@@ -14,6 +13,7 @@ import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
 import com.igoryan94.filmsearch.views.recycler.adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.views.recycler.adapters.TopSpacingItemDecoration
+import java.util.Locale
 
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
@@ -33,8 +33,8 @@ class HomeFragment : Fragment() {
 
         instance = this
 
+        setupSearch()
         initList()
-        applyAnimations()
 
         return b.root
     }
@@ -51,6 +51,42 @@ class HomeFragment : Fragment() {
         b.mainRecycler.scrollToPosition(
             savedInstanceState?.getInt("list_position") ?: 0
         )
+    }
+
+    private fun setupSearch() {
+        b.searchView.setOnClickListener {
+            b.searchView.isIconified = false
+            b.searchView.requestFocusFromTouch()
+        }
+
+        //Подключаем слушателя изменений введенного текста в поиска
+        b.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            //Этот метод отрабатывает при нажатии кнопки "поиск" на софт клавиатуре
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return true
+            }
+
+            //Этот метод отрабатывает на каждое изменения текста
+            @Suppress("SameReturnValue")
+            override fun onQueryTextChange(newText: String): Boolean {
+                //Если ввод пуст то вставляем в адаптер всю БД
+                if (newText.isEmpty()) {
+                    filmsAdapter.setItems(filmsDataBase)
+                    return true
+                }
+
+                //Фильтруем список на поискк подходящих сочетаний
+                val result = filmsDataBase.filter {
+                    //Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
+                    it.title.lowercase(Locale.getDefault())
+                        .contains(newText.lowercase(Locale.getDefault()))
+                }
+
+                //Добавляем в адаптер
+                filmsAdapter.setItems(result)
+                return true
+            }
+        })
     }
 
     private fun initList() {
@@ -74,20 +110,6 @@ class HomeFragment : Fragment() {
         }
         //Кладем нашу БД в RV
         filmsAdapter.setItems(filmsDataBase)
-    }
-
-    private fun applyAnimations() {
-        b.imagePoster1.animate()
-            .translationX(0f)
-            .setDuration(1000)
-            .start()
-
-        val animator = ObjectAnimator.ofFloat(b.imagePoster2, View.TRANSLATION_Y, 0f)
-        animator.setDuration(1000)
-        animator.start()
-
-        val anim = AnimationUtils.loadAnimation((activity as MainActivity), R.anim.my_animation)
-        b.imagePoster3.startAnimation(anim)
     }
 
     private fun initFilmsDb(): List<Film> = listOf(
