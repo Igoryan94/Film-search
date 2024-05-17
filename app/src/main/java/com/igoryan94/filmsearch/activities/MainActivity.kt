@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
@@ -48,21 +48,23 @@ class MainActivity : AppCompatActivity() {
         //Находим наш пункт меню с поиском
         val menuItem = menu.findItem(R.id.search)
         //Привязываем его как поле для поиска
-        val searchView = menuItem.actionView as SearchView
+        val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
         //Задаем слушатель изменений ввода текста
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : OnQueryTextListener {
             val list = HomeFragment.instance.filmsDataBase.map { it.title }
 
             //Здесь выполняется код при любом изменении текста
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (list.contains(newText)) "In list".toast(this@MainActivity)
-                else "Not in list".toast(this@MainActivity)
+//                if (list.contains(newText)) "In list".toast(this@MainActivity)
+//                else "Not in list".toast(this@MainActivity)
                 return false
             }
 
             //Здесь выполняется код по нажатию на кнопку поиска
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (list.contains(query)) "In list".toast(this@MainActivity)
+                if (list.stream()
+                        .anyMatch { it.contains(query ?: "(null)") }
+                ) "In list".toast(this@MainActivity)
                 else "Not in list".toast(this@MainActivity)
                 return false
             }

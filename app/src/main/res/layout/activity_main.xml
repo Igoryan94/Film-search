@@ -56,9 +56,10 @@
         android:id="@+id/btnTest"
         android:layout_width="72dp"
         android:layout_height="36dp"
+        android:clickable="true"
         android:text="T"
-        app:layout_anchor="@+id/fragmentPlaceholder"
-        app:layout_anchorGravity="top|end"
+        app:layout_anchor="@id/bottomNavigation"
+        app:layout_anchorGravity="end|top"
         tools:ignore="HardcodedText" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
