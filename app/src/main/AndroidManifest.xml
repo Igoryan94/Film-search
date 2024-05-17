@@ -14,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/MainTheme">
         <activity
+            android:name=".activities.training.InputTestActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".activities.training.NavActivity"
             android:exported="false" />
         <activity

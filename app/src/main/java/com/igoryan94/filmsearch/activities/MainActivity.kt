@@ -1,5 +1,6 @@
 package com.igoryan94.filmsearch.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -8,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.activities.training.InputTestActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.fragments.FavoritesFragment
 import com.igoryan94.filmsearch.fragments.FilmDetailsFragment
@@ -41,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(b.topAppBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_vector_back)
+
+        b.btnTest.setOnClickListener {
+            startActivity(Intent(this@MainActivity, InputTestActivity::class.java))
+        }
 
         b.topAppBar.setNavigationOnClickListener {
             if (supportFragmentManager.backStackEntryCount < 2) {

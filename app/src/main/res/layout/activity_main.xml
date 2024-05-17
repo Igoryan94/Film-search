@@ -52,4 +52,13 @@
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:menu="@menu/main_nav" />
 
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="72dp"
+        android:layout_height="36dp"
+        android:text="T"
+        app:layout_anchor="@+id/fragmentPlaceholder"
+        app:layout_anchorGravity="top|end"
+        tools:ignore="HardcodedText" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
