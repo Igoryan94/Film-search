@@ -1,9 +1,13 @@
 <resources>
 	<!-- Base application theme. -->
-	<style name="Base.Theme.FilmSearch" parent="Theme.Material3.DayNight.NoActionBar">
-		<!-- Customize your light theme here. -->
-		<!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+	<style name="MainTheme" parent="Theme.Material3.DayNight.NoActionBar">
+		<item name="android:windowTranslucentStatus">true</item>
+		<item name="android:forceDarkAllowed">true</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="backgroundColor">@color/white</item>
 	</style>
 
-	<style name="Theme.FilmSearch" parent="Base.Theme.FilmSearch" />
+	<style name="Theme.FilmSearch" parent="MainTheme" />
 </resources>

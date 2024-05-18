@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/main"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".activities.training.ScrollCoordinatorActivity">
+
+	<androidx.core.widget.NestedScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:text="abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc abcabcabc"
+			tools:ignore="HardcodedText" />
+
+	</androidx.core.widget.NestedScrollView>
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:id="@+id/appBar"
+		android:layout_width="match_parent"
+		android:layout_height="200dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<com.google.android.material.appbar.CollapsingToolbarLayout
+			android:id="@+id/toolbarLayout"
+			style="@style/Widget.MaterialComponents.Toolbar.Primary"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/colorPrimary"
+			android:fitsSystemWindows="true"
+			android:minHeight="60dp"
+			app:layout_scrollFlags="scroll|exitUntilCollapsed"
+			app:menu="@menu/main_top_bar"
+			app:navigationIcon="@drawable/ic_vector_nav"
+			app:title="@string/app_name"
+			app:titleTextColor="@color/white"
+			app:contentScrim="@color/colorPrimaryDark"
+			app:toolbarId="@+id/toolbar">
+
+			<ImageView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:fitsSystemWindows="true"
+				android:src="@drawable/cat"
+				app:layout_collapseMode="parallax" />
+
+			<androidx.appcompat.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				app:layout_collapseMode="pin"
+				app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+		</com.google.android.material.appbar.CollapsingToolbarLayout>
+
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<com.google.android.material.bottomnavigation.BottomNavigationView
+		android:id="@+id/bottomNavigation"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		app:itemIconTint="@color/colorPrimaryLight"
+		app:itemRippleColor="@color/backgroundColor"
+		app:itemTextColor="@color/colorPrimaryLight"
+		app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+		app:menu="@menu/main_nav" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

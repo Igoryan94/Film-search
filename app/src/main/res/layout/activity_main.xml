@@ -1,47 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/main"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context=".MainActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:layoutAnimation="@anim/layout_menu_transition"
+    tools:context=".activities.MainActivity"
+    tools:ignore="ContentDescription"
+    tools:layoutAnimation="null">
+    <!-- null указан, чтобы layout был по прежнему виден -->
 
-	<LinearLayout
-		android:id="@+id/topBar"
-		android:layout_width="match_parent"
-		android:layout_height="70dp"
-		android:background="#000077"
-		android:orientation="vertical"
-		app:layout_constraintBottom_toTopOf="@id/contents"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/fragmentPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-	<LinearLayout
-		android:id="@+id/contents"
-		android:layout_width="0dp"
-		android:layout_height="0dp"
-		android:background="#777777"
-		android:orientation="vertical"
-		android:layout_marginStart="50dp"
-		android:layout_marginTop="30dp"
-		android:layout_marginEnd="50dp"
-		android:layout_marginBottom="30dp"
-		app:layout_constraintBottom_toTopOf="@id/bottomButtons"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/topBar" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-	<LinearLayout
-		android:id="@+id/bottomButtons"
-		android:layout_width="match_parent"
-		android:layout_height="70dp"
-		android:background="#337700"
-		android:orientation="vertical"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/contents" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:menu="@menu/main_top_bar"
+            app:navigationIcon="@drawable/ic_vector_nav"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/white" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimaryDark"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:labelVisibilityMode="labeled"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:menu="@menu/main_nav" />
+
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="72dp"
+        android:layout_height="36dp"
+        android:clickable="true"
+        android:text="T"
+        app:layout_anchor="@id/bottomNavigation"
+        app:layout_anchorGravity="end|top"
+        tools:ignore="HardcodedText" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/favorites"
+        android:icon="@drawable/ic_vector_fav"
+        android:title="@string/main_button_title_favorites"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/watchLater"
+        android:icon="@drawable/ic_vector_watch_later"
+        android:title="@string/main_button_title_watch_later"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/selections"
+        android:icon="@drawable/ic_vector_video_library"
+        android:title="@string/menu_selections_title"
+        android:checked="true"
+        app:showAsAction="withText" />
+</menu>

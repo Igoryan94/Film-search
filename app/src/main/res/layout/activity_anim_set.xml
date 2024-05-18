@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/main"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/black"
+	tools:context=".activities.training.AnimSetActivity">
+
+	<ImageView
+		android:id="@+id/imageHorizon"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:alpha="0"
+		android:scaleType="centerCrop"
+		android:src="@drawable/anim_set_horizon"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<ImageView
+		android:id="@+id/imageSun"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:alpha="0"
+		android:scaleType="centerCrop"
+		android:src="@drawable/anim_set_vector_sun"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.37" />
+
+	<ImageView
+		android:id="@+id/imageCloud1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="36dp"
+		android:alpha="0"
+		android:scaleType="centerCrop"
+		android:translationX="-500dp"
+		android:src="@drawable/anim_set_vector_rain_cloud"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.0"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<ImageView
+		android:id="@+id/imageCloud2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="156dp"
+		android:alpha="0"
+		android:scaleType="centerCrop"
+		android:translationX="500dp"
+		android:src="@drawable/anim_set_vector_rain_cloud"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="1.0"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
