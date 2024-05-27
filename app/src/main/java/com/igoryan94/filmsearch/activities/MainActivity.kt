@@ -2,12 +2,10 @@ package com.igoryan94.filmsearch.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.navigation.NavigationBarView
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.activities.training.InputTestActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
@@ -108,22 +106,19 @@ class MainActivity : AppCompatActivity() {
     // Настройка нижней навигации
     private fun setupBottomNav() {
         // Реакция на выбор элементов навигации
-        b.bottomNavigation.setOnItemSelectedListener(object :
-            NavigationBarView.OnItemSelectedListener {
-            override fun onNavigationItemSelected(it: MenuItem): Boolean {
-                when (it.itemId) {
-                    R.id.favorites -> {
-                        supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.fragmentPlaceholder, FavoritesFragment())
-                            .addToBackStack(null)
-                            .commit()
-                    }
+        b.bottomNavigation.setOnItemSelectedListener { it ->
+            when (it.itemId) {
+                R.id.favorites -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentPlaceholder, FavoritesFragment())
+                        .addToBackStack(null)
+                        .commit()
                 }
-
-                return false
             }
-        })
+
+            false
+        }
     }
 
     // Открытие деталей фильма
