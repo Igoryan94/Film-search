@@ -2,6 +2,7 @@ package com.igoryan94.filmsearch.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,12 +34,10 @@ class MainActivity : AppCompatActivity() {
         setupHomeFragment()
 
         setupBottomNav()
-
-//        startActivity(Intent("asdasd")) // кастомный интент для открытия ImageViewTestActivity
     }
 
     // При создании опций меню...
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        //"Надуваем" наше меню
 //        menuInflater.inflate(R.menu.main_top_bar, menu)
 //        //Находим наш пункт меню с поиском
@@ -65,8 +64,8 @@ class MainActivity : AppCompatActivity() {
 //                return false
 //            }
 //        })
-//        return super.onCreateOptionsMenu(menu)
-//    }
+        return super.onCreateOptionsMenu(menu)
+    }
 
     private fun setupViews() {
         setSupportActionBar(b.topAppBar)

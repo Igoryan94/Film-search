@@ -1,6 +1,8 @@
 package com.igoryan94.filmsearch.fragments
 
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,14 @@ class HomeFragment : Fragment() {
 
     val filmsDataBase: List<Film> = initFilmsDb()
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
+
+    init {
+        exitTransition = Slide(Gravity.START).apply {
+            duration = 800
+            mode = Slide.MODE_OUT
+        }
+        reenterTransition = Slide(Gravity.START).apply { duration = 800 }
+    }
 
     companion object {
         lateinit var instance: HomeFragment
