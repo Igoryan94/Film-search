@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.transition.Scene
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -44,12 +45,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentHomeBinding.inflate(inflater, container, false)
-        mergeBinding = MergeHomeScreenContentBinding.bind(b.root)
+        mergeBinding =
+            MergeHomeScreenContentBinding.inflate(layoutInflater, b.homeFragmentRoot, false)
 
         instance = this
-
-        setupSearch()
-        initList()
 
         return b.root
     }
@@ -57,12 +56,24 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val scene = Scene.getSceneForLayout(
-            b.homeFragmentRoot,
-            R.layout.merge_home_screen_content,
-            requireContext()
-        )
-        TransitionManager.go(scene)
+        // Создаём анимацию выезда поля
+        val scene = Scene(b.homeFragmentRoot, mergeBinding.merge)
+        val searchSlide = Slide(Gravity.TOP).addTarget(R.id.search_view)
+        // Анимация выезда RV снизу
+        val recyclerSlide = Slide(Gravity.BOTTOM).addTarget(R.id.main_recycler)
+        // Создаём TransitionSet, который объединит все наши анимации
+        val customTransition = TransitionSet().apply {
+            // Устанавливаем длительность анимации
+            duration = 500
+            // Добавляем сами анимации
+            addTransition(recyclerSlide)
+            addTransition(searchSlide)
+        }
+        // Запускаем через TransitionManager, но вторым параметром передаём нашу кастомную анимацию
+        TransitionManager.go(scene, customTransition)
+        initList()
+
+        setupSearch()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
