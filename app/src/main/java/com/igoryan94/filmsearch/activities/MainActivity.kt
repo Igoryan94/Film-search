@@ -106,15 +106,17 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNav() {
         // Реакция на выбор элементов навигации
         b.bottomNavigation.setOnItemSelectedListener { it ->
-            when (it.itemId) {
-                R.id.favorites -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragmentPlaceholder, FavoritesFragment())
-                        .addToBackStack(null)
-                        .commit()
-                }
-            }
+            supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragmentPlaceholder,
+                    when (it.itemId) {
+                        R.id.favorites -> FavoritesFragment()
+                        else -> HomeFragment()
+                    }
+                )
+                .addToBackStack(null)
+                .commit()
 
             false
         }
