@@ -1,7 +1,9 @@
 package com.igoryan94.filmsearch.fragments
 
 import android.os.Bundle
+import android.transition.Scene
 import android.transition.Slide
+import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.activities.MainActivity
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
+import com.igoryan94.filmsearch.databinding.MergeHomeScreenContentBinding
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
 import com.igoryan94.filmsearch.views.recycler.adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.views.recycler.adapters.TopSpacingItemDecoration
@@ -19,6 +22,7 @@ import java.util.Locale
 
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
+    private lateinit var mergeBinding: MergeHomeScreenContentBinding
 
     val filmsDataBase: List<Film> = initFilmsDb()
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
@@ -40,6 +44,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentHomeBinding.inflate(inflater, container, false)
+        mergeBinding = MergeHomeScreenContentBinding.bind(b.root)
 
         instance = this
 
@@ -49,28 +54,39 @@ class HomeFragment : Fragment() {
         return b.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val scene = Scene.getSceneForLayout(
+            b.homeFragmentRoot,
+            R.layout.merge_home_screen_content,
+            requireContext()
+        )
+        TransitionManager.go(scene)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putInt("list_position", b.mainRecycler.scrollY)
+        outState.putInt("list_position", mergeBinding.mainRecycler.scrollY)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        b.mainRecycler.scrollToPosition(
+        mergeBinding.mainRecycler.scrollToPosition(
             savedInstanceState?.getInt("list_position") ?: 0
         )
     }
 
     private fun setupSearch() {
-        b.searchView.setOnClickListener {
-            b.searchView.isIconified = false
-            b.searchView.requestFocusFromTouch()
+        mergeBinding.searchView.setOnClickListener {
+            mergeBinding.searchView.isIconified = false
+            mergeBinding.searchView.requestFocusFromTouch()
         }
 
         //Подключаем слушателя изменений введенного текста в поиска
-        b.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        mergeBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             //Этот метод отрабатывает при нажатии кнопки "поиск" на софт клавиатуре
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
@@ -101,7 +117,7 @@ class HomeFragment : Fragment() {
 
     private fun initList() {
         //находим наш RV
-        b.mainRecycler.apply {
+        mergeBinding.mainRecycler.apply {
             //Инициализируем наш адаптер в конструктор передаем анонимно инициализированный интерфейс,
             //оставим его пока пустым, он нам понадобится во второй части задания
             filmsAdapter =
