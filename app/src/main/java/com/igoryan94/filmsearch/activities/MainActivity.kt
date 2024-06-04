@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.training.InputTestActivity
+import com.igoryan94.filmsearch.activities.training.AnimCircularRevealActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.fragments.FavoritesFragment
 import com.igoryan94.filmsearch.fragments.FilmDetailsFragment
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_vector_back)
 
         b.btnTest.setOnClickListener {
-            startActivity(Intent(this@MainActivity, InputTestActivity::class.java))
+            startActivity(Intent(this@MainActivity, AnimCircularRevealActivity::class.java))
         }
 
         b.topAppBar.setNavigationOnClickListener {
