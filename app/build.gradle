@@ -55,12 +55,12 @@ dependencies {
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
 
-    // Маска ввода - не работает почему-то
-//    implementation 'com.redmadrobot:input-mask-android:6.0.0'
-//    implementation libs.kotlin.stdlib
-
     // Жизненный цикл
     implementation libs.androidx.lifecycle.process
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

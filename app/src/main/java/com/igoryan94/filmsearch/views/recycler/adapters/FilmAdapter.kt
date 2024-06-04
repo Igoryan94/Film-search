@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.R
 import kotlinx.parcelize.Parcelize
 
@@ -26,8 +27,14 @@ class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
         fun bind(film: Film) {
             //Устанавливаем заголовок
             title.text = film.title
-            //Устанавливаем постер
-            poster.setImageResource(film.poster)
+            //Указываем контейнер, в котором будет "жить" наша картинка
+            Glide.with(itemView)
+                //Загружаем сам ресурс
+                .load(film.poster)
+                //Центрируем изображение
+                .centerCrop()
+                //Указываем ImageView, куда будем загружать изображение
+                .into(poster)
             //Устанавливаем описание
             description.text = film.description
         }
