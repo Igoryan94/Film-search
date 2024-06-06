@@ -46,8 +46,47 @@ class AnimCircularRevealActivity : AppCompatActivity() {
             }
         }
 
+//        setupFabFlingGestures()
+
         b.fab.setOnClickListener { setRevealState(!isRevealed) }
     }
+
+//    private fun setupFabFlingGestures() {
+//        // Для этой анимации нам нужно два аниматора FlingAnimation, потому что мы анимируем и по X, и по Y.
+//        val flingX = FlingAnimation(b.fab, DynamicAnimation.X).apply {
+//            friction = 1.1f
+//        }
+//        val flingY = FlingAnimation(b.fab, DynamicAnimation.Y).apply {
+//            friction = 1.1f
+//        }
+//
+//        // Мы будем использовать класс SimpleOnGestureListener, который позволит нам переопределить
+//        //только тот метод, который нам нужен, потому как он уже наследует OnGestureListener и переопределил
+//        //их за нас, а мы переопределяем только то, что нужно
+//        val gesturesListener = object : GestureDetector.SimpleOnGestureListener() {
+//            override fun onFling(
+//                e1: MotionEvent?,
+//                e2: MotionEvent,
+//                velocityX: Float,
+//                velocityY: Float
+//            ): Boolean {
+//                flingX.setStartVelocity(velocityX)
+//                flingY.setStartVelocity(velocityY)
+//
+//                flingX.start()
+//                flingY.start()
+//
+//                return true
+//            }
+//        }
+//
+//        val gestureDetector = GestureDetector(this, gesturesListener)
+//
+//        b.fab.setOnTouchListener { v, event ->
+//            v.performClick()
+//            gestureDetector.onTouchEvent(event)
+//        }
+//    }
 
     private fun setRevealState(isRevealing: Boolean) {
         if (isRevealing) {
