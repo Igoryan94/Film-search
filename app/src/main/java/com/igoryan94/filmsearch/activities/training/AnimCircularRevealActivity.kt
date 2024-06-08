@@ -37,16 +37,8 @@ class AnimCircularRevealActivity : AppCompatActivity() {
             insets
         }
 
-        CoroutineScope(IO).launch {
-            while (true) {
-                if (b.buttonsContainer.isAttachedToWindow) {
-                    withContext((Main)) {
-                        setRevealState(!isRevealed)
-                    }
-                    break
-                }
-            }
-        }
+//        val lottieAnimationView: LottieAnimationView = lottie_anim
+//        lottieAnimationView.playAnimation()
 
         setupFabCircularReveal()
 //        setupFabFlingGestures()
@@ -107,8 +99,20 @@ class AnimCircularRevealActivity : AppCompatActivity() {
         isRevealed = isRevealing
     }
 
-    private fun setupFabCircularReveal() =
+    private fun setupFabCircularReveal() {
+        CoroutineScope(IO).launch {
+            while (true) {
+                if (b.buttonsContainer.isAttachedToWindow) {
+                    withContext((Main)) {
+                        setRevealState(!isRevealed)
+                    }
+                    break
+                }
+            }
+        }
+
         b.fab.setOnClickListener { setRevealState(!isRevealed) }
+    }
 
 //    private fun setupFabFlingGestures() {
 //        // Для этой анимации нам нужно два аниматора FlingAnimation, потому что мы анимируем и по X, и по Y.

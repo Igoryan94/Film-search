@@ -65,6 +65,9 @@ dependencies {
     // Анимации Android, использующие физику
     implementation libs.androidx.dynamicanimation
 
+    // Сложные векторные анимации
+    implementation 'com.airbnb.android:lottie:3.4.4'
+
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
