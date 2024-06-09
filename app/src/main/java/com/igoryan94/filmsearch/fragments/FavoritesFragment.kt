@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.AnimationHelper
 import com.igoryan94.filmsearch.activities.MainActivity
 import com.igoryan94.filmsearch.databinding.FragmentFavoritesBinding
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
@@ -70,6 +71,16 @@ class FavoritesFragment : Fragment() {
         filmsAdapter.setItems(favoritesList)
 
         return b.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            b.favoritesFragmentRoot,
+            requireActivity(),
+            2
+        )
     }
 
     companion object {

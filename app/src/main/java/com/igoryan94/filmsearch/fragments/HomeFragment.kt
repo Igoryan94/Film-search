@@ -1,21 +1,16 @@
 package com.igoryan94.filmsearch.fragments
 
 import android.os.Bundle
-import android.transition.Scene
-import android.transition.Slide
-import android.transition.TransitionManager
-import android.transition.TransitionSet
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.AnimationHelper
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.activities.MainActivity
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
-import com.igoryan94.filmsearch.databinding.MergeHomeScreenContentBinding
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
 import com.igoryan94.filmsearch.views.recycler.adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.views.recycler.adapters.TopSpacingItemDecoration
@@ -23,18 +18,9 @@ import java.util.Locale
 
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
-    private lateinit var mergeBinding: MergeHomeScreenContentBinding
 
     val filmsDataBase: List<Film> = initFilmsDb()
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
-
-    init {
-        exitTransition = Slide(Gravity.START).apply {
-            duration = 800
-            mode = Slide.MODE_OUT
-        }
-        reenterTransition = Slide(Gravity.START).apply { duration = 800 }
-    }
 
     companion object {
         lateinit var instance: HomeFragment
@@ -45,8 +31,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentHomeBinding.inflate(inflater, container, false)
-        mergeBinding =
-            MergeHomeScreenContentBinding.inflate(layoutInflater, b.homeFragmentRoot, false)
 
         instance = this
 
@@ -56,48 +40,38 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Создаём анимацию выезда поля
-        val scene = Scene(b.homeFragmentRoot, mergeBinding.merge)
-        val searchSlide = Slide(Gravity.TOP).addTarget(R.id.search_view)
-        // Анимация выезда RV снизу
-        val recyclerSlide = Slide(Gravity.BOTTOM).addTarget(R.id.main_recycler)
-        // Создаём TransitionSet, который объединит все наши анимации
-        val customTransition = TransitionSet().apply {
-            // Устанавливаем длительность анимации
-            duration = 500
-            // Добавляем сами анимации
-            addTransition(recyclerSlide)
-            addTransition(searchSlide)
-        }
-        // Запускаем через TransitionManager, но вторым параметром передаём нашу кастомную анимацию
-        TransitionManager.go(scene, customTransition)
-        initList()
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            b.homeFragmentRoot,
+            requireActivity(),
+            1
+        )
 
+        initList()
         setupSearch()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putInt("list_position", mergeBinding.mainRecycler.scrollY)
+        outState.putInt("list_position", b.mainRecycler.scrollY)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        mergeBinding.mainRecycler.scrollToPosition(
+        b.mainRecycler.scrollToPosition(
             savedInstanceState?.getInt("list_position") ?: 0
         )
     }
 
     private fun setupSearch() {
-        mergeBinding.searchView.setOnClickListener {
-            mergeBinding.searchView.isIconified = false
-            mergeBinding.searchView.requestFocusFromTouch()
+        b.searchView.setOnClickListener {
+            b.searchView.isIconified = false
+            b.searchView.requestFocusFromTouch()
         }
 
         //Подключаем слушателя изменений введенного текста в поиска
-        mergeBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        b.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             //Этот метод отрабатывает при нажатии кнопки "поиск" на софт клавиатуре
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
@@ -128,7 +102,7 @@ class HomeFragment : Fragment() {
 
     private fun initList() {
         //находим наш RV
-        mergeBinding.mainRecycler.apply {
+        b.mainRecycler.apply {
             //Инициализируем наш адаптер в конструктор передаем анонимно инициализированный интерфейс,
             //оставим его пока пустым, он нам понадобится во второй части задания
             filmsAdapter =
