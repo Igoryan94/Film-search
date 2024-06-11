@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.AnimationHelper
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.activities.MainActivity
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
@@ -33,10 +34,20 @@ class HomeFragment : Fragment() {
 
         instance = this
 
-        setupSearch()
-        initList()
-
         return b.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            b.homeFragmentRoot,
+            requireActivity(),
+            1
+        )
+
+        initList()
+        setupSearch()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

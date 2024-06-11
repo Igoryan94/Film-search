@@ -1,11 +1,14 @@
 package com.igoryan94.filmsearch.fragments
 
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.AnimationHelper
 import com.igoryan94.filmsearch.activities.MainActivity
 import com.igoryan94.filmsearch.databinding.FragmentFavoritesBinding
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
@@ -24,6 +27,14 @@ class FavoritesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    init {
+        enterTransition = Slide(Gravity.END).apply { duration = 800 }
+        returnTransition = Slide(Gravity.END).apply {
+            duration = 800
+            mode = Slide.MODE_OUT
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +71,16 @@ class FavoritesFragment : Fragment() {
         filmsAdapter.setItems(favoritesList)
 
         return b.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            b.favoritesFragmentRoot,
+            requireActivity(),
+            2
+        )
     }
 
     companion object {

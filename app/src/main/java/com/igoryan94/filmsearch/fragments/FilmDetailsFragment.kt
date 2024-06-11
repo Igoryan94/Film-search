@@ -3,6 +3,8 @@ package com.igoryan94.filmsearch.fragments
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,14 @@ class FilmDetailsFragment : Fragment() {
     lateinit var b: FragmentFilmDetailsBinding
 
     private lateinit var film: Film
+
+    init {
+        enterTransition = Slide(Gravity.END).apply { duration = 800 }
+        returnTransition = Slide(Gravity.END).apply {
+            duration = 800
+            mode = Slide.MODE_OUT
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

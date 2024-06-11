@@ -2,18 +2,20 @@ package com.igoryan94.filmsearch.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.Menu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.navigation.NavigationBarView
+import androidx.fragment.app.Fragment
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.activities.training.InputTestActivity
+import com.igoryan94.filmsearch.activities.training.AnimCircularRevealActivity
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.fragments.FavoritesFragment
 import com.igoryan94.filmsearch.fragments.FilmDetailsFragment
 import com.igoryan94.filmsearch.fragments.HomeFragment
+import com.igoryan94.filmsearch.fragments.SelectionsFragment
+import com.igoryan94.filmsearch.fragments.WatchLaterFragment
 import com.igoryan94.filmsearch.toast
 import com.igoryan94.filmsearch.views.recycler.adapters.Film
 
@@ -33,14 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         setupViews()
         setupHomeFragment()
-
         setupBottomNav()
-
-//        startActivity(Intent("asdasd")) // кастомный интент для открытия ImageViewTestActivity
     }
 
     // При создании опций меню...
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        //"Надуваем" наше меню
 //        menuInflater.inflate(R.menu.main_top_bar, menu)
 //        //Находим наш пункт меню с поиском
@@ -67,8 +66,8 @@ class MainActivity : AppCompatActivity() {
 //                return false
 //            }
 //        })
-//        return super.onCreateOptionsMenu(menu)
-//    }
+        return super.onCreateOptionsMenu(menu)
+    }
 
     private fun setupViews() {
         setSupportActionBar(b.topAppBar)
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_vector_back)
 
         b.btnTest.setOnClickListener {
-            startActivity(Intent(this@MainActivity, InputTestActivity::class.java))
+            startActivity(Intent(this@MainActivity, AnimCircularRevealActivity::class.java))
         }
 
         b.topAppBar.setNavigationOnClickListener {
@@ -108,22 +107,32 @@ class MainActivity : AppCompatActivity() {
     // Настройка нижней навигации
     private fun setupBottomNav() {
         // Реакция на выбор элементов навигации
-        b.bottomNavigation.setOnItemSelectedListener(object :
-            NavigationBarView.OnItemSelectedListener {
-            override fun onNavigationItemSelected(it: MenuItem): Boolean {
-                when (it.itemId) {
-                    R.id.favorites -> {
-                        supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.fragmentPlaceholder, FavoritesFragment())
-                            .addToBackStack(null)
-                            .commit()
-                    }
-                }
+        b.bottomNavigation.setOnItemSelectedListener {
+            when (it.itemId) {
+                //В первом параметре, если фрагмент не найден и метод вернул null, то с помощью
+                //элвиса мы вызываем создание нового фрагмента
+                R.id.home -> changeFragment(
+                    checkFragmentExistence("home") ?: HomeFragment(),
+                    "home"
+                )
 
-                return false
+                R.id.favorites -> changeFragment(
+                    checkFragmentExistence("favorites") ?: FavoritesFragment(), "favorites"
+                )
+
+                R.id.watchLater -> changeFragment(
+                    checkFragmentExistence("watch_later") ?: WatchLaterFragment(), "watch_later"
+                )
+
+                R.id.selections -> changeFragment(
+                    checkFragmentExistence("selections") ?: SelectionsFragment(), "selections"
+                )
+
+                else -> return@setOnItemSelectedListener false
             }
-        })
+
+            true
+        }
     }
 
     // Открытие деталей фильма
@@ -136,9 +145,17 @@ class MainActivity : AppCompatActivity() {
         val fragment = FilmDetailsFragment()
         fragment.arguments = bundle
 
+        changeFragment(fragment, fragment.toString())
+    }
+
+    //Ищем фрагмент по тегу, если он есть то возвращаем его, если нет, то null
+    private fun checkFragmentExistence(tag: String): Fragment? =
+        supportFragmentManager.findFragmentByTag(tag)
+
+    private fun changeFragment(fragment: Fragment, tag: String) {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentPlaceholder, fragment)
+            .replace(R.id.fragmentPlaceholder, fragment, tag)
             .addToBackStack(null)
             .commit()
     }
