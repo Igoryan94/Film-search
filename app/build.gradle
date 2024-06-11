@@ -66,7 +66,7 @@ dependencies {
     implementation libs.androidx.dynamicanimation
 
     // Сложные векторные анимации
-    implementation 'com.airbnb.android:lottie:3.4.4'
+    implementation libs.lottie
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
