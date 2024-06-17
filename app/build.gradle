@@ -60,6 +60,7 @@ dependencies {
 
     //Glide
     implementation libs.glide
+    implementation libs.androidx.junit.ktx
     annotationProcessor libs.compiler
 
     // Анимации Android, использующие физику
@@ -68,7 +69,8 @@ dependencies {
     // Сложные векторные анимации
     implementation libs.lottie
 
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.androidx.espresso.core
+    // Тесты
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.rules)
 }
