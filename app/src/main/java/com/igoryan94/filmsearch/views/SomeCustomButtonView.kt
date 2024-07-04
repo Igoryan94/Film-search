@@ -3,7 +3,9 @@ package com.igoryan94.filmsearch.views
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.Shader
 import android.util.AttributeSet
 import com.google.android.material.button.MaterialButton
 import timber.log.Timber
@@ -81,5 +83,28 @@ class SomeCustomButtonView(context: Context, attrs: AttributeSet) : MaterialButt
         canvas.drawPath(path, paint)
          * ------
          */
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        // Красивый линейный градиент...
+        val colors = intArrayOf(
+            Color.YELLOW,
+            Color.BLUE,
+            Color.CYAN,
+            Color.MAGENTA,
+            Color.RED
+        )
+        val positions = floatArrayOf(
+            0.0f,
+            0.2f,
+            0.4f,
+            0.6f,
+            0.8f
+        )
+        paint.shader =
+            LinearGradient(0f, 0f, 0f, h.toFloat(), colors, positions, Shader.TileMode.MIRROR)
+
+        // Радиальный градиент
+        //paint.shader = RadialGradient(w.toFloat() / 2, h.toFloat() / 2, 100f, Color.YELLOW, Color.RED, Shader.TileMode.MIRROR)
     }
 }
