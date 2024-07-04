@@ -18,7 +18,7 @@ class App : Application() {
     }
 
     class AppLifecycleObserver : LifecycleObserver {
-        private val lifecycleEventObserver = LifecycleEventObserver { source, event ->
+        private val lifecycleEventObserver = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_START -> Timber.d("app lifecycle stage is at start")
                 Lifecycle.Event.ON_PAUSE -> Timber.d("app lifecycle stage is pausing")
