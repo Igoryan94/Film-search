@@ -39,21 +39,24 @@
             android:background="@android:color/transparent"
             android:orientation="vertical">
 
-            <!--            <com.igoryan94.filmsearch.views.SomeCustomButtonView-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content" />-->
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <com.igoryan94.filmsearch.views.SomeCustomButtonView
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="text" />
         </LinearLayout>
     </FrameLayout>
