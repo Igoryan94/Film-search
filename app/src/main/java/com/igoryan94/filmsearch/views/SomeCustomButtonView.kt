@@ -38,6 +38,7 @@ class SomeCustomButtonView(context: Context, attrs: AttributeSet) : MaterialButt
             color = Color.RED
             style = Paint.Style.FILL_AND_STROKE
             strokeWidth = 5f
+            flags = Paint.ANTI_ALIAS_FLAG
         }
 
         // Заливка чёрным
