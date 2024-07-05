@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.views.RatingDonutView
 import kotlinx.parcelize.Parcelize
 
 //в параметр передаем слушатель, чтобы мы потом могли обрабатывать нажатия из класса Activity
@@ -22,6 +23,7 @@ class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
         val title: TextView = itemView.findViewById(R.id.title)
         val poster: ImageView = itemView.findViewById(R.id.poster)
         val description: TextView = itemView.findViewById(R.id.description)
+        private val ratingDonut = itemView.findViewById<RatingDonutView>(R.id.rating)
 
         //В этом методе кладем данные из Film в наши View
         fun bind(film: Film) {
@@ -37,6 +39,8 @@ class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
                 .into(poster)
             //Устанавливаем описание
             description.text = film.description
+            //Устанавливаем рейтинг
+            ratingDonut.setProgress((film.rating * 10).toInt())
         }
     }
 
@@ -128,5 +132,6 @@ data class Film(
     val title: String,
     val poster: Int,
     val description: String,
+    var rating: Float = 0f,
     var isInFavorites: Boolean = false
 ) : Parcelable
