@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply plugin: 'kotlin-kapt'
+
 android {
     namespace 'com.igoryan94.filmsearch'
     compileSdk 34
@@ -33,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
