@@ -10,6 +10,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityAnimCircularRevealBinding
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +24,7 @@ import kotlin.math.roundToInt
 
 @SuppressLint("ClickableViewAccessibility")
 class AnimCircularRevealActivity : AppCompatActivity() {
+    //    lateinit var b: ActivityAnimCircularRevealBinding
     lateinit var b: ActivityAnimCircularRevealBinding
 
     private var isRevealed = false
@@ -29,13 +32,20 @@ class AnimCircularRevealActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        b = ActivityAnimCircularRevealBinding.inflate(layoutInflater)
+//        b = ActivityAnimCircularRevealBinding.inflate(layoutInflater) // TODO вернуть при переиспользовании ViewBinding
+        b = DataBindingUtil.inflate(
+            layoutInflater, R.layout.activity_anim_circular_reveal,
+            null, false
+        )
         setContentView(b.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_container)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // DataBinding: задаём текст переменной в макете. Переменная определяет текст у одной из кнопок.
+        b.buttonText = ObservableField("DataBinding-defined text")
 
 //        val lottieAnimationView: LottieAnimationView = lottie_anim
 //        lottieAnimationView.playAnimation()

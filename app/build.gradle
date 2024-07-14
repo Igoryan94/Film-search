@@ -35,7 +35,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        dataBinding = true
+        dataBinding = true // Устаревшее, теперь не используется -
+        //  компании предпочитают JetPack Compose либо ViewBinding
     }
 }
 
