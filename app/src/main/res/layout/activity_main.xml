@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     android:layoutAnimation="@anim/layout_menu_transition"
-    tools:context=".activities.MainActivity"
+    tools:context=".view.MainActivity"
     tools:ignore="ContentDescription"
     tools:layoutAnimation="null">
     <!-- null указан, чтобы layout был по прежнему виден -->

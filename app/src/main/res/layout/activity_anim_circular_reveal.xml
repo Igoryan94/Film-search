@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
-        tools:context=".activities.training.AnimCircularRevealActivity">
+        tools:context=".view.training.activities.AnimCircularRevealActivity">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_anim"
@@ -48,7 +48,7 @@
                 android:background="@android:color/transparent"
                 android:orientation="vertical">
 
-                <com.igoryan94.filmsearch.views.SomeCustomButtonView
+                <com.igoryan94.filmsearch.custom_views.SomeCustomButtonView
                     android:layout_width="100dp"
                     android:layout_height="100dp" />
 

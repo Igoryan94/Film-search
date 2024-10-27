@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@+id/title"
             tools:text="@tools:sample/lorem/random" />
 
-        <com.igoryan94.filmsearch.views.RatingDonutView
+        <com.igoryan94.filmsearch.view.custom_views.RatingDonutView
             android:id="@+id/rating"
             android:layout_width="50dp"
             android:layout_height="50dp"

@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.igoryan94.filmsearch.fragments.HomeFragment"
+        android:name="com.igoryan94.filmsearch.view.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/filmDetailsFragment"
-        android:name="com.igoryan94.filmsearch.fragments.FilmDetailsFragment"
+        android:name="com.igoryan94.filmsearch.view.fragments.FilmDetailsFragment"
         android:label="fragment_film_details"
         tools:layout="@layout/fragment_film_details" />
     <fragment
         android:id="@+id/myFragment"
-        android:name="com.igoryan94.filmsearch.fragments.training.MyFragment"
+        android:name="com.igoryan94.filmsearch.view.fragments.training.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my" />
 </navigation>
