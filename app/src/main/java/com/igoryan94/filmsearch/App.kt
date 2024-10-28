@@ -5,12 +5,24 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.igoryan94.filmsearch.data.MainRepository
+import com.igoryan94.filmsearch.domain.Interactor
 import timber.log.Timber
 
 class App : Application() {
+    lateinit var repo: MainRepository
+    lateinit var interactor: Interactor
+
     override fun onCreate() {
         super.onCreate()
+
+        // Инициализируем экземпляр App, через который будем получать доступ к остальным переменным
         instance = this
+
+        // Инициализируем репозиторий
+        repo = MainRepository()
+        // Инициализируем интерактор
+        interactor = Interactor(repo)
 
         Timber.plant(Timber.DebugTree())
 

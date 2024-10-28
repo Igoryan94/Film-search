@@ -73,7 +73,7 @@ class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
         }
     }
 
-    //Метод для добавления объектов в наш список
+    //Метод для переопределения списка
     fun setItems(list: List<Film>) {
         val diffCallback = FilmDiffCallback(items, list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -88,6 +88,45 @@ class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
         diffResult.dispatchUpdatesTo(this)
     }
 
+    // Метод для добавления объекта в наш список
+    fun add(item: Film) {
+        val itemsNew = items
+        itemsNew.add(item)
+        dispatchUpdates(itemsNew)
+    }
+
+    // Метод для добавления списка объектов в наш список
+    fun add(list: List<Film>) {
+        val itemsNew = items
+        itemsNew.addAll(list)
+        dispatchUpdates(itemsNew)
+    }
+
+    // Метод для удаления из списка по индексу
+    fun remove(index: Int) {
+        val itemsNew = items
+        itemsNew.removeAt(index)
+        dispatchUpdates(itemsNew)
+    }
+
+    // Метод для удаления из списка определённого объекта
+    fun remove(film: Film) {
+        val itemsNew = items
+        itemsNew.remove(film)
+        dispatchUpdates(itemsNew)
+    }
+
+    private fun dispatchUpdates(itemsNew: List<Film>) {
+        val diffCallback = FilmDiffCallback(items, itemsNew)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        items.clear()
+        items.addAll(itemsNew)
+
+        //Уведомляем RV, что пришел новый список, и ему нужно заново все "привязывать"
+//        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     //Интерфейс для обработки кликов
     interface OnItemClickListener {
