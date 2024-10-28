@@ -14,38 +14,41 @@
         android:supportsRtl="true"
         android:theme="@style/MainTheme">
         <activity
-            android:name=".activities.training.InputTestActivity"
+            android:name=".view.training.activities.AnimCircularRevealActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.training.activities.InputTestActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".activities.training.NavActivity"
+            android:name=".view.training.activities.NavActivity"
             android:exported="false" />
         <activity
-            android:name=".fragments.FilmDetailsFragment"
+            android:name=".view.fragments.FilmDetailsFragment"
             android:exported="false" />
         <activity
-            android:name=".activities.training.ScrollCoordinatorActivity"
+            android:name=".view.training.activities.ScrollCoordinatorActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.training.ScrollActivity"
+            android:name=".view.training.activities.ScrollActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.training.NumberGridActivity"
+            android:name=".view.training.activities.NumberGridActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.training.ListActivity"
+            android:name=".view.training.activities.ListActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.training.LayoutTransitionAnimActivity"
+            android:name=".view.training.activities.LayoutTransitionAnimActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.training.AnimSetActivity"
+            android:name=".view.training.activities.AnimSetActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.training.AnimThrowActivity"
+            android:name=".view.training.activities.AnimThrowActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.training.ImageViewTestActivity"
+            android:name=".view.training.activities.ImageViewTestActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="asdasd" />
@@ -62,9 +65,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.training.activities.ScenesActivity"
+            android:exported="false" />
 
         <service
-            android:name=".InputMethodServiceImpl"
+            android:name=".utils.InputMethodServiceImpl"
             android:exported="true"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>

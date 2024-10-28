@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.training.ImageViewTestActivity">
+    tools:context=".view.training.activities.ImageViewTestActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                 app:layout_constraintBottom_toTopOf="@id/subscribeView"
                 app:layout_constraintTop_toBottomOf="@id/styledButton" />
 
-            <com.igoryan94.filmsearch.views.SubscribeView
+            <com.igoryan94.filmsearch.view.custom_views.SubscribeView
                 android:id="@+id/subscribeView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

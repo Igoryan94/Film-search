@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply plugin: 'kotlin-kapt'
+
 android {
     namespace 'com.igoryan94.filmsearch'
     compileSdk 34
@@ -33,6 +35,8 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true // Устаревшее, теперь не используется -
+        //  компании предпочитают JetPack Compose либо ViewBinding
     }
 }
 
@@ -55,14 +59,22 @@ dependencies {
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
 
-    // Маска ввода - не работает почему-то
-//    implementation 'com.redmadrobot:input-mask-android:6.0.0'
-//    implementation libs.kotlin.stdlib
-
     // Жизненный цикл
     implementation libs.androidx.lifecycle.process
 
-    testImplementation libs.junit
-    androidTestImplementation libs.androidx.junit
-    androidTestImplementation libs.androidx.espresso.core
+    //Glide
+    implementation libs.glide
+    implementation libs.androidx.junit.ktx
+    annotationProcessor libs.compiler
+
+    // Анимации Android, использующие физику
+    implementation libs.androidx.dynamicanimation
+
+    // Сложные векторные анимации
+    implementation libs.lottie
+
+    // Тесты
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.rules)
 }
