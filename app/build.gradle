@@ -73,6 +73,9 @@ dependencies {
     // Сложные векторные анимации
     implementation libs.lottie
 
+    // JSON
+    implementation libs.gson
+
     // Тесты
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.runner)
