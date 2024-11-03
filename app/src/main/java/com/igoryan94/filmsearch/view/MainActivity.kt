@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         setupViews()
         setupHomeFragment()
         setupBottomNav()
+
+//        testNetworkRequest()
     }
 
     // При создании опций меню...
