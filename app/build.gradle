@@ -77,7 +77,10 @@ dependencies {
     implementation libs.gson
 
     // Работа с интернетом
-    implementation libs.okhttp
+//    implementation libs.okhttp
+    implementation libs.retrofit
+    implementation libs.converter.gson // Конвертер из/в JSON
+    implementation libs.logging.interceptor // Перехватчик для логгирования запросов
 
     // Тесты
     androidTestImplementation(libs.androidx.espresso.core)

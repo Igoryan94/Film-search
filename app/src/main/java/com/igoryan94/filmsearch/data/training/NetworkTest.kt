@@ -1,39 +1,54 @@
 package com.igoryan94.filmsearch.data.training
 
-import okhttp3.Call
-import okhttp3.Callback
+import com.airbnb.lottie.BuildConfig
+import com.google.gson.GsonBuilder
+import com.igoryan94.filmsearch.data.training.json_example.UsersData
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 object NetworkTest {
     fun testNetworkRequest() {
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url("https://reqres.in/api/users/2")
+        val gson = GsonBuilder()
+            .create()
+
+        // Создаём перехватчик. Если приложение собрано для отладки, включаем базовый логгинг вместо никакого.
+        val interceptor = HttpLoggingInterceptor().apply {
+            if (BuildConfig.DEBUG) level = HttpLoggingInterceptor.Level.BASIC
+        }
+        // Создаем клиент и добавляем туда перехватчик
+        val okHttpCLient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
             .build()
 
-        // Создаем отправку запроса, мы должны имплементировать интерфейс Callback,
-        // когда будете его импортировать, проверьте, чтобы он был от библиотеки OkHttp, потому что есть
-        // Интерфейсы с таким же названием и в других библиотеках
-        client.newCall(request).enqueue(object : Callback {
-            // Переопределяем метод, что будет, если мы не сможем получить ответ на запрос
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
+        // Создаём объект Retrofit и передаём ему клиент
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://reqres.in/")
+            // Конвертер. Если у нас нет настроек, можно обойтись без аргумента `gson`
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpCLient)
+            .build()
+        val service = retrofit.create(RetrofitInterface::class.java)
+
+        service.getUsers(2).enqueue(object : Callback<UsersData> {
+            override fun onResponse(call: Call<UsersData>, response: Response<UsersData>) {
+                println(response.body())
             }
 
-            // Переопределяем метод, что будет, если мы сможем получить ответ на запрос
-            override fun onResponse(call: Call, response: Response) {
-                // Здесь тоже надо обернуть в try-catch
-                try {
-                    val responseBody = response.body()
-                    println("!!! ${responseBody?.string()}")
-                } catch (e: Exception) {
-                    println(response)
-                    e.printStackTrace()
-                }
+            override fun onFailure(call: Call<UsersData>, t: Throwable) {
+                t.printStackTrace()
             }
         })
+    }
+
+    interface RetrofitInterface {
+        @GET("api/users")
+        fun getUsers(@Query("page") page: Int): Call<UsersData>
     }
 }
