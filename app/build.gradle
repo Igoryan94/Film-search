@@ -82,6 +82,10 @@ dependencies {
     implementation libs.converter.gson // Конвертер из/в JSON
     implementation libs.logging.interceptor // Перехватчик для логгирования запросов
 
+    // Работа с изображениями из сети
+    implementation libs.glide
+    annotationProcessor libs.compiler
+
     // Тесты
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.runner)
