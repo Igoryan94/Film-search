@@ -5,9 +5,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.airbnb.lottie.BuildConfig
 import com.igoryan94.filmsearch.data.MainRepository
+import com.igoryan94.filmsearch.data.entity.API.TmdbApi
+import com.igoryan94.filmsearch.data.entity.ApiConstants
 import com.igoryan94.filmsearch.domain.Interactor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class App : Application() {
     lateinit var repo: MainRepository
@@ -16,15 +24,39 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        val isDebugging = BuildConfig.DEBUG
+
         // Инициализируем экземпляр App, через который будем получать доступ к остальным переменным
         instance = this
+
+        // Создаём перехватчик. Если приложение собрано для отладки, включаем базовый логгинг вместо никакого.
+        val interceptor = HttpLoggingInterceptor().apply {
+            if (isDebugging) level = HttpLoggingInterceptor.Level.BASIC
+        }
+        // Создаем клиент и добавляем туда перехватчик
+        val okHttpCLient = OkHttpClient.Builder()
+            // Настраиваем таймауты для медленного интернета
+            .callTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            // Логгер
+            .addInterceptor(interceptor)
+            .build()
+
+        // Создаём объект Retrofit и передаём ему клиент
+        val retrofit = Retrofit.Builder()
+            .baseUrl(ApiConstants.BASE_URL)
+            // Конвертер
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpCLient)
+            .build()
+        val retrofitService = retrofit.create(TmdbApi::class.java)
 
         // Инициализируем репозиторий
         repo = MainRepository()
         // Инициализируем интерактор
-        interactor = Interactor(repo)
+        interactor = Interactor(repo, retrofitService)
 
-        Timber.plant(Timber.DebugTree())
+        if (isDebugging) Timber.plant(Timber.DebugTree())
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver())
     }
