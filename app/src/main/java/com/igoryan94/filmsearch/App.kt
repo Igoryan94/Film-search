@@ -5,7 +5,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.airbnb.lottie.BuildConfig
 import com.igoryan94.filmsearch.data.MainRepository
 import com.igoryan94.filmsearch.data.entity.API.TmdbApi
 import com.igoryan94.filmsearch.data.entity.ApiConstants
@@ -24,7 +23,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val isDebugging = BuildConfig.DEBUG
+        val isDebugging = true // BuildConfig.DEBUG
 
         // Инициализируем экземпляр App, через который будем получать доступ к остальным переменным
         instance = this
