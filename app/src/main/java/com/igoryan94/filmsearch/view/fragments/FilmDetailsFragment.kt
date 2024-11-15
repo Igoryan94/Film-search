@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.data.entity.ApiConstants
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
 import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 
@@ -45,12 +47,15 @@ class FilmDetailsFragment : Fragment() {
             arguments?.getParcelable("film")
         else arguments?.getParcelable("film", Film::class.java))
             ?: Film(
-                "(null)", android.R.drawable.ic_dialog_alert,
+                "(null)", "",
                 "Object is null"
             )
 
         b.detailsToolbar.title = film.title
-        b.detailsPoster.setImageResource(film.poster)
+        Glide.with(this)
+            .load(ApiConstants.IMAGES_URL + "w780" + film.poster)
+            .centerCrop()
+            .into(b.detailsPoster)
         b.detailsDescription.text = film.description
     }
 

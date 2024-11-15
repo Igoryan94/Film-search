@@ -2,7 +2,6 @@ package com.igoryan94.filmsearch.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -36,37 +35,6 @@ class MainActivity : AppCompatActivity() {
         setupViews()
         setupHomeFragment()
         setupBottomNav()
-    }
-
-    // При создании опций меню...
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        //"Надуваем" наше меню
-//        menuInflater.inflate(R.menu.main_top_bar, menu)
-//        //Находим наш пункт меню с поиском
-//        val menuItem = menu.findItem(R.id.search)
-//        //Привязываем его как поле для поиска
-//        val searchView = menuItem.actionView as androidx.appcompat.widget.SearchView
-//        //Задаем слушатель изменений ввода текста
-//        searchView.setOnQueryTextListener(object : OnQueryTextListener {
-//            val list = HomeFragment.instance.filmsDataBase.map { it.title }
-//
-//            //Здесь выполняется код при любом изменении текста
-//            override fun onQueryTextChange(newText: String?): Boolean {
-////                if (list.contains(newText)) "In list".toast(this@MainActivity)
-////                else "Not in list".toast(this@MainActivity)
-//                return false
-//            }
-//
-//            //Здесь выполняется код по нажатию на кнопку поиска
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                if (list.stream()
-//                        .anyMatch { it.contains(query ?: "(null)") }
-//                ) "In list".toast(this@MainActivity)
-//                else "Not in list".toast(this@MainActivity)
-//                return false
-//            }
-//        })
-        return super.onCreateOptionsMenu(menu)
     }
 
     private fun setupViews() {

@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     }
 
     private var filmsDataBase = listOf<Film>()
-        //Используем backing field
+        // Используем backing field
         set(value) {
             // Если придет такое же значение, то мы выходим из метода
             if (field == value) return
@@ -85,29 +85,29 @@ class HomeFragment : Fragment() {
             b.searchView.requestFocusFromTouch()
         }
 
-        //Подключаем слушателя изменений введенного текста в поиска
+        // Подключаем слушателя изменений введенного текста в поиска
         b.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            //Этот метод отрабатывает при нажатии кнопки "поиск" на софт клавиатуре
+            // Этот метод отрабатывает при нажатии кнопки "поиск" на софт клавиатуре
             override fun onQueryTextSubmit(query: String): Boolean {
                 return true
             }
 
-            //Этот метод отрабатывает на каждое изменения текста
+            // Этот метод отрабатывает на каждое изменения текста
             override fun onQueryTextChange(newText: String): Boolean {
-                //Если ввод пуст то вставляем в адаптер всю БД
+                // Если ввод пуст то вставляем в адаптер всю БД
                 if (newText.isEmpty()) {
                     filmsAdapter.setItems(filmsDataBase)
                     return true
                 }
 
-                //Фильтруем список на поискк подходящих сочетаний
+                // Фильтруем список на поискк подходящих сочетаний
                 val result = filmsDataBase.filter {
-                    //Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
+                    // Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
                     it.title.lowercase(Locale.getDefault())
                         .contains(newText.lowercase(Locale.getDefault()))
                 }
 
-                //Добавляем в адаптер
+                // Добавляем в адаптер
                 filmsAdapter.setItems(result)
                 return true
             }
@@ -115,25 +115,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun initList() {
-        //находим наш RV
+        // находим наш RV
         b.mainRecycler.apply {
-            //Инициализируем наш адаптер в конструктор передаем анонимно инициализированный интерфейс,
-            //оставим его пока пустым, он нам понадобится во второй части задания
+            // Инициализируем наш адаптер в конструктор передаем анонимно инициализированный интерфейс,
+            // оставим его пока пустым, он нам понадобится во второй части задания
             filmsAdapter =
                 FilmListRecyclerAdapter(object : FilmListRecyclerAdapter.OnItemClickListener {
                     override fun click(film: Film, position: Int) {
                         (activity as MainActivity).openFilmDetails(film)
                     }
                 })
-            //Присваиваем адаптер
+            // Присваиваем адаптер
             adapter = filmsAdapter
-            //Присвои layoutmanager
-            layoutManager = LinearLayoutManager((activity as MainActivity))
-            //Применяем декоратор для отступов
+            // Присвои layoutmanager
+            layoutManager = LinearLayoutManager(activity as MainActivity)
+            // Применяем декоратор для отступов
             val decorator = TopSpacingItemDecoration(8)
             addItemDecoration(decorator)
         }
-        //Кладем нашу БД в RV
+        // Кладем нашу БД в RV
         filmsAdapter.setItems(filmsDataBase)
     }
 
