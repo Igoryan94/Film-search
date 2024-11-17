@@ -9,11 +9,10 @@ import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
 
-class Interactor @Inject constructor(
-    var repository: MainRepository,
-    var retrofitService: TmdbApi
+class Interactor(
+    private val repository: MainRepository,
+    private val retrofitService: TmdbApi
 ) {
     // В конструктор мы будем передавать коллбэк из вью модели, чтобы реагировать на то, когда фильмы будут получены
     // и страницу, которую нужно загрузить (это для пагинации)

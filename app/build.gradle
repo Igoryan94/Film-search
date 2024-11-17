@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id 'kotlin-parcelize'
-    id 'com.google.dagger.hilt.android'
 }
 
 apply plugin: 'kotlin-kapt'
@@ -84,12 +83,7 @@ dependencies {
     annotationProcessor libs.compiler
 
     // Dependency Injection
-//    implementation "io.insert-koin:koin-core:2.0.1"
-    implementation libs.hilt.android
-    kapt libs.hilt.compiler
-    implementation libs.androidx.hilt.lifecycle.viewmodel
-    kapt libs.androidx.hilt.compiler
-    // ... другие зависимости
+    implementation "io.insert-koin:koin-core:2.0.1"
 //    implementation libs.dagger
 //    kapt libs.dagger.compiler
 
@@ -98,8 +92,3 @@ dependencies {
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.rules)
 }
-
-// Allow references to generated code
-//kapt {
-//    correctErrorTypes true
-//}

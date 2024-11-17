@@ -17,9 +17,7 @@ import com.igoryan94.filmsearch.view.fragments.SelectionsFragment
 import com.igoryan94.filmsearch.view.fragments.WatchLaterFragment
 import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.training.activities.AnimCircularRevealActivity
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var b: ActivityMainBinding
 
