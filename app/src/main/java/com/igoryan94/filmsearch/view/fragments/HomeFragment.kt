@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
 import com.igoryan94.filmsearch.utils.AnimationHelper
@@ -15,16 +15,16 @@ import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.recyclerview_adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecoration
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
 
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
 
-    private val viewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(HomeFragmentViewModel::class.java)
-    }
+    private val viewModel: HomeFragmentViewModel by viewModels()
 
     private var filmsDataBase = listOf<Film>()
         // Используем backing field

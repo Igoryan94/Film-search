@@ -1,21 +1,13 @@
 package com.igoryan94.filmsearch
 
 import android.app.Application
-import com.igoryan94.filmsearch.di.DI
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
+@HiltAndroidApp
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            //Прикрепляем контекст
-//            androidContext(this@App) // FIXME Не существует!
-            //(Опционально) подключаем зависимость
-//            androidLogger() // FIXME Не существует!
-            //Инициализируем модули
-            modules(listOf(DI.mainModule))
-        }
 
         // Инициализация Timber
         if (isDebugging) Timber.plant(Timber.DebugTree())
