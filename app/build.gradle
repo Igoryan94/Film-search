@@ -83,9 +83,8 @@ dependencies {
     annotationProcessor libs.compiler
 
     // Dependency Injection
-    implementation "io.insert-koin:koin-core:2.0.1"
-//    implementation libs.dagger
-//    kapt libs.dagger.compiler
+    implementation libs.dagger
+    annotationProcessor libs.dagger.compiler
 
     // Тесты
     androidTestImplementation(libs.androidx.espresso.core)
