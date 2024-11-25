@@ -2,9 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
-
-apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'com.igoryan94.filmsearch'
@@ -37,6 +36,7 @@ android {
         viewBinding = true
         dataBinding = true // Устаревшее, теперь не используется -
         //  компании предпочитают JetPack Compose либо ViewBinding
+        buildConfig = true
     }
 }
 
@@ -83,8 +83,8 @@ dependencies {
     annotationProcessor libs.compiler
 
     // Dependency Injection
-    implementation libs.dagger
-    annotationProcessor libs.dagger.compiler
+    implementation 'com.google.dagger:dagger:2.51.1'
+    kapt 'com.google.dagger:dagger-compiler:2.51.1'
 
     // Тесты
     androidTestImplementation(libs.androidx.espresso.core)
