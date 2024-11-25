@@ -21,6 +21,6 @@ class App : Application() {
 
     companion object {
         lateinit var instance: App
-        val isDebugging = true // BuildConfig.DEBUG
+        val isDebugging = BuildConfig.DEBUG
     }
 }

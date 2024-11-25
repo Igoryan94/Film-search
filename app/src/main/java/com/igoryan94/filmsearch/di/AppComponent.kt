@@ -11,9 +11,9 @@ import javax.inject.Singleton
 @Component(
     // Внедряем все модули, нужные для этого компонента
     modules = [
-        RemoteModule::class,
         DatabaseModule::class,
-        DomainModule::class
+        DomainModule::class,
+        RemoteModule::class
     ]
 )
 interface AppComponent {

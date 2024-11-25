@@ -1,16 +1,19 @@
 package com.igoryan94.filmsearch.di.modules
 
-import com.igoryan94.filmsearch.data.MainRepository
-import com.igoryan94.filmsearch.data.entity.API
 import com.igoryan94.filmsearch.domain.Interactor
+import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class DomainModule {
+abstract class DomainModule {
+    @Suppress("unused")
     @Singleton
-    @Provides
-    fun provideInteractor(repository: MainRepository, tmdbApi: API.TmdbApi) =
-        Interactor(repository = repository, retrofitService = tmdbApi)
+    @Binds
+    abstract fun bindInteractor(interactor: Interactor): InteractorProvider
+}
+
+interface InteractorProvider {
+    fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback)
 }
