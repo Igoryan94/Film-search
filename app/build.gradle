@@ -2,9 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
-
-apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'com.igoryan94.filmsearch'
@@ -37,6 +36,8 @@ android {
         viewBinding = true
         dataBinding = true // Устаревшее, теперь не используется -
         //  компании предпочитают JetPack Compose либо ViewBinding
+        buildConfig = true // Форсирование создания BuildConfig, для определения типа билда -
+        //  релизный или отладочный.
     }
 }
 
@@ -58,9 +59,6 @@ dependencies {
     // Навигация
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
-
-    // Жизненный цикл
-    implementation libs.androidx.lifecycle.process
 
     //Glide
     implementation libs.glide
@@ -84,6 +82,10 @@ dependencies {
     // Работа с изображениями из сети
     implementation libs.glide
     annotationProcessor libs.compiler
+
+    // Dependency Injection
+    implementation libs.dagger
+    kapt libs.dagger.compiler
 
     // Тесты
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,0 +1,19 @@
+package com.igoryan94.filmsearch.di.modules
+
+import com.igoryan94.filmsearch.domain.Interactor
+import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
+import dagger.Binds
+import dagger.Module
+import javax.inject.Singleton
+
+@Module
+abstract class DomainModule {
+    @Suppress("unused")
+    @Singleton
+    @Binds
+    abstract fun bindInteractor(interactor: Interactor): InteractorProvider
+}
+
+interface InteractorProvider {
+    fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback)
+}
