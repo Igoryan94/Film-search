@@ -37,6 +37,51 @@ class MainActivity : AppCompatActivity() {
         setupBottomNav()
     }
 
+    // TODO перенести в одну из тестовых активити это:
+    //  Сохранение изображения в MediaStore:
+    //    private fun loadToGallery(bitmap: Bitmap) {
+    //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    //            //Задаем информацию для файла
+    //            val contentValues = ContentValues().apply {
+    //                //Название файла
+    //                put(MediaStore.Images.Media.DISPLAY_NAME, "Картинка-пример")
+    //                //Описание
+    //                put(MediaStore.Images.Media.DESCRIPTION, "Картинка")
+    //                //Тип файла
+    //                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+    //                //Дата создания
+    //                put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis())
+    //                //Опционально можно создать подпапку в галерее
+    //                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/MyApp")
+    //            }
+    //            //Получаем экземпляр объекта ContentResolver
+    //            val contentResolver = contentResolver
+    //            //Указываем в какую коллекцию будем класть, в данном случае Images
+    //            val uri = contentResolver.insert(
+    //                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+    //                contentValues
+    //            )
+    //            //Открываем поток
+    //            contentResolver.openOutputStream(uri!!)?.let {
+    //                //Загружаем картинку, опционально можно задать уровень компрессии
+    //                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+    //                //Закрываем поток
+    //                it.close()
+    //            }
+    //        } else {
+    //            @Suppress("DEPRECATION")
+    //            MediaStore.Images.Media.insertImage(
+    //                contentResolver,
+    //                bitmap,
+    //                "Картинка титул",
+    //                "Картинка описание"
+    //            )
+    //        }
+    //    }
+    //  Пример использования:
+    //    val bitmap = BitmapFactory.decodeResource(resources, R.drawable.anim_set_horizon)
+    //  loadToGallery(bitmap)
+
     private fun setupViews() {
         setSupportActionBar(b.topAppBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
