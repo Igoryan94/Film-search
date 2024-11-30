@@ -14,6 +14,7 @@ import com.igoryan94.filmsearch.view.fragments.FavoritesFragment
 import com.igoryan94.filmsearch.view.fragments.FilmDetailsFragment
 import com.igoryan94.filmsearch.view.fragments.HomeFragment
 import com.igoryan94.filmsearch.view.fragments.SelectionsFragment
+import com.igoryan94.filmsearch.view.fragments.SettingsFragment
 import com.igoryan94.filmsearch.view.fragments.WatchLaterFragment
 import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.training.activities.AnimCircularRevealActivity
@@ -139,6 +140,10 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.selections -> changeFragment(
                     checkFragmentExistence("selections") ?: SelectionsFragment(), "selections"
+                )
+
+                R.id.settings -> changeFragment(
+                    checkFragmentExistence("selections") ?: SettingsFragment(), "selections"
                 )
 
                 else -> return@setOnItemSelectedListener false

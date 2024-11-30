@@ -52,15 +52,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         AnimationHelper.performFragmentCircularRevealAnimation(
-            b.homeFragmentRoot,
-            requireActivity(),
-            1
+            b.homeFragmentRoot, requireActivity(), 1
         )
 
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
-            filmsDataBase = it
-        }
-
+        initPullToRefresh()
         initList()
         setupSearch()
     }
@@ -133,8 +128,24 @@ class HomeFragment : Fragment() {
             val decorator = TopSpacingItemDecoration(8)
             addItemDecoration(decorator)
         }
+
         // Кладем нашу БД в RV
-        filmsAdapter.setItems(filmsDataBase)
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
+            filmsDataBase = it
+            filmsAdapter.add(it)
+        }
+    }
+
+    private fun initPullToRefresh() {
+        // Вешаем слушатель, чтобы вызвался pull to refresh
+        b.pullToRefresh.setOnRefreshListener {
+            // Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
+            filmsAdapter.items.clear()
+            // Делаем новый запрос фильмов на сервер
+            viewModel.getFilms()
+            // Убираем крутящееся колечко
+            b.pullToRefresh.isRefreshing = false
+        }
     }
 
     companion object {
