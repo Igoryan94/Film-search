@@ -1,5 +1,6 @@
 package com.igoryan94.filmsearch.view.fragments
 
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
 import com.igoryan94.filmsearch.utils.AnimationHelper
 import com.igoryan94.filmsearch.view.MainActivity
@@ -134,6 +136,13 @@ class HomeFragment : Fragment() {
             filmsDataBase = it
             filmsAdapter.add(it)
         }
+
+        // Регистрируем слушатель для обновления списка при изменении категории фильмов
+        val prefsListener = OnSharedPreferenceChangeListener { _, key ->
+            if (key == PreferenceProvider.KEY_DEFAULT_CATEGORY) viewModel.getFilms()
+        }
+        PreferenceProvider(requireActivity()).getSharedPreferences()
+            .registerOnSharedPreferenceChangeListener(prefsListener)
     }
 
     private fun initPullToRefresh() {
