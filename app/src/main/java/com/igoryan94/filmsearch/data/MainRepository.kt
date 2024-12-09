@@ -46,4 +46,9 @@ class MainRepository @Inject constructor(databaseHelper: DatabaseHelper) {
         // Возвращаем список фильмов
         return result
     }
+
+    fun clearDB() {
+        // Очистка базы
+        sqlDb.delete(DatabaseHelper.TABLE_NAME, null, null)
+    }
 }

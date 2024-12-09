@@ -35,7 +35,10 @@ class Interactor @Inject constructor(
                     // При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк - список фильмов
                     val list = FilmDataConverter.convertApiListToDtoList(response.body()?.tmdbFilms)
 
-                    // Кладем фильмы в бд
+                    // Очищаем БД перед обновлением данных
+                    repository.clearDB()
+
+                    // Кладем фильмы в БД
                     list.forEach {
                         repository.putToDb(film = it)
                     }
@@ -52,6 +55,9 @@ class Interactor @Inject constructor(
 
     // Метод для получения фильмов из базы, например при сетевой ошибке
     fun getFilmsFromDB(): List<Film> = repository.getAllFromDB()
+
+    // Метод для очистки базы данных
+    fun clearDB() = repository.clearDB()
 
     // Метод для сохранения настроек
     fun saveDefaultCategoryToPreferences(category: String) {

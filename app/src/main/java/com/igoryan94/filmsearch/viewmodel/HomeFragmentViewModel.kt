@@ -26,6 +26,8 @@ class HomeFragmentViewModel : ViewModel() {
 
             override fun onFailure() {
                 filmsListLiveData.postValue(interactor.getFilmsFromDB())
+                //interactor.clearDB()
+                // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
             }
         })
     }
