@@ -7,6 +7,7 @@ import com.igoryan94.filmsearch.data.entity.TmdbResultsDto
 import com.igoryan94.filmsearch.di.modules.InteractorProvider
 import com.igoryan94.filmsearch.di.modules.TmdbApiProvider
 import com.igoryan94.filmsearch.utils.FilmDataConverter
+import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,8 +32,15 @@ class Interactor @Inject constructor(
                     call: Call<TmdbResultsDto>,
                     response: Response<TmdbResultsDto>
                 ) {
-                    // При успехе мы вызываем метод передаем onSuccess и в этот коллбэк список фильмов
-                    callback.onSuccess(FilmDataConverter.convertApiListToDtoList(response.body()?.tmdbFilms))
+                    // При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк - список фильмов
+                    val list = FilmDataConverter.convertApiListToDtoList(response.body()?.tmdbFilms)
+
+                    // Кладем фильмы в бд
+                    list.forEach {
+                        repository.putToDb(film = it)
+                    }
+
+                    callback.onSuccess(list)
                 }
 
                 override fun onFailure(call: Call<TmdbResultsDto>, t: Throwable) {
@@ -41,6 +49,9 @@ class Interactor @Inject constructor(
                 }
             })
     }
+
+    // Метод для получения фильмов из базы, например при сетевой ошибке
+    fun getFilmsFromDB(): List<Film> = repository.getAllFromDB()
 
     // Метод для сохранения настроек
     fun saveDefaultCategoryToPreferences(category: String) {
