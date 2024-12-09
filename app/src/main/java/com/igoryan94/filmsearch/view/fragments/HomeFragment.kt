@@ -1,5 +1,6 @@
 package com.igoryan94.filmsearch.view.fragments
 
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
 import com.igoryan94.filmsearch.utils.AnimationHelper
 import com.igoryan94.filmsearch.view.MainActivity
@@ -52,15 +54,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         AnimationHelper.performFragmentCircularRevealAnimation(
-            b.homeFragmentRoot,
-            requireActivity(),
-            1
+            b.homeFragmentRoot, requireActivity(), 1
         )
 
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
-            filmsDataBase = it
-        }
-
+        initPullToRefresh()
         initList()
         setupSearch()
     }
@@ -133,8 +130,33 @@ class HomeFragment : Fragment() {
             val decorator = TopSpacingItemDecoration(8)
             addItemDecoration(decorator)
         }
+
         // Кладем нашу БД в RV
-        filmsAdapter.setItems(filmsDataBase)
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
+            filmsDataBase = it
+            //filmsAdapter.add(it)
+            // Если строка выше раскомментирована, как в уроке, RV в итоге будет пуст. Строка
+            //  здесь не нужна - мы и так применяем наш список к адаптеру в сеттере переменной.
+        }
+
+        // Регистрируем слушатель для обновления списка при изменении категории фильмов
+        val prefsListener = OnSharedPreferenceChangeListener { _, key ->
+            if (key == PreferenceProvider.KEY_DEFAULT_CATEGORY) viewModel.getFilms()
+        }
+        PreferenceProvider(requireActivity()).getSharedPreferences()
+            .registerOnSharedPreferenceChangeListener(prefsListener)
+    }
+
+    private fun initPullToRefresh() {
+        // Вешаем слушатель, чтобы вызвался pull to refresh
+        b.pullToRefresh.setOnRefreshListener {
+            // Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
+            filmsAdapter.items.clear()
+            // Делаем новый запрос фильмов на сервер
+            viewModel.getFilms()
+            // Убираем крутящееся колечко
+            b.pullToRefresh.isRefreshing = false
+        }
     }
 
     companion object {

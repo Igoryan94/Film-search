@@ -3,6 +3,7 @@ package com.igoryan94.filmsearch
 import android.app.Application
 import com.igoryan94.filmsearch.di.AppComponent
 import com.igoryan94.filmsearch.di.DaggerAppComponent
+import com.igoryan94.filmsearch.di.modules.DomainProvideModule
 import timber.log.Timber
 
 class App : Application() {
@@ -16,7 +17,9 @@ class App : Application() {
         if (isDebugging) Timber.plant(Timber.DebugTree())
 
         // Создаем компонент Dagger
-        dagger = DaggerAppComponent.create()
+        dagger = DaggerAppComponent.builder()
+            .domainProvideModule(DomainProvideModule(this))
+            .build()
     }
 
     companion object {

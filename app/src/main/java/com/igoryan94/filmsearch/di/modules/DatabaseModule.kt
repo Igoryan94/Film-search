@@ -1,18 +1,19 @@
 package com.igoryan94.filmsearch.di.modules
 
+import android.content.Context
 import com.igoryan94.filmsearch.data.MainRepository
-import dagger.Binds
+import com.igoryan94.filmsearch.data.db.DatabaseHelper
 import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
-interface RepositoryFactory {
-    fun create(): MainRepository
-}
-
 @Module
-abstract class DatabaseModule {
-    @Suppress("unused")
-    @Binds
+class DatabaseModule {
     @Singleton
-    abstract fun bindRepository(mainRepository: MainRepository): RepositoryFactory
+    @Provides
+    fun provideDatabaseHelper(context: Context) = DatabaseHelper(context)
+
+    @Provides
+    @Singleton
+    fun provideRepository(databaseHelper: DatabaseHelper) = MainRepository(databaseHelper)
 }

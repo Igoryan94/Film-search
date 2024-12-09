@@ -49,6 +49,7 @@ dependencies {
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.viewpager2
     implementation libs.androidx.recyclerview
+    implementation libs.androidx.swiperefreshlayout
 
     // Делаем разработку RecyclerView adapter'ов намного удобнее
     implementation libs.adapterdelegates4.kotlin.dsl
@@ -62,7 +63,6 @@ dependencies {
 
     //Glide
     implementation libs.glide
-    implementation libs.androidx.junit.ktx
     annotationProcessor libs.compiler
 
     // Анимации Android, использующие физику
@@ -88,6 +88,7 @@ dependencies {
     kapt libs.dagger.compiler
 
     // Тесты
+    implementation libs.androidx.junit.ktx
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.runner)
     androidTestImplementation(libs.androidx.rules)

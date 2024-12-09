@@ -9,8 +9,7 @@
     android:layoutAnimation="@anim/layout_menu_transition"
     tools:context=".view.MainActivity"
     tools:ignore="ContentDescription"
-    tools:layoutAnimation="null">
-    <!-- null указан, чтобы layout был по прежнему виден -->
+    tools:layoutAnimation="@null">
 
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"
