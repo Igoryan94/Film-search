@@ -10,7 +10,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-abstract class DomainModule {
+abstract class DomainBindModule {
     @Suppress("unused")
     @Singleton
     @Binds
@@ -22,7 +22,7 @@ interface InteractorProvider {
 }
 
 @Module
-class LazyDomainModule(val context: Context) {
+class DomainProvideModule(val context: Context) {
     // Нам нужно контекст как-то провайдить, поэтому создаем такой метод
     @Provides
     fun provideContext() = context
