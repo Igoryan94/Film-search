@@ -134,7 +134,9 @@ class HomeFragment : Fragment() {
         // Кладем нашу БД в RV
         viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
             filmsDataBase = it
-            filmsAdapter.add(it)
+            //filmsAdapter.add(it)
+            // Если строка выше раскомментирована, как в уроке, RV в итоге будет пуст. Строка
+            //  здесь не нужна - мы и так применяем наш список к адаптеру в сеттере переменной.
         }
 
         // Регистрируем слушатель для обновления списка при изменении категории фильмов
