@@ -87,6 +87,12 @@ dependencies {
     implementation libs.dagger
     kapt libs.dagger.compiler
 
+    // Работа с базами данных - Room
+    implementation libs.androidx.room.runtime
+    // TODO включить KSP позже, когда найду, как работать с ним без ошибки
+    //noinspection KaptUsageInsteadOfKsp
+    kapt libs.androidx.room.compiler
+
     // Тесты
     implementation libs.androidx.junit.ktx
     androidTestImplementation(libs.androidx.espresso.core)
