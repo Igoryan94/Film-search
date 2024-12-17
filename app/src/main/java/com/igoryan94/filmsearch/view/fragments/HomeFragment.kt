@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.igoryan94.filmsearch.data.PreferenceProvider
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
 import com.igoryan94.filmsearch.utils.AnimationHelper
 import com.igoryan94.filmsearch.view.MainActivity
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.recyclerview_adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecoration
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel

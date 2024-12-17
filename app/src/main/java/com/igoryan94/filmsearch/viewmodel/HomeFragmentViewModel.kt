@@ -3,8 +3,9 @@ package com.igoryan94.filmsearch.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.igoryan94.filmsearch.App
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.domain.Interactor
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
@@ -25,7 +26,10 @@ class HomeFragmentViewModel : ViewModel() {
             }
 
             override fun onFailure() {
-                filmsListLiveData.postValue(interactor.getFilmsFromDB())
+                // Получение фильмов из БД-кэша делается в фоне...
+                Executors.newSingleThreadExecutor().execute {
+                    filmsListLiveData.postValue(interactor.getFilmsFromDB())
+                }
                 //interactor.clearDB()
                 // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
             }

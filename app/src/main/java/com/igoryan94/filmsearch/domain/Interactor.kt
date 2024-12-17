@@ -3,11 +3,11 @@ package com.igoryan94.filmsearch.domain
 import com.igoryan94.filmsearch.data.MainRepository
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.entity.ApiKey
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.data.entity.TmdbResultsDto
 import com.igoryan94.filmsearch.di.modules.InteractorProvider
 import com.igoryan94.filmsearch.di.modules.TmdbApiProvider
 import com.igoryan94.filmsearch.utils.FilmDataConverter
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,13 +35,9 @@ class Interactor @Inject constructor(
                     // При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк - список фильмов
                     val list = FilmDataConverter.convertApiListToDtoList(response.body()?.tmdbFilms)
 
-                    // Очищаем БД перед обновлением данных
+                    // Очищаем БД перед обновлением данных и кладем туда фильмы
                     repository.clearDB()
-
-                    // Кладем фильмы в БД
-                    list.forEach {
-                        repository.putToDb(film = it)
-                    }
+                    repository.putToDb(films = list)
 
                     callback.onSuccess(list)
                 }
