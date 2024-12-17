@@ -3,6 +3,7 @@ package com.igoryan94.filmsearch.di.modules
 import android.content.Context
 import androidx.room.Room
 import com.igoryan94.filmsearch.data.MainRepository
+import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.dao.FilmDao
 import com.igoryan94.filmsearch.data.db.AppDatabase
 import dagger.Module
@@ -19,5 +20,6 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideRepository(filmDao: FilmDao) = MainRepository(filmDao)
+    fun provideRepository(filmDao: FilmDao, preferenceProvider: PreferenceProvider) =
+        MainRepository(filmDao, preferenceProvider)
 }

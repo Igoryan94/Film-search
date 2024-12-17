@@ -32,6 +32,13 @@ class PreferenceProvider(val context: Context) {
         return preference.getString(KEY_DEFAULT_CATEGORY, DEFAULT_CATEGORY) ?: DEFAULT_CATEGORY
     }
 
+    // Etc.
+    fun saveLastCacheRefreshTime(time: Long) {
+        preference.edit { putLong(KEY_LAST_CACHE_REFRESH_TIME, time) }
+    }
+
+    fun getLastCacheRefreshTime(): Long = preference.getLong(KEY_LAST_CACHE_REFRESH_TIME, 0L)
+
     fun getSharedPreferences(): SharedPreferences =
         context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
 
@@ -40,6 +47,7 @@ class PreferenceProvider(val context: Context) {
         const val PREFERENCES_NAME = "settings"
         private const val KEY_FIRST_LAUNCH = "first_launch"
         const val KEY_DEFAULT_CATEGORY = "default_category"
+        const val KEY_LAST_CACHE_REFRESH_TIME = "last_cache_refresh_time"
         private const val DEFAULT_CATEGORY = "popular"
     }
 }
