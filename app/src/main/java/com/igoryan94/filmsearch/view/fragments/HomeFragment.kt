@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.entity.Film
@@ -24,9 +24,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
 
-    private val viewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(HomeFragmentViewModel::class.java)
-    }
+    private val homeFragmentViewModel: HomeFragmentViewModel by activityViewModels()
 
     private var filmsDataBase = listOf<Film>()
         // Используем backing field
@@ -44,6 +42,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val state = homeFragmentViewModel.getState()
+        if (state.isNotEmpty()) filmsDataBase = state
 
         instance = this
 
@@ -64,6 +65,8 @@ class HomeFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
+        homeFragmentViewModel.saveState(filmsDataBase)
 
         outState.putInt("list_position", b.mainRecycler.scrollY)
     }
@@ -97,7 +100,7 @@ class HomeFragment : Fragment() {
                     return true
                 }
 
-                // Фильтруем список на поискк подходящих сочетаний
+                // Фильтруем список на поиск подходящих сочетаний
                 val result = filmsDataBase.filter {
                     // Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
                     it.title.lowercase(Locale.getDefault())
@@ -132,7 +135,7 @@ class HomeFragment : Fragment() {
         }
 
         // Кладем нашу БД в RV
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
+        homeFragmentViewModel.filmsListLiveData.observe(viewLifecycleOwner) {
             filmsDataBase = it
             //filmsAdapter.add(it)
             // Если строка выше раскомментирована, как в уроке, RV в итоге будет пуст. Строка
@@ -141,7 +144,7 @@ class HomeFragment : Fragment() {
 
         // Регистрируем слушатель для обновления списка при изменении категории фильмов
         val prefsListener = OnSharedPreferenceChangeListener { _, key ->
-            if (key == PreferenceProvider.KEY_DEFAULT_CATEGORY) viewModel.getFilms()
+            if (key == PreferenceProvider.KEY_DEFAULT_CATEGORY) homeFragmentViewModel.getFilms()
         }
         PreferenceProvider(requireActivity()).getSharedPreferences()
             .registerOnSharedPreferenceChangeListener(prefsListener)
@@ -153,7 +156,7 @@ class HomeFragment : Fragment() {
             // Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
             filmsAdapter.items.clear()
             // Делаем новый запрос фильмов на сервер
-            viewModel.getFilms()
+            homeFragmentViewModel.getFilms()
             // Убираем крутящееся колечко
             b.pullToRefresh.isRefreshing = false
         }

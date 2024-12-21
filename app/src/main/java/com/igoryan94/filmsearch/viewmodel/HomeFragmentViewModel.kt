@@ -1,6 +1,7 @@
 package com.igoryan94.filmsearch.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.igoryan94.filmsearch.App
 import com.igoryan94.filmsearch.data.PreferenceProvider
@@ -9,7 +10,9 @@ import com.igoryan94.filmsearch.domain.Interactor
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class HomeFragmentViewModel : ViewModel() {
+class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
+    private val savedStateHandle = state
+
     val filmsListLiveData = MutableLiveData<List<Film>>()
 
     @Inject
@@ -42,6 +45,14 @@ class HomeFragmentViewModel : ViewModel() {
                 // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
             }
         })
+    }
+
+    fun saveState(list: List<Film>) {
+        savedStateHandle["films_list"] = list
+    }
+
+    fun getState(): List<Film> {
+        return savedStateHandle["films_list"] ?: mutableListOf()
     }
 
     interface ApiCallback {
