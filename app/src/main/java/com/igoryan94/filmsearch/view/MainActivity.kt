@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.igoryan94.filmsearch.R
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
 import com.igoryan94.filmsearch.utils.toast
 import com.igoryan94.filmsearch.view.fragments.FavoritesFragment
@@ -16,7 +17,6 @@ import com.igoryan94.filmsearch.view.fragments.HomeFragment
 import com.igoryan94.filmsearch.view.fragments.SelectionsFragment
 import com.igoryan94.filmsearch.view.fragments.SettingsFragment
 import com.igoryan94.filmsearch.view.fragments.WatchLaterFragment
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.training.activities.AnimCircularRevealActivity
 
 class MainActivity : AppCompatActivity() {

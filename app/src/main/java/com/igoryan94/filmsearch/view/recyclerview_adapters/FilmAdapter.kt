@@ -2,7 +2,6 @@ package com.igoryan94.filmsearch.view.recyclerview_adapters
 
 import android.content.res.Resources
 import android.graphics.Rect
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.ApiConstants
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.view.custom_views.RatingDonutView
-import kotlinx.parcelize.Parcelize
 
 //в параметр передаем слушатель, чтобы мы потом могли обрабатывать нажатия из класса Activity
 class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
@@ -166,12 +165,3 @@ class FilmDiffCallback(private val oldList: List<Film>, private val newList: Lis
         return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }
-
-@Parcelize
-data class Film(
-    val title: String,
-    val poster: String,
-    val description: String,
-    var rating: Double = 0.0,
-    var isInFavorites: Boolean = false
-) : Parcelable

@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFavoritesBinding
 import com.igoryan94.filmsearch.utils.AnimationHelper
 import com.igoryan94.filmsearch.view.MainActivity
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.recyclerview_adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecoration
 

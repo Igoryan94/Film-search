@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.PreferenceProvider
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
 import com.igoryan94.filmsearch.utils.AnimationHelper
 import com.igoryan94.filmsearch.view.MainActivity
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 import com.igoryan94.filmsearch.view.recyclerview_adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecoration
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
@@ -24,9 +27,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
 
-    private val viewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(HomeFragmentViewModel::class.java)
-    }
+    private val homeFragmentViewModel: HomeFragmentViewModel by activityViewModels()
 
     private var filmsDataBase = listOf<Film>()
         // Используем backing field
@@ -44,6 +45,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val state = homeFragmentViewModel.getState()
+        if (state.isNotEmpty()) filmsDataBase = state
 
         instance = this
 
@@ -64,6 +68,8 @@ class HomeFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
+        homeFragmentViewModel.saveState(filmsDataBase)
 
         outState.putInt("list_position", b.mainRecycler.scrollY)
     }
@@ -97,7 +103,7 @@ class HomeFragment : Fragment() {
                     return true
                 }
 
-                // Фильтруем список на поискк подходящих сочетаний
+                // Фильтруем список на поиск подходящих сочетаний
                 val result = filmsDataBase.filter {
                     // Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
                     it.title.lowercase(Locale.getDefault())
@@ -132,16 +138,32 @@ class HomeFragment : Fragment() {
         }
 
         // Кладем нашу БД в RV
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner) {
+        homeFragmentViewModel.filmsListLiveData.observe(viewLifecycleOwner) {
             filmsDataBase = it
             //filmsAdapter.add(it)
             // Если строка выше раскомментирована, как в уроке, RV в итоге будет пуст. Строка
             //  здесь не нужна - мы и так применяем наш список к адаптеру в сеттере переменной.
         }
 
+        // Управляем видимостью ProgressBar на основе состояния запроса
+        homeFragmentViewModel.showProgressBar.observe(viewLifecycleOwner) {
+            b.progressBar.isVisible = it
+        }
+
+        // Управляем видимостью ProgressBar на основе состояния запроса
+        homeFragmentViewModel.showErrorSnackbar.observe(viewLifecycleOwner) {
+            if (it) {
+                Snackbar.make(
+                    b.homeFragmentRoot,
+                    getString(R.string.error_getting_server_data_snackbar), Snackbar.LENGTH_LONG
+                ).show()
+                homeFragmentViewModel.showErrorSnackbar.postValue(false)
+            }
+        }
+
         // Регистрируем слушатель для обновления списка при изменении категории фильмов
         val prefsListener = OnSharedPreferenceChangeListener { _, key ->
-            if (key == PreferenceProvider.KEY_DEFAULT_CATEGORY) viewModel.getFilms()
+            if (key == PreferenceProvider.KEY_DEFAULT_CATEGORY) homeFragmentViewModel.getFilms()
         }
         PreferenceProvider(requireActivity()).getSharedPreferences()
             .registerOnSharedPreferenceChangeListener(prefsListener)
@@ -153,7 +175,7 @@ class HomeFragment : Fragment() {
             // Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
             filmsAdapter.items.clear()
             // Делаем новый запрос фильмов на сервер
-            viewModel.getFilms()
+            homeFragmentViewModel.getFilms()
             // Убираем крутящееся колечко
             b.pullToRefresh.isRefreshing = false
         }

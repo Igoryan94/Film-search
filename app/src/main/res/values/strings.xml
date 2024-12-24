@@ -19,4 +19,5 @@
     <string name="radio_button_upcoming">Скоро</string>
     <string name="radio_button_playing">В кинотеатрах</string>
     <string name="radio_group_header">Подборка на главном экране:</string>
+    <string name="error_getting_server_data_snackbar">Ошибка загрузки из сети...</string>
 </resources>

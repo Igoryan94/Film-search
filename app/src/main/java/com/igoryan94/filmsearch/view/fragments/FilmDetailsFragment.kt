@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.ApiConstants
+import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
-import com.igoryan94.filmsearch.view.recyclerview_adapters.Film
 
 class FilmDetailsFragment : Fragment() {
     lateinit var b: FragmentFilmDetailsBinding
@@ -47,8 +47,8 @@ class FilmDetailsFragment : Fragment() {
             arguments?.getParcelable("film")
         else arguments?.getParcelable("film", Film::class.java))
             ?: Film(
-                "(null)", "",
-                "Object is null"
+                title = "(null)", poster = "",
+                description = "Object is null"
             )
 
         b.detailsToolbar.title = film.title
