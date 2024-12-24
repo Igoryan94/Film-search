@@ -8,6 +8,7 @@ import com.igoryan94.filmsearch.App
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.domain.Interactor
+import com.igoryan94.filmsearch.utils.SingleLiveEvent
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
     lateinit var interactor: Interactor
     val filmsListLiveData: LiveData<List<Film>>
     val showProgressBar: MutableLiveData<Boolean> = MutableLiveData()
+    val showErrorSnackbar: MutableLiveData<Boolean> = SingleLiveEvent()
 
     @Inject
     lateinit var preferenceProvider: PreferenceProvider
@@ -37,6 +39,9 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
             }
 
             override fun onFailure() {
+                // Информируем подписчика о том, что возникла ошибка и надо это показать
+                showErrorSnackbar.postValue(true)
+
                 // Получение фильмов из БД-кэша делается в фоне...
                 Executors.newSingleThreadExecutor().execute {
                     // Загружаем фильмы из кэша лишь тогда, когда его актуальность менее 10 минут. Иначе полагаемся только на запрос из сети...

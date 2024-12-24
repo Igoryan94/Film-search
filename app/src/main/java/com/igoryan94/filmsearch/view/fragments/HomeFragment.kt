@@ -10,6 +10,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
@@ -146,6 +148,17 @@ class HomeFragment : Fragment() {
         // Управляем видимостью ProgressBar на основе состояния запроса
         homeFragmentViewModel.showProgressBar.observe(viewLifecycleOwner) {
             b.progressBar.isVisible = it
+        }
+
+        // Управляем видимостью ProgressBar на основе состояния запроса
+        homeFragmentViewModel.showErrorSnackbar.observe(viewLifecycleOwner) {
+            if (it) {
+                Snackbar.make(
+                    b.homeFragmentRoot,
+                    getString(R.string.error_getting_server_data_snackbar), Snackbar.LENGTH_LONG
+                ).show()
+                homeFragmentViewModel.showErrorSnackbar.postValue(false)
+            }
         }
 
         // Регистрируем слушатель для обновления списка при изменении категории фильмов
