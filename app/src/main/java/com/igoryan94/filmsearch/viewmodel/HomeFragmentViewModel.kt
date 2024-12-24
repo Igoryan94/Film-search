@@ -1,5 +1,6 @@
 package com.igoryan94.filmsearch.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,23 +14,26 @@ import javax.inject.Inject
 class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
     private val savedStateHandle = state
 
-    val filmsListLiveData = MutableLiveData<List<Film>>()
-
     @Inject
     lateinit var interactor: Interactor
+    val filmsListLiveData: LiveData<List<Film>>
+    val showProgressBar: MutableLiveData<Boolean> = MutableLiveData()
 
     @Inject
     lateinit var preferenceProvider: PreferenceProvider
 
     init {
         App.instance.dagger.inject(this)
+        filmsListLiveData = interactor.getFilmsFromDB()
         getFilms()
     }
 
     fun getFilms() {
+        showProgressBar.postValue(true)
+
         interactor.getFilmsFromApi(1, object : ApiCallback {
-            override fun onSuccess(films: List<Film>) {
-                filmsListLiveData.postValue(films)
+            override fun onSuccess() {
+                showProgressBar.postValue(false)
             }
 
             override fun onFailure() {
@@ -39,7 +43,8 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
                     val now = System.currentTimeMillis()
                     if (now - preferenceProvider.getLastCacheRefreshTime() > 1000 * 60 * 10L)
                         interactor.clearDB()
-                    else filmsListLiveData.postValue(interactor.getFilmsFromDB())
+
+                    showProgressBar.postValue(false)
                 }
                 //interactor.clearDB()
                 // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
@@ -56,7 +61,7 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
     }
 
     interface ApiCallback {
-        fun onSuccess(films: List<Film>)
+        fun onSuccess()
         fun onFailure()
     }
 }

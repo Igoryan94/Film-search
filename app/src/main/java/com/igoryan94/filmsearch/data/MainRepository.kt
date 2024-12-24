@@ -1,5 +1,6 @@
 package com.igoryan94.filmsearch.data
 
+import androidx.lifecycle.LiveData
 import com.igoryan94.filmsearch.data.dao.FilmDao
 import com.igoryan94.filmsearch.data.entity.Film
 import java.util.concurrent.Executors
@@ -17,9 +18,7 @@ class MainRepository @Inject constructor(
         }
     }
 
-    fun getAllFromDB(): List<Film> {
-        return filmDao.getCachedFilms()
-    }
+    fun getAllFromDB(): LiveData<List<Film>> = filmDao.getCachedFilms()
 
     // Очистка базы
     fun clearDB() = Executors.newSingleThreadExecutor().execute { filmDao.clear() }

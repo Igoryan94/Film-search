@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -140,6 +141,11 @@ class HomeFragment : Fragment() {
             //filmsAdapter.add(it)
             // Если строка выше раскомментирована, как в уроке, RV в итоге будет пуст. Строка
             //  здесь не нужна - мы и так применяем наш список к адаптеру в сеттере переменной.
+        }
+
+        // Управляем видимостью ProgressBar на основе состояния запроса
+        homeFragmentViewModel.showProgressBar.observe(viewLifecycleOwner) {
+            b.progressBar.isVisible = it
         }
 
         // Регистрируем слушатель для обновления списка при изменении категории фильмов
