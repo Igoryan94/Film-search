@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.igoryan94.filmsearch.R
@@ -20,6 +21,7 @@ import com.igoryan94.filmsearch.view.MainActivity
 import com.igoryan94.filmsearch.view.recyclerview_adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecoration
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class HomeFragment : Fragment() {
@@ -64,6 +66,9 @@ class HomeFragment : Fragment() {
         initPullToRefresh()
         initList()
         setupSearch()
+
+        // Запрашиваем обновление данных по фильмам
+        homeFragmentViewModel.getFilms()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -137,26 +142,29 @@ class HomeFragment : Fragment() {
         }
 
         // Кладем нашу БД в RV
-        homeFragmentViewModel.filmsListLiveData.observe(viewLifecycleOwner) {
-            filmsDataBase = it
-            //filmsAdapter.add(it)
-            // Если строка выше раскомментирована, как в уроке, RV в итоге будет пуст. Строка
-            //  здесь не нужна - мы и так применяем наш список к адаптеру в сеттере переменной.
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeFragmentViewModel.filmsListStateFlow.collect {
+                filmsDataBase = it
+            }
         }
 
         // Управляем видимостью ProgressBar на основе состояния запроса
-        homeFragmentViewModel.showProgressBar.observe(viewLifecycleOwner) {
-            b.progressBar.isVisible = it
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeFragmentViewModel.showProgressBarStateFlow.collect {
+                b.progressBar.isVisible = it
+            }
         }
 
-        // Управляем видимостью ProgressBar на основе состояния запроса
-        homeFragmentViewModel.showErrorSnackbar.observe(viewLifecycleOwner) {
-            if (it) {
-                Snackbar.make(
-                    b.homeFragmentRoot,
-                    getString(R.string.error_getting_server_data_snackbar), Snackbar.LENGTH_LONG
-                ).show()
-                homeFragmentViewModel.showErrorSnackbar.postValue(false)
+        // Управляем видимостью Snackbar на основе состояния запроса
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeFragmentViewModel.showErrorSnackbarStateFlow.collect {
+                if (it) {
+                    Snackbar.make(
+                        b.homeFragmentRoot,
+                        getString(R.string.error_getting_server_data_snackbar), Snackbar.LENGTH_LONG
+                    ).show()
+                    homeFragmentViewModel.resetErrorSnackbar()
+                }
             }
         }
 

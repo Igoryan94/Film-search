@@ -1,6 +1,5 @@
 package com.igoryan94.filmsearch.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,7 +11,7 @@ import com.igoryan94.filmsearch.data.entity.Film
 interface FilmDao {
     // Запрос на всю таблицу
     @Query("SELECT * FROM cached_films")
-    fun getCachedFilms(): LiveData<List<Film>>
+    fun getCachedFilms(): List<Film>
 
     // Кладём список в БД, в случае конфликта перезаписываем
     @Insert(onConflict = OnConflictStrategy.REPLACE)
