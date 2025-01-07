@@ -7,7 +7,6 @@ import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.data.entity.TmdbResultsDto
 import com.igoryan94.filmsearch.di.modules.InteractorProvider
 import com.igoryan94.filmsearch.di.modules.TmdbApiProvider
-import com.igoryan94.filmsearch.utils.FilmDataConverter
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,8 +38,19 @@ class Interactor @Inject constructor(
                     ) {
                         CoroutineScope(Dispatchers.IO).launch {
                             // При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк - список фильмов
-                            val list =
-                                FilmDataConverter.convertApiListToDtoList(response.body()?.tmdbFilms)
+                            val filmsData = response.body()?.tmdbFilms
+                            // Конвертируем полученные данные из исходного объекта List<TmdbFilm> в
+                            // пригодный для нашей обработки List<Film>. Если ошибка в данных (null),
+                            // то возвращаем пустой MutableList<Film>
+                            val list = filmsData?.map {
+                                Film(
+                                    title = it.title,
+                                    poster = it.posterPath,
+                                    description = it.overview,
+                                    rating = it.voteAverage,
+                                    isInFavorites = false
+                                )
+                            }?.toMutableList() ?: mutableListOf()
 
                             // Очищаем БД перед обновлением данных и кладем туда фильмы
                             repository.clearDB()
