@@ -18,7 +18,7 @@ abstract class DomainBindModule {
 }
 
 interface InteractorProvider {
-    fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback)
+    suspend fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback)
 }
 
 @Module
