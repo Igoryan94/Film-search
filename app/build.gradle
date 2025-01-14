@@ -89,13 +89,17 @@ dependencies {
 
     // Работа с базами данных - Room
     implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.rxjava3
     // TODO включить KSP позже, когда найду, как работать с ним без ошибки
     //noinspection KaptUsageInsteadOfKsp
     kapt libs.androidx.room.compiler
 
     // Многопоточность. Корутины
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
+    // RxJava
+    implementation libs.rxandroid
+    implementation libs.rxjava
 
     // Тесты
     implementation libs.androidx.junit.ktx
