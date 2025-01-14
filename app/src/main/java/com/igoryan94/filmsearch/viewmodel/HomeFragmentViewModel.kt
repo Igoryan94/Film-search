@@ -69,7 +69,7 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe()
-                //interactor.clearDB()
+//                interactor.clearDB()
                 // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
             }
         })

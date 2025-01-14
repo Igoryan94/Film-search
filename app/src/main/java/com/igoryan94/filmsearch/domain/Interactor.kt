@@ -36,25 +36,30 @@ class Interactor @Inject constructor(
                     response: Response<TmdbResultsDto>
                 ) {
                     // При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк - список фильмов
-                    val filmsData = response.body()?.tmdbFilms
-                    // Конвертируем полученные данные из исходного объекта List<TmdbFilm> в
-                    // пригодный для нашей обработки List<Film>. Если ошибка в данных (null),
-                    // то возвращаем пустой MutableList<Film>
-                    val list = filmsData?.map {
-                        Film(
-                            title = it.title,
-                            poster = it.posterPath,
-                            description = it.overview,
-                            rating = it.voteAverage,
-                            isInFavorites = false
-                        )
-                    }?.toMutableList() ?: mutableListOf()
+                    val filmsObservable: Observable<List<Film>> = Observable.fromCallable {
+                        response.body()?.tmdbFilms ?: emptyList()
+                    }
+                        // Конвертируем полученные данные из исходного объекта List<TmdbFilm> в
+                        // пригодный для нашей обработки List<Film>. Если ошибка в данных (null),
+                        // то возвращаем пустой MutableList<Film>
+                        .map { tmdbFilms ->
+                            tmdbFilms.map { tmdbFilm ->
+                                Film(
+                                    title = tmdbFilm.title,
+                                    poster = tmdbFilm.posterPath,
+                                    description = tmdbFilm.overview,
+                                    rating = tmdbFilm.voteAverage,
+                                    isInFavorites = false
+                                )
+                            }
+                        }
 
                     // Очищаем БД перед обновлением данных и кладем туда фильмы
                     repository.clearDB()
-                        .flatMap { repository.putToDb(films = list) }
+                        .flatMap { filmsObservable }
+                        .flatMap { films -> repository.putToDb(films) }
                         .subscribeOn(Schedulers.io())
-                        .subscribe({ callback.onSuccess() }, { callback.onFailure() })
+                        .subscribe({ }, { callback.onFailure() }, { callback.onSuccess() })
                 }
 
                 override fun onFailure(call: Call<TmdbResultsDto>, t: Throwable) {
