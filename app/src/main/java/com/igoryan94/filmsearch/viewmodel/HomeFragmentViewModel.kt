@@ -2,17 +2,16 @@ package com.igoryan94.filmsearch.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.igoryan94.filmsearch.App
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.domain.Interactor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import javax.inject.Inject
 
 class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
@@ -24,16 +23,13 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
     @Inject
     lateinit var preferenceProvider: PreferenceProvider
 
-    private val _filmsListStateFlow = MutableStateFlow<List<Film>>(emptyList())
-    val filmsListStateFlow: StateFlow<List<Film>> = _filmsListStateFlow.asStateFlow()
+    val filmsListObserver = BehaviorSubject.create<List<Film>>()
 
-    private val _showProgressBarStateFlow = MutableStateFlow(false)
-    val showProgressBarStateFlow: StateFlow<Boolean> = _showProgressBarStateFlow.asStateFlow()
+    val showProgressBarObserver = BehaviorSubject.createDefault(false)
 
-    private val _showErrorSnackbarStateFlow = MutableStateFlow(false)
-    val showErrorSnackbarStateFlow: StateFlow<Boolean> = _showErrorSnackbarStateFlow.asStateFlow()
+    val showErrorSnackbarObserver = PublishSubject.create<Boolean>()
 
-    private val progressBarChannel = Channel<Boolean>(Channel.CONFLATED)
+    private val compositeDisposable = CompositeDisposable()
 
     init {
         App.instance.dagger.inject(this)
@@ -42,42 +38,45 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
     }
 
     private fun getFilmsFromDB() {
-        viewModelScope.launch {
-            _filmsListStateFlow.value = interactor.getFilmsFromDB()
-        }
+        val disposable = interactor.getFilmsFromDB()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { films -> filmsListObserver.onNext(films) }
+        compositeDisposable.add(disposable)
     }
 
     fun getFilms() {
-        viewModelScope.launch {
-            _showProgressBarStateFlow.value = true
+        showProgressBarObserver.onNext(true)
 
-            interactor.getFilmsFromApi(1, object : ApiCallback {
-                override fun onSuccess() {
-                    _showProgressBarStateFlow.value = false
+        interactor.getFilmsFromApi(1, object : ApiCallback {
+            override fun onSuccess() {
+                showProgressBarObserver.onNext(false)
+            }
+
+            override fun onFailure() {
+                // Информируем подписчика о том, что возникла ошибка и надо это показать
+                showErrorSnackbarObserver.onNext(true)
+
+                // Получение фильмов из БД-кэша делается в фоне...
+                // Загружаем фильмы из кэша лишь тогда, когда его актуальность менее 10 минут. Иначе полагаемся только на запрос из сети...
+                val refreshCache = Observable.fromCallable {
+                    val now = System.currentTimeMillis()
+                    if (now - preferenceProvider.getLastCacheRefreshTime() > 1000 * 60 * 10L)
+                        interactor.clearDB().subscribe() // No need to await for it...
+                    showProgressBarObserver.onNext(false)
                 }
-
-                override fun onFailure() {
-                    // Информируем подписчика о том, что возникла ошибка и надо это показать
-                    _showErrorSnackbarStateFlow.value = true
-
-                    // Получение фильмов из БД-кэша делается в фоне...
-                    viewModelScope.launch(Dispatchers.IO) {
-                        // Загружаем фильмы из кэша лишь тогда, когда его актуальность менее 10 минут. Иначе полагаемся только на запрос из сети...
-                        val now = System.currentTimeMillis()
-                        if (now - preferenceProvider.getLastCacheRefreshTime() > 1000 * 60 * 10L)
-                            interactor.clearDB()
-
-                        _showProgressBarStateFlow.value = false
-                    }
-                    //interactor.clearDB()
-                    // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
-                }
-            })
-        }
+                refreshCache
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
+//                interactor.clearDB()
+                // Можно раскомментировать строку выше, если будет нужна одноразовость считывания из базы...
+            }
+        })
     }
 
     fun resetErrorSnackbar() {
-        _showErrorSnackbarStateFlow.value = false
+        showErrorSnackbarObserver.onNext(false)
     }
 
     fun saveState(list: List<Film>) {
@@ -86,6 +85,11 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
 
     fun getState(): List<Film> {
         return savedStateHandle["films_list"] ?: mutableListOf()
+    }
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
     }
 
     interface ApiCallback {

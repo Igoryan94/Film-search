@@ -9,7 +9,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.igoryan94.filmsearch.R
@@ -21,7 +20,8 @@ import com.igoryan94.filmsearch.view.MainActivity
 import com.igoryan94.filmsearch.view.recyclerview_adapters.FilmListRecyclerAdapter
 import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecoration
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.util.Locale
 
 class HomeFragment : Fragment() {
@@ -41,6 +41,8 @@ class HomeFragment : Fragment() {
             // Обновляем RV адаптер
             filmsAdapter.setItems(field)
         }
+
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +87,11 @@ class HomeFragment : Fragment() {
         b.mainRecycler.scrollToPosition(
             savedInstanceState?.getInt("list_position") ?: 0
         )
+    }
+
+    override fun onDestroyView() {
+        compositeDisposable.clear()
+        super.onDestroyView()
     }
 
     private fun setupSearch() {
@@ -141,31 +148,32 @@ class HomeFragment : Fragment() {
             addItemDecoration(decorator)
         }
 
-        // Кладем нашу БД в RV
-        viewLifecycleOwner.lifecycleScope.launch {
-            homeFragmentViewModel.filmsListStateFlow.collect {
-                filmsDataBase = it
-            }
-        }
+        compositeDisposable.apply {
+            // Кладем нашу БД в RV
+            add(homeFragmentViewModel.filmsListObserver
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe { filmsDataBase = it })
 
-        // Управляем видимостью ProgressBar на основе состояния запроса
-        viewLifecycleOwner.lifecycleScope.launch {
-            homeFragmentViewModel.showProgressBarStateFlow.collect {
-                b.progressBar.isVisible = it
-            }
-        }
+            // Управляем видимостью ProgressBar на основе состояния запроса
+            add(homeFragmentViewModel.showProgressBarObserver
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    b.progressBar.isVisible = it
+                })
 
-        // Управляем видимостью Snackbar на основе состояния запроса
-        viewLifecycleOwner.lifecycleScope.launch {
-            homeFragmentViewModel.showErrorSnackbarStateFlow.collect {
-                if (it) {
-                    Snackbar.make(
-                        b.homeFragmentRoot,
-                        getString(R.string.error_getting_server_data_snackbar), Snackbar.LENGTH_LONG
-                    ).show()
-                    homeFragmentViewModel.resetErrorSnackbar()
-                }
-            }
+            // Управляем видимостью Snackbar на основе состояния запроса
+            add(homeFragmentViewModel.showErrorSnackbarObserver
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it) {
+                        Snackbar.make(
+                            b.homeFragmentRoot,
+                            getString(R.string.error_getting_server_data_snackbar),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        homeFragmentViewModel.resetErrorSnackbar()
+                    }
+                })
         }
 
         // Регистрируем слушатель для обновления списка при изменении категории фильмов

@@ -26,11 +26,11 @@ import com.igoryan94.filmsearch.data.entity.ApiConstants
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
 import com.igoryan94.filmsearch.viewmodel.FilmDetailsViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class FilmDetailsFragment : Fragment() {
@@ -41,6 +41,8 @@ class FilmDetailsFragment : Fragment() {
     private lateinit var film: Film
 
     private val filmDetailsViewModel: FilmDetailsViewModel by activityViewModels()
+
+    private var disposable: Disposable? = null
 
     init {
         enterTransition = Slide(Gravity.END).apply { duration = 800 }
@@ -62,6 +64,11 @@ class FilmDetailsFragment : Fragment() {
         setupShareFab()
 
         return b.root
+    }
+
+    override fun onDestroyView() {
+        disposable?.dispose()
+        super.onDestroyView()
     }
 
     @Suppress("DEPRECATION")
@@ -204,79 +211,61 @@ class FilmDetailsFragment : Fragment() {
     }
 
     private fun performAsyncLoadOfPoster() {
+        disposable?.dispose()
+
         Timber.d("performAsyncLoadOfPoster: start")
         // Проверяем есть ли разрешение
-        MainScope().launch {
-            Timber.d("performAsyncLoadOfPoster: launch coroutine in MainScope")
-            // Включаем Прогресс-бар
-            b.progressBar.isVisible = true
-            Timber.d("performAsyncLoadOfPoster: progress bar is visible")
-            try {
-                Timber.d("performAsyncLoadOfPoster: try block start")
-                // Создаем через async, так как нам нужен результат от работы, то есть Bitmap
-                val job = scope.async {
-                    Timber.d("performAsyncLoadOfPoster: async job started")
-                    filmDetailsViewModel.loadWallpaper(ApiConstants.IMAGES_URL + "original" + film.poster)
-                }
-                // Получаем результат загрузки
-                val loadedBitmap = job.await()
-                Timber.d("performAsyncLoadOfPoster: loadedBitmap obtained")
+        b.progressBar.isVisible = true
+        Timber.d("performAsyncLoadOfPoster: progress bar is visible")
+        disposable =
+            filmDetailsViewModel.loadWallpaper(ApiConstants.IMAGES_URL + "original" + film.poster)
+                .subscribeOn(Schedulers.io()) // Теперь вызываем subscribeOn в Fragment
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ loadedBitmap ->
+                    Timber.d("performAsyncLoadOfPoster: loadedBitmap obtained")
+                    val savedImageUri = saveToGallery(loadedBitmap)
+                    Timber.d("performAsyncLoadOfPoster: savedImageUri = $savedImageUri")
 
-                // Сохраняем в галерею и получаем URI
-                val savedImageUri = saveToGallery(loadedBitmap)
-                Timber.d("performAsyncLoadOfPoster: savedImageUri = $savedImageUri")
-
-                // FIXME Snackbar отображается строго под панелью навигации родительской активити - исправить...
-
-                if (savedImageUri != null) {
-                    Timber.d("performAsyncLoadOfPoster: savedImageUri is not null, showing success snackbar")
-                    // Выводим снекбар с кнопкой перейти в галерею
+                    if (savedImageUri != null) {
+                        Timber.d("performAsyncLoadOfPoster: savedImageUri is not null, showing success snackbar")
+                        Snackbar.make(
+                            b.root, R.string.downloaded_to_gallery,
+                            Snackbar.LENGTH_LONG
+                        ).setAction(R.string.open) {
+                            Timber.d("performAsyncLoadOfPoster: open gallery action clicked")
+                            Intent().apply {
+                                action = Intent.ACTION_VIEW
+                                Timber.d("performAsyncLoadOfPoster: Intent action set to ACTION_VIEW")
+                                data = savedImageUri
+                                Timber.d("performAsyncLoadOfPoster: Intent data set to savedImageUri")
+                                flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                Timber.d("performAsyncLoadOfPoster: Intent flags set")
+                                startActivity(this)
+                                Timber.d("performAsyncLoadOfPoster: startActivity called")
+                            }
+                        }.show()
+                        Timber.d("performAsyncLoadOfPoster: snackbar with open action shown")
+                    } else {
+                        Timber.d("performAsyncLoadOfPoster: savedImageUri is null, showing failure snackbar")
+                        Snackbar.make(
+                            b.root, R.string.save_failed,
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        Timber.d("performAsyncLoadOfPoster: snackbar with save failed message shown")
+                    }
+                }, { throwable ->
+                    Timber.d("performAsyncLoadOfPoster: Exception occurred: ${throwable.message}")
                     Snackbar.make(
-                        b.root, R.string.downloaded_to_gallery,
-                        Snackbar.LENGTH_LONG
-                    ).setAction(R.string.open) {
-                        Timber.d("performAsyncLoadOfPoster: open gallery action clicked")
-                        Intent().apply {
-                            action = Intent.ACTION_VIEW
-                            Timber.d("performAsyncLoadOfPoster: Intent action set to ACTION_VIEW")
-                            data = savedImageUri // Устанавливаем URI сохраненного файла
-                            Timber.d("performAsyncLoadOfPoster: Intent data set to savedImageUri")
-                            flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION // Необходимые флаги
-                            Timber.d("performAsyncLoadOfPoster: Intent flags set")
-                            startActivity(this)
-                            Timber.d("performAsyncLoadOfPoster: startActivity called")
-                        }
-                    }.show()
-
-                    Timber.d("performAsyncLoadOfPoster: snackbar with open action shown")
-                } else {
-                    Timber.d("performAsyncLoadOfPoster: savedImageUri is null, showing failure snackbar")
-                    // Обработка случая, когда сохранение не удалось
-                    Snackbar.make(
-                        b.root, R.string.save_failed, // Добавьте эту строку в ресурсы
+                        b.root, R.string.download_failed,
                         Snackbar.LENGTH_LONG
                     ).show()
-                    Timber.d("performAsyncLoadOfPoster: snackbar with save failed message shown")
-                }
-
-            } catch (e: Exception) {
-                Timber.d("performAsyncLoadOfPoster: Exception occurred: ${e.message}")
-                // Обрабатываем любые исключения, которые могли возникнуть при загрузке
-                Snackbar.make(
-                    b.root, R.string.download_failed,
-                    Snackbar.LENGTH_LONG
-                ).show()
-                Timber.d("performAsyncLoadOfPoster: snackbar with download failed message shown")
-                // Логируем ошибку для отладки
-                e.printStackTrace()
-            } finally {
-                Timber.d("performAsyncLoadOfPoster: finally block, hiding progress bar")
-                // Отключаем Прогресс-бар в любом случае (успех или ошибка)
-                b.progressBar.isVisible = false
-                Timber.d("performAsyncLoadOfPoster: progress bar is hidden")
-            }
-        }
-        Timber.d("performAsyncLoadOfPoster: end")
+                    Timber.d("performAsyncLoadOfPoster: snackbar with download failed message shown")
+                    throwable.printStackTrace() // Логирование ошибки
+                }, {
+                    Timber.d("performAsyncLoadOfPoster: finally block, hiding progress bar")
+                    b.progressBar.isVisible = false // Отключаем прогресс бар
+                    Timber.d("performAsyncLoadOfPoster: progress bar is hidden")
+                })
     }
 }

@@ -14,11 +14,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.databinding.ActivityAnimCircularRevealBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import kotlin.math.hypot
 import kotlin.math.roundToInt
 
@@ -28,6 +28,8 @@ class AnimCircularRevealActivity : AppCompatActivity() {
     lateinit var b: ActivityAnimCircularRevealBinding
 
     private var isRevealed = false
+
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,11 @@ class AnimCircularRevealActivity : AppCompatActivity() {
         setupFabCircularReveal()
 //        setupFabFlingGestures()
 //        setupFabSpringGestures()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     private fun setRevealState(isRevealing: Boolean) {
@@ -110,18 +117,18 @@ class AnimCircularRevealActivity : AppCompatActivity() {
     }
 
     private fun setupFabCircularReveal() {
-        CoroutineScope(IO).launch {
-            while (true) {
-                if (b.buttonsContainer.isAttachedToWindow) {
-                    withContext((Main)) {
-                        setRevealState(!isRevealed)
-                    }
-                    break
-                }
-            }
-        }
+        // Создаем Observable, который будет проверять видимость
+        val disposable = Observable.interval(0, 50, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io()) // Операции выполняются в фоновом потоке
+            .filter { b.buttonsContainer.isAttachedToWindow } // Проверяем, прикреплена ли view к окну
+            .observeOn(AndroidSchedulers.mainThread()) // Возвращаемся в главный поток для изменения UI
+            .take(1) // Берем только первый элемент - когда view прикрепится к окну
+            .subscribe { setRevealState(!isRevealed) }
+        compositeDisposable.add(disposable)
 
-        b.fab.setOnClickListener { setRevealState(!isRevealed) }
+        b.fab.setOnClickListener {
+            setRevealState(!isRevealed)
+        }
     }
 
 //    private fun setupFabFlingGestures() {
