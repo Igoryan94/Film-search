@@ -45,10 +45,10 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
         compositeDisposable.add(disposable)
     }
 
-    fun getFilms() {
+    fun getFilms(page: Int = 1) {
         showProgressBarObserver.onNext(true)
 
-        interactor.getFilmsFromApi(1, object : ApiCallback {
+        interactor.getFilmsFromApi(page, object : ApiCallback {
             override fun onSuccess() {
                 showProgressBarObserver.onNext(false)
             }
@@ -62,7 +62,7 @@ class HomeFragmentViewModel(state: SavedStateHandle) : ViewModel() {
                 val refreshCache = Observable.fromCallable {
                     val now = System.currentTimeMillis()
                     if (now - preferenceProvider.getLastCacheRefreshTime() > 1000 * 60 * 10L)
-                        interactor.clearDB().subscribe() // No need to await for it...
+                        interactor.clearDB().subscribe() // Не ждём окончания...
                     showProgressBarObserver.onNext(false)
                 }
                 refreshCache

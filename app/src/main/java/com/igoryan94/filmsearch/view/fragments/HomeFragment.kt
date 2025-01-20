@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.PreferenceProvider
@@ -24,6 +25,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
+import timber.log.Timber
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -48,6 +50,9 @@ class HomeFragment : Fragment() {
     private val searchSubject = PublishSubject.create<String>()
 
     private val compositeDisposable = CompositeDisposable()
+
+    private var isLoading = false
+    private var currentPage = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -156,13 +161,48 @@ class HomeFragment : Fragment() {
             // Применяем декоратор для отступов
             val decorator = TopSpacingItemDecoration(8)
             addItemDecoration(decorator)
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    // если не скроллим вниз, выходим из метода
+                    if (dy <= 0) return
+
+                    val layoutManager = layoutManager as LinearLayoutManager
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+                    // Если не загружаем в данный момент и достигли конца списка
+                    if (!isLoading && (visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                        // Загружаем следующую страницу
+                        isLoading = true
+                        currentPage++
+                        homeFragmentViewModel.getFilms(currentPage)
+                    }
+                }
+            })
         }
 
         compositeDisposable.apply {
             // Кладем нашу БД в RV
             add(homeFragmentViewModel.filmsListObserver
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe { filmsDataBase = it })
+                .subscribe {
+                    Timber.d("filmsListObserver received: ${it.size} film(s)")
+                    // Если это первая страница - то просто меняем список
+                    if (currentPage == 1) {
+                        filmsDataBase = it
+                    } else {
+                        // Если страница последующая, то добавляем в конец списка
+                        val newList = mutableListOf<Film>()
+                        newList.addAll(filmsDataBase)
+                        newList.addAll(it)
+                        filmsDataBase = newList
+                        isLoading = false
+                    }
+                })
 
             // Управляем видимостью ProgressBar на основе состояния запроса
             add(homeFragmentViewModel.showProgressBarObserver
@@ -199,6 +239,10 @@ class HomeFragment : Fragment() {
         b.pullToRefresh.setOnRefreshListener {
             // Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
             filmsAdapter.items.clear()
+            // Сбрасываем номер страницы для загрузки первой
+            currentPage = 1
+            // Сбрасываем флаг загрузки
+            isLoading = false
             // Делаем новый запрос фильмов на сервер
             homeFragmentViewModel.getFilms()
             // Убираем крутящееся колечко

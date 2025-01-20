@@ -14,6 +14,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import javax.inject.Inject
 
 class Interactor @Inject constructor(
@@ -35,7 +36,7 @@ class Interactor @Inject constructor(
                     call: Call<TmdbResultsDto>,
                     response: Response<TmdbResultsDto>
                 ) {
-                    // При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк - список фильмов
+                    // При успехе мы вызываем метод, передаем onSuccess, и в этот коллбэк - список фильмов
                     val filmsObservable: Observable<List<Film>> = Observable.fromCallable {
                         response.body()?.tmdbFilms ?: emptyList()
                     }
@@ -54,9 +55,9 @@ class Interactor @Inject constructor(
                             }
                         }
 
-                    // Очищаем БД перед обновлением данных и кладем туда фильмы
-                    repository.clearDB()
-                        .flatMap { filmsObservable }
+                    // Была добавлена постраничность: тут нам уже не нужно делать очистку БД перед вставкой, иначе мы потеряем старые данные
+                    // Кладем в БД фильмы
+                    filmsObservable
                         .flatMap { films -> repository.putToDb(films) }
                         .subscribeOn(Schedulers.io())
                         .subscribe({ }, { callback.onFailure() }, { callback.onSuccess() })
@@ -70,7 +71,13 @@ class Interactor @Inject constructor(
     }
 
     // Метод для получения фильмов из базы, например при сетевой ошибке
-    fun getFilmsFromDB(): Observable<List<Film>> = repository.getAllFromDB()
+    fun getFilmsFromDB(): Observable<List<Film>> {
+        Timber.d("getFilmsFromDB() called")
+        return repository.getAllFromDB()
+            .doOnNext { films ->
+                Timber.d("getFilmsFromDB() return: ${films.size} film(s)")
+            }
+    }
 
     // Метод для очистки базы данных
     fun clearDB(): Observable<Unit> = repository.clearDB()
