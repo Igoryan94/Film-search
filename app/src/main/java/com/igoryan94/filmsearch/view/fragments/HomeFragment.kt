@@ -22,7 +22,10 @@ import com.igoryan94.filmsearch.view.recyclerview_adapters.TopSpacingItemDecorat
 import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
@@ -41,6 +44,8 @@ class HomeFragment : Fragment() {
             // Обновляем RV адаптер
             filmsAdapter.setItems(field)
         }
+
+    private val searchSubject = PublishSubject.create<String>()
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -91,6 +96,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         compositeDisposable.clear()
+        searchSubject.onComplete()
         super.onDestroyView()
     }
 
@@ -109,24 +115,28 @@ class HomeFragment : Fragment() {
 
             // Этот метод отрабатывает на каждое изменения текста
             override fun onQueryTextChange(newText: String): Boolean {
-                // Если ввод пуст то вставляем в адаптер всю БД
-                if (newText.isEmpty()) {
-                    filmsAdapter.setItems(filmsDataBase)
-                    return true
-                }
-
-                // Фильтруем список на поиск подходящих сочетаний
-                val result = filmsDataBase.filter {
-                    // Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
-                    it.title.lowercase(Locale.getDefault())
-                        .contains(newText.lowercase(Locale.getDefault()))
-                }
-
-                // Добавляем в адаптер
-                filmsAdapter.setItems(result)
+                searchSubject.onNext(newText)
                 return true
             }
         })
+
+        compositeDisposable.add(
+            searchSubject
+                // Устанавливаем задержку для более плавного поиска, чтобы не дергался список при наборе каждого символа
+                .debounce(300, TimeUnit.MILLISECONDS)
+                // Переводим в фоновый поток
+                .subscribeOn(Schedulers.io())
+                // Обрабатываем в главном потоке, потому что работаем со списком и UI
+                .observeOn(AndroidSchedulers.mainThread())
+                // Подписываемся на результат
+                .subscribe { newText ->
+                    val result = filmsDataBase.filter {
+                        it.title.lowercase(Locale.getDefault())
+                            .contains(newText.lowercase(Locale.getDefault()))
+                    }
+                    filmsAdapter.setItems(result)
+                }
+        )
     }
 
     private fun initList() {
