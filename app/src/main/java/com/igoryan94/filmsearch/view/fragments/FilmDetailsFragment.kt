@@ -22,7 +22,6 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.data.entity.ApiConstants
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
 import com.igoryan94.filmsearch.viewmodel.FilmDetailsViewModel
@@ -83,7 +82,7 @@ class FilmDetailsFragment : Fragment() {
 
         b.detailsToolbar.title = film.title
         Glide.with(this)
-            .load(ApiConstants.IMAGES_URL + "w780" + film.poster)
+            .load(com.igoryan94.remote_module.entity.ApiConstants.IMAGES_URL + "w780" + film.poster)
             .centerCrop()
             .into(b.detailsPoster)
         b.detailsDescription.text = film.description
@@ -218,7 +217,7 @@ class FilmDetailsFragment : Fragment() {
         b.progressBar.isVisible = true
         Timber.d("performAsyncLoadOfPoster: progress bar is visible")
         disposable =
-            filmDetailsViewModel.loadWallpaper(ApiConstants.IMAGES_URL + "original" + film.poster)
+            filmDetailsViewModel.loadWallpaper(com.igoryan94.remote_module.entity.ApiConstants.IMAGES_URL + "original" + film.poster)
                 .subscribeOn(Schedulers.io()) // Теперь вызываем subscribeOn в Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ loadedBitmap ->
