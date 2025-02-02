@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.R
-import com.igoryan94.filmsearch.data.entity.ApiConstants
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.view.custom_views.RatingDonutView
 
@@ -32,7 +31,7 @@ class FilmListRecyclerAdapter(private val clickListener: OnItemClickListener) :
             //Указываем контейнер, в котором будет "жить" наша картинка
             Glide.with(itemView)
                 //Загружаем сам ресурс
-                .load(ApiConstants.IMAGES_URL + "w342" + film.poster)
+                .load(com.igoryan94.remote_module.entity.ApiConstants.IMAGES_URL + "w342" + film.poster)
                 //Центрируем изображение
                 .centerCrop()
                 //Указываем ImageView, куда будем загружать изображение

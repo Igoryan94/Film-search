@@ -3,7 +3,6 @@ package com.igoryan94.filmsearch.di.modules
 import android.content.Context
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.domain.Interactor
-import com.igoryan94.filmsearch.viewmodel.HomeFragmentViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -18,7 +17,7 @@ abstract class DomainBindModule {
 }
 
 interface InteractorProvider {
-    fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback)
+    fun getFilmsFromApi(page: Int)
 }
 
 @Module

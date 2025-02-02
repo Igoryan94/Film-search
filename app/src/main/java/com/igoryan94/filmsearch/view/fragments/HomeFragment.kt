@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.PreferenceProvider
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentHomeBinding
@@ -31,7 +29,6 @@ import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
     private lateinit var b: FragmentHomeBinding
-
     private lateinit var filmsAdapter: FilmListRecyclerAdapter
 
     private val homeFragmentViewModel: HomeFragmentViewModel by activityViewModels()
@@ -80,7 +77,21 @@ class HomeFragment : Fragment() {
         setupSearch()
 
         // Запрашиваем обновление данных по фильмам
-        homeFragmentViewModel.getFilms()
+        compositeDisposable.add(homeFragmentViewModel.filmsListData
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { list ->
+                filmsAdapter.setItems(list)
+                Timber.d("!!! home: got data, its size is ${list.size}")
+            }
+        )
+
+        compositeDisposable.add(homeFragmentViewModel.showProgressBar
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                b.progressBar.isVisible = it
+            })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -183,47 +194,6 @@ class HomeFragment : Fragment() {
                     }
                 }
             })
-        }
-
-        compositeDisposable.apply {
-            // Кладем нашу БД в RV
-            add(homeFragmentViewModel.filmsListObserver
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    Timber.d("filmsListObserver received: ${it.size} film(s)")
-                    // Если это первая страница - то просто меняем список
-                    if (currentPage == 1) {
-                        filmsDataBase = it
-                    } else {
-                        // Если страница последующая, то добавляем в конец списка
-                        val newList = mutableListOf<Film>()
-                        newList.addAll(filmsDataBase)
-                        newList.addAll(it)
-                        filmsDataBase = newList
-                        isLoading = false
-                    }
-                })
-
-            // Управляем видимостью ProgressBar на основе состояния запроса
-            add(homeFragmentViewModel.showProgressBarObserver
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    b.progressBar.isVisible = it
-                })
-
-            // Управляем видимостью Snackbar на основе состояния запроса
-            add(homeFragmentViewModel.showErrorSnackbarObserver
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it) {
-                        Snackbar.make(
-                            b.homeFragmentRoot,
-                            getString(R.string.error_getting_server_data_snackbar),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                        homeFragmentViewModel.resetErrorSnackbar()
-                    }
-                })
         }
 
         // Регистрируем слушатель для обновления списка при изменении категории фильмов

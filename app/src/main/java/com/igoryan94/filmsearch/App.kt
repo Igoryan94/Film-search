@@ -4,6 +4,7 @@ import android.app.Application
 import com.igoryan94.filmsearch.di.AppComponent
 import com.igoryan94.filmsearch.di.DaggerAppComponent
 import com.igoryan94.filmsearch.di.modules.DomainProvideModule
+import com.igoryan94.remote_module.DaggerRemoteComponent
 import timber.log.Timber
 
 class App : Application() {
@@ -14,16 +15,17 @@ class App : Application() {
         instance = this
 
         // Инициализация Timber
-        if (isDebugging) Timber.plant(Timber.DebugTree())
+        Timber.plant(Timber.DebugTree())
 
         // Создаем компонент Dagger
+        val remoteProvider = DaggerRemoteComponent.create()
         dagger = DaggerAppComponent.builder()
+            .remoteProvider(remoteProvider)
             .domainProvideModule(DomainProvideModule(this))
             .build()
     }
 
     companion object {
         lateinit var instance: App
-        val isDebugging = BuildConfig.DEBUG
     }
 }
