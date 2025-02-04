@@ -25,4 +25,6 @@
     <string name="open">В галерею</string>
     <string name="download_failed">Ошибка закачки...</string>
     <string name="save_failed">Ошибка сохранения</string>
+    <string name="condition_receiver_action_power_plugged_toast">Питание подключено...</string>
+    <string name="condition_receiver_action_low_battery_toast">Низкий заряд батареи!</string>
 </resources>
