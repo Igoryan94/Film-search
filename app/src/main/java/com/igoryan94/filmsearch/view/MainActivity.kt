@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         setupViews()
         setupHomeFragment()
         setupBottomNav()
+        checkArguments()
     }
 
     override fun onDestroy() {
@@ -160,6 +161,21 @@ class MainActivity : AppCompatActivity() {
                 else -> return@setOnItemSelectedListener false
             }
             true
+        }
+    }
+
+    // Открытие определённого фильма по запросу (пока только это...)
+    private fun checkArguments() {
+        val operation = intent.getStringExtra("operation") ?: ""
+
+        when (operation) {
+            "open_film_details" -> {
+                @Suppress("DEPRECATION") val film: Film = if (Build.VERSION.SDK_INT >= 33)
+                    intent.getParcelableExtra("target_film", Film::class.java) ?: return
+                else intent.getParcelableExtra("target_film") ?: return
+
+                openFilmDetails(film)
+            }
         }
     }
 
