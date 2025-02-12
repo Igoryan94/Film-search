@@ -24,18 +24,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
+import com.igoryan94.filmsearch.utils.NotificationUtils
 import com.igoryan94.filmsearch.viewmodel.FilmDetailsViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 
+@Suppress("unused", "SpellCheckingInspection")
 class FilmDetailsFragment : Fragment() {
     lateinit var b: FragmentFilmDetailsBinding
-
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var film: Film
 
@@ -60,6 +58,7 @@ class FilmDetailsFragment : Fragment() {
         setupDetails()
         setupDownloadFab()
         setupFavFab()
+        setupNotifFab()
         setupShareFab()
 
         return b.root
@@ -108,6 +107,12 @@ class FilmDetailsFragment : Fragment() {
                 b.detailsFabFavorites.setImageResource(R.drawable.ic_vector_fav_filled)
                 film.isInFavorites = false
             }
+        }
+    }
+
+    private fun setupNotifFab() {
+        b.detailsFabSendCurrentFilmNotification.setOnClickListener {
+            NotificationUtils.sendNotification(requireActivity(), film)
         }
     }
 
@@ -165,7 +170,7 @@ class FilmDetailsFragment : Fragment() {
 
 
         val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, imageName + ".jpg")
+            put(MediaStore.Images.Media.DISPLAY_NAME, "$imageName.jpg")
             Timber.d("saveToGallery: DISPLAY_NAME added to ContentValues")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
             Timber.d("saveToGallery: MIME_TYPE added to ContentValues")
@@ -175,7 +180,7 @@ class FilmDetailsFragment : Fragment() {
             Timber.d("saveToGallery: IS_PENDING set to 1 in ContentValues")
         }
 
-        var imageUri: Uri?
+        val imageUri: Uri?
         try {
             Timber.d("saveToGallery: trying to insert image")
             imageUri = contentResolver.insert(imageCollection, contentValues)

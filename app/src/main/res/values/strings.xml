@@ -27,4 +27,7 @@
     <string name="save_failed">Ошибка сохранения</string>
     <string name="condition_receiver_action_power_plugged_toast">Питание подключено...</string>
     <string name="condition_receiver_action_low_battery_toast">Низкий заряд батареи!</string>
+    <string name="notif_channel_reminders_title">Напоминания</string>
+    <string name="notification_film_watch_reminder_title">Напоминание</string>
+    <string name="notification_film_watch_reminder_text">Посмотрите на этот фильм!..</string>
 </resources>

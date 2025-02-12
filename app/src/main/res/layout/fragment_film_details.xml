@@ -52,6 +52,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:translationX="72dp"
+        android:importantForAccessibility="no"
         app:borderWidth="0dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="left|bottom"
@@ -73,10 +74,25 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimaryDark"
+        android:importantForAccessibility="no"
         app:borderWidth="0dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="left|bottom"
         app:srcCompat="@drawable/ic_vector_fav"
+        app:tint="@android:color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/details_fab_send_current_film_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:translationX="-72dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:tint="@android:color/white"
+        android:importantForAccessibility="no"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|right"
+        app:srcCompat="@drawable/ic_vector_notify"
         app:tint="@android:color/white" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -86,6 +102,7 @@
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:tint="@android:color/white"
+        android:importantForAccessibility="no"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|right"
         app:srcCompat="@android:drawable/ic_menu_share"
