@@ -130,7 +130,10 @@ class FilmDetailsFragment : Fragment() {
         val timePickerDialog = TimePickerDialog(
             requireContext(),
             { _, selectedHour, selectedMinute ->
-                scheduleNotification(selectedHour, selectedMinute) // Вызываем функцию планирования уведомления
+                scheduleNotification(
+                    selectedHour,
+                    selectedMinute
+                ) // Вызываем функцию планирования уведомления
             },
             hour,
             minute,
@@ -154,7 +157,10 @@ class FilmDetailsFragment : Fragment() {
         }
 
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), FilmNotificationReceiver::class.java) // Используем BroadcastReceiver для уведомления
+        val intent = Intent(
+            requireContext(),
+            FilmNotificationReceiver::class.java
+        ) // Используем BroadcastReceiver для уведомления
         intent.putExtra("film_title", film.title) // Передаем данные о фильме
         intent.putExtra("film_description", film.description)
         intent.putExtra("film_poster_path", film.poster)
@@ -174,7 +180,10 @@ class FilmDetailsFragment : Fragment() {
 
         Snackbar.make(
             b.root,
-            getString(R.string.notification_scheduled_snackbar, "${hour}:${minute}"), // Сообщение об успехе
+            getString(
+                R.string.notification_scheduled_snackbar,
+                "${hour}:${minute}"
+            ), // Сообщение об успехе
             Snackbar.LENGTH_LONG
         ).show()
     }
@@ -335,4 +344,15 @@ class FilmDetailsFragment : Fragment() {
                     Timber.d("performAsyncLoadOfPoster: progress bar is hidden")
                 })
     }
+
+    // Класс данных для хранения информации об уведомлении
+    data class ScheduledNotification(
+        var filmId: Int,
+        var filmTitle: String,
+        var filmDescription: String,
+        var filmPosterPath: String, // Сохраняем путь к постеру
+        var hour: Int,
+        var minute: Int,
+        val requestCode: Int
+    )
 }
