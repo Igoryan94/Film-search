@@ -1,7 +1,12 @@
 package com.igoryan94.filmsearch.view.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -21,15 +26,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.igoryan94.filmsearch.FilmNotificationReceiver
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
-import com.igoryan94.filmsearch.utils.NotificationUtils
 import com.igoryan94.filmsearch.viewmodel.FilmDetailsViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
+import java.util.Calendar
 
 @Suppress("unused", "SpellCheckingInspection")
 class FilmDetailsFragment : Fragment() {
@@ -112,8 +118,74 @@ class FilmDetailsFragment : Fragment() {
 
     private fun setupNotifFab() {
         b.detailsFabSendCurrentFilmNotification.setOnClickListener {
-            NotificationUtils.sendNotification(requireActivity(), film)
+            showTimePickerDialog() // Вызываем функцию показа TimePickerDialog
         }
+    }
+
+    private fun showTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(
+            requireContext(),
+            { _, selectedHour, selectedMinute ->
+                scheduleNotification(
+                    selectedHour,
+                    selectedMinute
+                ) // Вызываем функцию планирования уведомления
+            },
+            hour,
+            minute,
+            true // true для 24-часового формата
+        )
+        timePickerDialog.show()
+    }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private fun scheduleNotification(hour: Int, minute: Int) {
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+        }
+
+        // Если выбранное время уже прошло, переносим уведомление на следующий день
+        if (calendar.timeInMillis <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(
+            requireContext(),
+            FilmNotificationReceiver::class.java
+        ) // Используем BroadcastReceiver для уведомления
+        intent.putExtra("film_title", film.title) // Передаем данные о фильме
+        intent.putExtra("film_description", film.description)
+        intent.putExtra("film_poster_path", film.poster)
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(),
+            film.id, // Используем id фильма как requestCode, чтобы сделать PendingIntent уникальным (важно для редактирования/отмены)
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_CANCEL_CURRENT // Важно для безопасности и корректной работы
+        )
+
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+
+        Snackbar.make(
+            b.root,
+            getString(
+                R.string.notification_scheduled_snackbar,
+                "${hour}:${minute}"
+            ), // Сообщение об успехе
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun setupShareFab() {
@@ -272,4 +344,15 @@ class FilmDetailsFragment : Fragment() {
                     Timber.d("performAsyncLoadOfPoster: progress bar is hidden")
                 })
     }
+
+    // Класс данных для хранения информации об уведомлении
+    data class ScheduledNotification(
+        var filmId: Int,
+        var filmTitle: String,
+        var filmDescription: String,
+        var filmPosterPath: String, // Сохраняем путь к постеру
+        var hour: Int,
+        var minute: Int,
+        val requestCode: Int
+    )
 }

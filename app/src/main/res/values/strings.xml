@@ -30,4 +30,11 @@
     <string name="notif_channel_reminders_title">Напоминания</string>
     <string name="notification_film_watch_reminder_title">Напоминание</string>
     <string name="notification_film_watch_reminder_text">Посмотрите на этот фильм!..</string>
+    <string name="notification_scheduled_snackbar">Уведомление запланировано на время: %s</string>
+    <string name="scheduled_notifications_screen_title">Отложенные уведомления</string>
+    <string name="edit_button_text">Редактировать</string>
+    <string name="cancel_button_text">Отменить</string>
+    <string name="notification_cancelled">Уведомление отменено</string>
+    <string name="notification_updated">Уведомление обновлено: %s</string>
+    <string name="scheduled_notifications_menu_item">Отложенные уведомления</string>
 </resources>

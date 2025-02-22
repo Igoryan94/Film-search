@@ -8,6 +8,8 @@ import android.content.SharedPreferences
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import com.igoryan94.filmsearch.utils.toast
 import com.igoryan94.filmsearch.view.fragments.FavoritesFragment
 import com.igoryan94.filmsearch.view.fragments.FilmDetailsFragment
 import com.igoryan94.filmsearch.view.fragments.HomeFragment
+import com.igoryan94.filmsearch.view.fragments.ScheduledNotificationsFragment
 import com.igoryan94.filmsearch.view.fragments.SelectionsFragment
 import com.igoryan94.filmsearch.view.fragments.SettingsFragment
 import com.igoryan94.filmsearch.view.fragments.WatchLaterFragment
@@ -62,6 +65,7 @@ class MainActivity : AppCompatActivity() {
     private fun initialize() {
         enableEdgeToEdge()
         b = ActivityMainBinding.inflate(layoutInflater)
+        setSupportActionBar(b.topAppBar)
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
         loadThemeMode()
@@ -97,6 +101,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         registerConditionsReceiver()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_options_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_scheduled_notifications_list -> {
+                openScheduledNotificationsFragment() // Вызываем функцию открытия фрагмента
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupViews() {
@@ -191,6 +211,9 @@ class MainActivity : AppCompatActivity() {
 
         changeFragment(fragment, "film_details")
     }
+
+    fun openScheduledNotificationsFragment() =
+        changeFragment(ScheduledNotificationsFragment(), "scheduled_notifications")
 
     //Ищем фрагмент по тегу, если он есть то возвращаем его, если нет, то null
     private fun checkFragmentExistence(tag: String): Fragment? =

@@ -1,27 +1,30 @@
-package com.igoryan94.filmsearch.utils
+package com.igoryan94.filmsearch
 
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.igoryan94.filmsearch.App
-import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.view.MainActivity
 import kotlin.random.Random
 
-object NotificationUtils {
-    private const val NOTIFICATION_CHANNEL_ID = "FilmDetailsWatchFilmReminder"
-    private val NOTIFICATION_CHANNEL_TITLE =
-        App.instance.getString(R.string.notif_channel_reminders_title)
-    private val NOTIFICATION_ID = Random.nextInt(1000000, 9999999)
+class FilmNotificationReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        val filmTitle = intent.getStringExtra("film_title") ?: "Unknown Film"
+        val filmDescription = intent.getStringExtra("film_description") ?: ""
+        val filmPoster = intent.getStringExtra("film_poster_path") ?: ""
+
+        val film = Film(title = filmTitle, poster = filmPoster, description = filmDescription) // Создаем Film объект для передачи в уведомление
+        sendNotification(context, film) // Отправляем уведомление, используя NotificationUtils
+    }
 
     @Suppress("DEPRECATION", "ObsoleteSdkInt")
-    fun sendNotification(context: Context, film: Film) {
+    private fun sendNotification(context: Context, film: Film) {
         val dataIntent = Intent(context, MainActivity::class.java)
         dataIntent.putExtra("operation", "open_film_details")
         dataIntent.putExtra("target_film", film)
@@ -65,5 +68,12 @@ object NotificationUtils {
                 .build()
         }
         notificationManager.notify(NOTIFICATION_ID, notification)
+    }
+
+    companion object {
+        private const val NOTIFICATION_CHANNEL_ID = "FilmDetailsWatchFilmReminder"
+        private val NOTIFICATION_CHANNEL_TITLE =
+            App.instance.getString(R.string.notif_channel_reminders_title)
+        private val NOTIFICATION_ID = Random.nextInt(1000000, 9999999)
     }
 }
