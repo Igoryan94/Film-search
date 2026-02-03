@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.igoryan94.filmsearch.BuildConfig.IS_PRO
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.ActivityMainBinding
@@ -36,12 +37,6 @@ class MainActivity : AppCompatActivity() {
     private var conditionsChangeReceiver: BroadcastReceiver? = null
     private lateinit var sharedPreferences: SharedPreferences
     private var isManualThemeSet = false
-
-    companion object {
-        const val PREFS_NAME = "FilmSearchPrefs"
-        const val PREF_MANUAL_THEME = "manual_theme_set"
-        const val PREF_THEME_MODE = "theme_mode"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,17 +157,33 @@ class MainActivity : AppCompatActivity() {
                     "home"
                 )
 
-                R.id.favorites -> changeFragment(
-                    checkFragmentExistence("favorites") ?: FavoritesFragment(), "favorites"
-                )
+                R.id.favorites ->
+                    @Suppress("KotlinConstantConditions")
+                    if (IS_PRO) {
+                        changeFragment(
+                            checkFragmentExistence("favorites") ?: FavoritesFragment(),
+                            "favorites"
+                        )
+                    } else {
+                        getString(R.string.feature_avail_in_pro_only).toast(this)
+                        return@setOnItemSelectedListener false
+                    }
 
                 R.id.watchLater -> changeFragment(
                     checkFragmentExistence("watch_later") ?: WatchLaterFragment(), "watch_later"
                 )
 
-                R.id.selections -> changeFragment(
-                    checkFragmentExistence("selections") ?: SelectionsFragment(), "selections"
-                )
+                R.id.selections ->
+                    @Suppress("KotlinConstantConditions")
+                    if (IS_PRO) {
+                        changeFragment(
+                            checkFragmentExistence("selections") ?: SelectionsFragment(),
+                            "selections"
+                        )
+                    } else {
+                        getString(R.string.feature_avail_in_pro_only).toast(this)
+                        return@setOnItemSelectedListener false
+                    }
 
                 R.id.settings -> changeFragment(
                     checkFragmentExistence("settings") ?: SettingsFragment(), "settings"
@@ -357,5 +368,11 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(savedMode)
         isManualThemeSet =
             sharedPreferences.getBoolean(PREF_MANUAL_THEME, false)
+    }
+
+    companion object {
+        const val PREFS_NAME = "FilmSearchPrefs"
+        const val PREF_MANUAL_THEME = "manual_theme_set"
+        const val PREF_THEME_MODE = "theme_mode"
     }
 }
