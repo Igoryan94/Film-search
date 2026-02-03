@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -158,14 +159,13 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 R.id.favorites ->
-                    @Suppress("KotlinConstantConditions")
-                    if (IS_PRO) {
+                    if (isSubscriptionActive()) {
                         changeFragment(
                             checkFragmentExistence("favorites") ?: FavoritesFragment(),
                             "favorites"
                         )
                     } else {
-                        getString(R.string.feature_avail_in_pro_only).toast(this)
+                        getString(R.string.pro_feature__subscription_advice).toast(this)
                         return@setOnItemSelectedListener false
                     }
 
@@ -174,14 +174,13 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 R.id.selections ->
-                    @Suppress("KotlinConstantConditions")
-                    if (IS_PRO) {
+                    if (isSubscriptionActive()) {
                         changeFragment(
                             checkFragmentExistence("selections") ?: SelectionsFragment(),
                             "selections"
                         )
                     } else {
-                        getString(R.string.feature_avail_in_pro_only).toast(this)
+                        getString(R.string.pro_feature__subscription_advice).toast(this)
                         return@setOnItemSelectedListener false
                     }
 
@@ -323,17 +322,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("unused")
     fun setManualThemeMode(mode: Int) {
         isManualThemeSet = true
         AppCompatDelegate.setDefaultNightMode(mode)
         saveThemeMode(mode)
-        sharedPreferences.edit().putBoolean(PREF_MANUAL_THEME, true).apply()
+        sharedPreferences.edit { putBoolean(PREF_MANUAL_THEME, true) }
         recreate()
     }
 
+    @Suppress("unused")
     fun resetToAutomaticTheme() {
         isManualThemeSet = false
-        sharedPreferences.edit().putBoolean(PREF_MANUAL_THEME, false).apply()
+        sharedPreferences.edit { putBoolean(PREF_MANUAL_THEME, false) }
         determineThemeBasedOnBatteryState()
     }
 
@@ -357,7 +358,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveThemeMode(mode: Int) {
-        sharedPreferences.edit().putInt(PREF_THEME_MODE, mode).apply()
+        sharedPreferences.edit { putInt(PREF_THEME_MODE, mode) }
     }
 
     private fun loadThemeMode() {
@@ -368,6 +369,29 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(savedMode)
         isManualThemeSet =
             sharedPreferences.getBoolean(PREF_MANUAL_THEME, false)
+    }
+
+    private fun isSubscriptionActive(): Boolean {
+        // Переменная константна для текущего flavor, но Студия этого не видит,
+        // так как меняется её значение лишь при нашем ручном изменении варианта выпуска.
+        @Suppress("KotlinConstantConditions")
+
+        // Если это и так PRO версия — всё доступно
+        if (IS_PRO) return true
+
+        val prefs = getSharedPreferences("TrialPrefs", MODE_PRIVATE)
+        val firstRunTime = prefs.getLong("first_run_time", 0L)
+
+        if (firstRunTime == 0L) {
+            // Первый запуск: сохраняем текущее время
+            val currentTime = System.currentTimeMillis()
+            prefs.edit { putLong("first_run_time", currentTime) }
+            return true
+        }
+
+        // Проверяем, прошло ли более 3 дней (3 * 24 * 60 * 60 * 1000 мс)
+        val trialDuration = 3 * 24 * 60 * 60 * 1000L
+        return System.currentTimeMillis() - firstRunTime < trialDuration
     }
 
     companion object {

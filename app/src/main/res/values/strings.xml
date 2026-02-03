@@ -37,5 +37,5 @@
     <string name="notification_cancelled">Уведомление отменено</string>
     <string name="notification_updated">Уведомление обновлено: %s</string>
     <string name="scheduled_notifications_menu_item">Отложенные уведомления</string>
-    <string name="feature_avail_in_pro_only">Функция доступна только в PRO версии</string>
+    <string name="pro_feature__subscription_advice">Пробный период истек. Купите PRO версию!</string>
 </resources>
