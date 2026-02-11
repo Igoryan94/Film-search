@@ -40,6 +40,25 @@ android {
         buildConfig = true // Форсирование создания BuildConfig, для определения типа билда -
         //  релизный или отладочный.
     }
+
+    // Определяем измерение для типов подписки
+    flavorDimensions += "version"
+
+    productFlavors {
+        free {
+            dimension "version"
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+            // Переменная для проверки типа версии в коде
+            buildConfigField "boolean", "IS_PRO", "false"
+        }
+        pro {
+            dimension "version"
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
+            buildConfigField "boolean", "IS_PRO", "true"
+        }
+    }
 }
 
 dependencies {
