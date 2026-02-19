@@ -20,6 +20,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.remoteConfigSettings
 import com.igoryan94.filmsearch.BuildConfig.IS_PRO
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
@@ -399,13 +401,13 @@ class MainActivity : AppCompatActivity() {
         return System.currentTimeMillis() - firstRunTime < trialDuration
     }
 
-    // II. 1. Функция инициализации и проверки промо-акции
+    // Функция инициализации и проверки промо-акции
     private fun checkPromo() {
         // Проверяем, первый ли это вход
         val prefs = getSharedPreferences("TrialPrefs", MODE_PRIVATE)
         val isFirstRun = prefs.getBoolean("is_first_run", true)
 
-        if (isFirstRun) {
+        if (isFirstRun || true) { // TODO убрать отладочный костыль
             val remoteConfig = FirebaseRemoteConfig.getInstance()
             // Настройки (интервал обновления 0 для тестов, в продакшене лучше больше)
             val configSettings = remoteConfigSettings {
@@ -430,7 +432,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // II. 2. Функция отображения промо-слоя
+    // Функция отображения промо-слоя
     private fun showPromo(link: String) {
         b.promoContainer.visibility = View.VISIBLE
 
@@ -445,7 +447,7 @@ class MainActivity : AppCompatActivity() {
             b.promoContainer.visibility = View.GONE
         }
 
-        // ⭐ Звездное задание: переход на фильм при клике на промо
+        // ⭐ Переход на фильм при клике на промо
         b.promoImage.setOnClickListener {
             // Скрываем промо
             b.promoContainer.visibility = View.GONE
