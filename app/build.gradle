@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id 'kotlin-parcelize'
     id 'com.google.devtools.ksp'
+
+    // Применяем плагин Google Services
+    id 'com.google.gms.google-services'
 }
 apply from: "$project.rootDir/versions.gradle"
 
@@ -86,6 +89,16 @@ dependencies {
 
     // Анимации Android, использующие физику
     implementation libs.androidx.dynamicanimation
+
+    //
+    // Google Firebase
+    // Подключаем Firebase BOM
+    implementation platform('com.google.firebase:firebase-bom:32.7.2')
+
+    // Библиотеки Remote Config и Analytics
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    //
 
     // Сложные векторные анимации
     implementation libs.lottie

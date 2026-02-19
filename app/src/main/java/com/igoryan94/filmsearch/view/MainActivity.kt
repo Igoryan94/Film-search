@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.igoryan94.filmsearch.BuildConfig.IS_PRO
 import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
@@ -46,6 +48,9 @@ class MainActivity : AppCompatActivity() {
         setupHomeFragment()
         setupBottomNav()
         checkArguments()
+
+        // Запускаем проверку промо
+        checkPromo()
     }
 
     override fun onDestroy() {
@@ -394,9 +399,77 @@ class MainActivity : AppCompatActivity() {
         return System.currentTimeMillis() - firstRunTime < trialDuration
     }
 
+    // II. 1. Функция инициализации и проверки промо-акции
+    private fun checkPromo() {
+        // Проверяем, первый ли это вход
+        val prefs = getSharedPreferences("TrialPrefs", MODE_PRIVATE)
+        val isFirstRun = prefs.getBoolean("is_first_run", true)
+
+        if (isFirstRun) {
+            val remoteConfig = FirebaseRemoteConfig.getInstance()
+            // Настройки (интервал обновления 0 для тестов, в продакшене лучше больше)
+            val configSettings = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 0
+            }
+            remoteConfig.setConfigSettingsAsync(configSettings)
+
+            // Получаем данные с сервера
+            remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Ключ "promo_link" должен быть настроен в консоли Firebase
+                    val promoLink = remoteConfig.getString("promo_link")
+
+                    if (promoLink.isNotEmpty()) {
+                        showPromo(promoLink)
+                    }
+                }
+            }
+
+            // Ставим флаг, что первый вход выполнен
+            sharedPreferences.edit { putBoolean(PREF_FIRST_RUN, false) }
+        }
+    }
+
+    // II. 2. Функция отображения промо-слоя
+    private fun showPromo(link: String) {
+        b.promoContainer.visibility = View.VISIBLE
+
+        // Загружаем картинку через Glide
+        Glide.with(this)
+            .load(link)
+            .centerCrop()
+            .into(b.promoImage)
+
+        // Логика закрытия промо
+        b.promoCloseText.setOnClickListener {
+            b.promoContainer.visibility = View.GONE
+        }
+
+        // ⭐ Звездное задание: переход на фильм при клике на промо
+        b.promoImage.setOnClickListener {
+            // Скрываем промо
+            b.promoContainer.visibility = View.GONE
+
+            // Создаем объект фильма (в реальности данные можно тоже взять из Remote Config)
+            val promoFilm = Film(
+                id = 1, // Или ID из конфига
+                title = "Промо фильм",
+                poster = link, // Используем ту же ссылку или другую
+                description = "Описание фильма из промо-акции",
+                isInFavorites = false
+            )
+
+            // Вызываем существующую функцию перехода
+            openFilmDetails(promoFilm)
+        }
+    }
+
     companion object {
         const val PREFS_NAME = "FilmSearchPrefs"
         const val PREF_MANUAL_THEME = "manual_theme_set"
         const val PREF_THEME_MODE = "theme_mode"
+
+        // Константа для первого запуска
+        const val PREF_FIRST_RUN = "first_run_promo"
     }
 }
