@@ -31,6 +31,7 @@ import com.igoryan94.filmsearch.R
 import com.igoryan94.filmsearch.data.entity.Film
 import com.igoryan94.filmsearch.databinding.FragmentFilmDetailsBinding
 import com.igoryan94.filmsearch.viewmodel.FilmDetailsViewModel
+import com.igoryan94.remote_module.entity.ApiConstants
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -85,9 +86,12 @@ class FilmDetailsFragment : Fragment() {
                 description = "Object is null"
             )
 
+        val posterUrl = if (film.poster.startsWith("http")) film.poster
+        else ApiConstants.IMAGES_URL + "w780" + film.poster
+
         b.detailsToolbar.title = film.title
         Glide.with(this)
-            .load(com.igoryan94.remote_module.entity.ApiConstants.IMAGES_URL + "w780" + film.poster)
+            .load(posterUrl)
             .centerCrop()
             .into(b.detailsPoster)
         b.detailsDescription.text = film.description
